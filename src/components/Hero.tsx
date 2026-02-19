@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Github, Linkedin, Mail } from 'lucide-react'
 import ChatSection from './ChatSection'
 
@@ -19,6 +20,8 @@ const scaleIn = {
   show: { opacity: 1, scale: 1, transition: { duration: 0.6, ease } },
 }
 
+const layoutSpring = { type: 'spring', stiffness: 120, damping: 20, mass: 0.85 } as const
+
 const socials = [
   { icon: Github, href: '#', label: 'GitHub' },
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
@@ -26,14 +29,32 @@ const socials = [
 ]
 
 export default function Hero() {
+  const [isChatExpanded, setIsChatExpanded] = useState(false)
+
   return (
     <section
       id="about"
       className="relative z-10 flex min-h-screen items-start px-6 pb-16 pt-24 md:px-12 lg:px-20"
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(430px,520px)] lg:items-center">
+      <motion.div
+        layout
+        transition={layoutSpring}
+        className={`mx-auto grid w-full gap-10 ${
+          isChatExpanded
+            ? 'max-w-none grid-cols-1 lg:grid-cols-1 lg:items-start'
+            : 'max-w-6xl lg:grid-cols-[minmax(0,1fr)_minmax(430px,520px)] lg:items-center'
+        }`}
+      >
         <motion.div
-          className="flex flex-col items-center text-center lg:items-start lg:text-left"
+          layout
+          transition={layoutSpring}
+          animate={{ y: isChatExpanded ? 16 : 0 }}
+          className={`${
+            isChatExpanded ? 'order-2' : 'order-1'
+          }`}
+        >
+          <motion.div
+            className="flex flex-col items-center text-center lg:items-start lg:text-left"
           variants={container}
           initial="hidden"
           animate="show"
@@ -93,21 +114,35 @@ export default function Hero() {
               </motion.a>
             ))}
           </motion.div>
-
+          </motion.div>
         </motion.div>
 
-        <div className="relative w-full">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6, ease: 'easeOut' as const }}
-            className="mb-3 text-center font-mono text-[11px] tracking-[0.18em] text-accent uppercase lg:text-left"
-          >
-            Featured Chatbot
-          </motion.p>
-          <ChatSection featured />
-        </div>
-      </div>
+        <motion.div
+          layout
+          transition={layoutSpring}
+          className={`relative w-full ${isChatExpanded ? 'order-1' : 'order-2'}`}
+        >
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={isChatExpanded ? 'expanded-title' : 'default-title'}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: 'easeOut' as const }}
+              className="mb-3 text-center font-mono text-[11px] tracking-[0.18em] text-accent uppercase lg:text-left"
+            >
+              {isChatExpanded ? 'Live Conversation Mode' : 'Featured Chatbot'}
+            </motion.p>
+          </AnimatePresence>
+          <ChatSection
+            featured
+            expandToFullWidth={isChatExpanded}
+            onFirstUserMessage={() => setIsChatExpanded(true)}
+            onExpandRequest={() => setIsChatExpanded(true)}
+            onCollapseRequest={() => setIsChatExpanded(false)}
+          />
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

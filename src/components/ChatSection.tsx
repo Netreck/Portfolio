@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Send, Sparkles } from 'lucide-react'
+import { Maximize2, Send, Sparkles, X } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 
 interface Message {
@@ -11,6 +11,10 @@ interface Message {
 
 interface ChatSectionProps {
   featured?: boolean
+  expandToFullWidth?: boolean
+  onFirstUserMessage?: () => void
+  onExpandRequest?: () => void
+  onCollapseRequest?: () => void
 }
 
 const SUGGESTIONS = [
@@ -41,7 +45,15 @@ function getMockResponse(input: string): string {
   return "Thanks for the message! The AI backend is coming soon — powered by FastAPI and LLMs. Try one of the quick questions to learn more about me!"
 }
 
-export default function ChatSection({ featured = false }: ChatSectionProps) {
+const layoutSpring = { type: 'spring', stiffness: 130, damping: 20, mass: 0.85 } as const
+
+export default function ChatSection({
+  featured = false,
+  expandToFullWidth = false,
+  onFirstUserMessage,
+  onExpandRequest,
+  onCollapseRequest,
+}: ChatSectionProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
@@ -52,6 +64,7 @@ export default function ChatSection({ featured = false }: ChatSectionProps) {
   ])
   const [input, setInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const hasSentFirstUserMessage = useRef(false)
   const messagesListRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
@@ -65,6 +78,11 @@ export default function ChatSection({ featured = false }: ChatSectionProps) {
   const handleSend = (text?: string) => {
     const msg = (text ?? input).trim()
     if (!msg || isTyping) return
+
+    if (!hasSentFirstUserMessage.current) {
+      hasSentFirstUserMessage.current = true
+      onFirstUserMessage?.()
+    }
 
     setMessages((prev) => [...prev, { id: Date.now(), role: 'user', content: msg }])
     setInput('')
@@ -87,31 +105,73 @@ export default function ChatSection({ featured = false }: ChatSectionProps) {
   const chatCard = (
     <div
       className={`overflow-hidden rounded-2xl border backdrop-blur-sm ${
-        featured
-          ? 'glow-card border-accent/40 bg-dark-800/75 shadow-[0_0_0_1px_rgba(74,222,128,0.18),0_24px_70px_rgba(74,222,128,0.12)]'
-          : 'glow-card border-dark-600/60 bg-dark-800/50'
+        featured && expandToFullWidth
+          ? 'glow-card rounded-3xl border-accent/50 bg-dark-800/85 shadow-[0_0_0_1px_rgba(74,222,128,0.24),0_28px_90px_rgba(74,222,128,0.12)]'
+          : featured
+            ? 'glow-card border-accent/40 bg-dark-800/75 shadow-[0_0_0_1px_rgba(74,222,128,0.18),0_24px_70px_rgba(74,222,128,0.12)]'
+            : 'glow-card border-dark-600/60 bg-dark-800/50'
       }`}
     >
-      <div className="flex items-center gap-3 border-b border-dark-600/40 px-5 py-4">
-        <motion.div
-          className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10"
-          animate={{ rotate: [0, 5, -5, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' as const }}
-        >
-          <Sparkles size={16} className="text-accent" />
-        </motion.div>
+      <div className="flex items-center justify-between border-b border-dark-600/40 px-5 py-4">
         <div>
-          <p className="text-sm font-semibold text-cream">Chat with me</p>
-          <div className="flex items-center gap-1.5">
-            <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
-            <span className="font-mono text-[10px] text-accent">Online</span>
+          <div className="flex items-center gap-3">
+            <motion.div
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' as const }}
+            >
+              <Sparkles size={16} className="text-accent" />
+            </motion.div>
+            <div>
+              <p className="text-sm font-semibold text-cream">Chat with me</p>
+              <div className="flex items-center gap-1.5">
+                <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+                <span className="font-mono text-[10px] text-accent">Online</span>
+              </div>
+            </div>
           </div>
         </div>
+        {featured && (
+          <div className="flex items-center gap-2">
+            {!expandToFullWidth && (
+              <motion.button
+                type="button"
+                title="Fullscreen chat"
+                aria-label="Fullscreen chat"
+                onClick={onExpandRequest}
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.92 }}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-dark-600/70 bg-dark-700/50 text-cream-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent"
+              >
+                <Maximize2 size={14} />
+              </motion.button>
+            )}
+            {expandToFullWidth && (
+              <motion.button
+                type="button"
+                title="Close fullscreen"
+                aria-label="Close fullscreen"
+                onClick={onCollapseRequest}
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.92 }}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-dark-600/70 bg-dark-700/50 text-cream-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent"
+              >
+                <X size={14} />
+              </motion.button>
+            )}
+          </div>
+        )}
       </div>
 
       <div
         ref={messagesListRef}
-        className={`flex flex-col gap-4 overflow-y-auto p-5 ${featured ? 'h-[400px]' : 'h-[380px]'}`}
+        className={`flex flex-col gap-4 overflow-y-auto p-5 ${
+          featured
+            ? expandToFullWidth
+              ? 'h-[52vh] min-h-[430px] max-h-[650px]'
+              : 'h-[400px]'
+            : 'h-[380px]'
+        }`}
       >
         {messages.map((msg) => (
           <ChatMessage key={msg.id} role={msg.role} content={msg.content} />
@@ -160,14 +220,23 @@ export default function ChatSection({ featured = false }: ChatSectionProps) {
   if (featured) {
     return (
       <motion.div
+        layout
         id="chat"
         ref={sectionRef}
-        initial={{ opacity: 0, y: 35 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto w-full max-w-xl"
+        initial={{ opacity: 0, y: 35, scale: 0.98 }}
+        animate={
+          isInView
+            ? { opacity: 1, y: 0, scale: expandToFullWidth ? 1 : 0.995 }
+            : { opacity: 0, y: 35, scale: 0.98 }
+        }
+        transition={{ ...layoutSpring, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        className={`relative mx-auto w-full ${expandToFullWidth ? 'max-w-none' : 'max-w-xl'}`}
       >
-        <div className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-accent/18 blur-3xl" />
+        <div
+          className={`pointer-events-none absolute -z-10 rounded-[2rem] bg-accent/18 blur-3xl transition-all duration-700 ${
+            expandToFullWidth ? '-inset-8' : '-inset-5'
+          }`}
+        />
         {chatCard}
       </motion.div>
     )
