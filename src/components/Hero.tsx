@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react'
 import ChatSection from './ChatSection'
 
 const container = {
@@ -30,11 +30,14 @@ const socials = [
 
 export default function Hero() {
   const [isChatExpanded, setIsChatExpanded] = useState(false)
+  const scrollToProjects = () => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
     <section
       id="about"
-      className="relative z-10 flex min-h-screen items-start px-6 pb-16 pt-24 md:px-12 lg:px-20"
+      className="relative z-10 flex min-h-screen items-start px-6 pb-28 pt-24 md:px-12 lg:px-20"
     >
       <motion.div
         layout
@@ -88,16 +91,19 @@ export default function Hero() {
             <span className="text-accent">Goncalves</span>
           </motion.h1>
 
-          <motion.p variants={fadeUp} className="mt-3 font-mono text-base text-cream-muted">
-            Full-Stack Developer
-          </motion.p>
+          <motion.p 
+  variants={fadeUp} 
+  className="mt-3 font-mono text-base text-cream-muted"
+>
+  Tech Intern - Bank of America <br />
+  Computer Science - Universidade Federal do ABC
+</motion.p>
 
           <motion.p
             variants={fadeUp}
             className="mt-5 max-w-lg font-body text-base leading-relaxed text-dark-300"
           >
-            Building intelligent tools and sleek interfaces. Exploring the intersection of
-            AI&nbsp;and web development.
+            Interest in Data Science, Devops and Data Engineering.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex items-center gap-3">
@@ -143,6 +149,26 @@ export default function Hero() {
           />
         </motion.div>
       </motion.div>
+
+      <motion.button
+        type="button"
+        aria-label="Scroll down to projects"
+        onClick={scrollToProjects}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.5, ease: 'easeOut' as const }}
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.96 }}
+        className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2 rounded-2xl border border-dark-600/70 bg-dark-900/65 px-4 py-2 text-dark-300 backdrop-blur-md transition-colors duration-300 hover:border-accent/45 hover:text-accent"
+      >
+        <span className="font-mono text-[10px] tracking-[0.18em] uppercase">Scroll to Projects</span>
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.35, repeat: Infinity, ease: 'easeInOut' as const }}
+        >
+          <ChevronDown size={16} />
+        </motion.div>
+      </motion.button>
     </section>
   )
 }
