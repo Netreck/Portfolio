@@ -1,7 +1,5 @@
 node_modules
 dist
 .git
-.claude
-venv
 npm-debug.log
 .DS_Store
