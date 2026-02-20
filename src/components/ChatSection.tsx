@@ -58,9 +58,18 @@ export default function ChatSection({
     {
       id: 0,
       role: 'assistant',
-      content:
-        "Hey! I'm a virtual assistant. Ask me about my skills, projects, experience, or anything else!",
-    },
+      content: `## Hello! 👋
+
+I’m a **RAG chatbot** powered by information about my skills and projects.
+
+You can ask me about:
+- technical skills
+- professional experience
+- projects I've built
+- goals and interests
+
+Feel free to ask anything!`,
+},
   ])
   const [input, setInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)

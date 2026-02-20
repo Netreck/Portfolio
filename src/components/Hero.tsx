@@ -137,7 +137,7 @@ export default function Hero() {
               transition={{ duration: 0.35, ease: 'easeOut' as const }}
               className="mb-3 text-center font-mono text-[11px] tracking-[0.18em] text-accent uppercase lg:text-left"
             >
-              {isChatExpanded ? 'Live Conversation Mode' : 'Featured Chatbot'}
+              {isChatExpanded ? 'Live Conversation Mode' : 'Rag chatbot '}
             </motion.p>
           </AnimatePresence>
           <ChatSection

@@ -1,5 +1,8 @@
+import type { ComponentPropsWithoutRef } from 'react'
 import { motion } from 'framer-motion'
 import { Bot, User } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface ChatMessageProps {
   role: 'user' | 'assistant'
@@ -9,6 +12,7 @@ interface ChatMessageProps {
 
 export default function ChatMessage({ role, content, isTyping }: ChatMessageProps) {
   const isBot = role === 'assistant'
+  const markdownClass = isBot ? 'text-cream-muted' : 'text-cream'
 
   return (
     <motion.div
@@ -53,7 +57,63 @@ export default function ChatMessage({ role, content, isTyping }: ChatMessageProp
             ))}
           </div>
         ) : (
-          content
+          <div className={markdownClass}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: (props) => <p {...props} className="mb-2 last:mb-0" />,
+                ul: (props) => (
+                  <ul {...props} className="mb-2 ml-5 list-disc space-y-1 last:mb-0" />
+                ),
+                ol: (props) => (
+                  <ol {...props} className="mb-2 ml-5 list-decimal space-y-1 last:mb-0" />
+                ),
+                li: (props) => <li {...props} className="pl-1" />,
+                blockquote: (props) => (
+                  <blockquote
+                    {...props}
+                    className="mb-2 border-l-2 border-accent/40 pl-3 italic text-dark-300 last:mb-0"
+                  />
+                ),
+                a: (props) => (
+                  <a
+                    {...props}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-accent underline decoration-accent/60 underline-offset-2 transition-colors hover:text-accent-dim"
+                  />
+                ),
+                pre: (props) => (
+                  <pre
+                    {...props}
+                    className="mb-2 overflow-x-auto rounded-xl border border-dark-600/60 bg-dark-900/70 p-3 last:mb-0"
+                  />
+                ),
+                code: ({ className, children, ...props }: ComponentPropsWithoutRef<'code'>) => {
+                  const isCodeBlock = Boolean(className?.includes('language-'))
+
+                  if (isCodeBlock) {
+                    return (
+                      <code {...props} className={`font-mono text-[12px] ${className ?? ''}`}>
+                        {children}
+                      </code>
+                    )
+                  }
+
+                  return (
+                    <code
+                      {...props}
+                      className="rounded-md bg-dark-900/70 px-1.5 py-0.5 font-mono text-[12px] text-accent"
+                    >
+                      {children}
+                    </code>
+                  )
+                },
+              }}
+            >
+              {content}
+            </ReactMarkdown>
+          </div>
         )}
       </div>
     </motion.div>
