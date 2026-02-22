@@ -3,6 +3,11 @@ dist
 web/node_modules
 web/dist
 venv
+.venv
+rag/.venv
 __pycache__
 *.pyc
 .env
+.claude
+rag/data
+rag/.chroma

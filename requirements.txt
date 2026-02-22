@@ -1,2 +1,6 @@
+# Python dependencies for the whole backend stack (including /rag).
+# Keep this file as the single source of truth.
 fastapi>=0.115.0
 uvicorn[standard]>=0.34.0
+pydantic-settings>=2.7.0
+python-dotenv>=1.0.1
