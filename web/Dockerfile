@@ -6,6 +6,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+ARG VITE_RAG_API_URL=
+ENV VITE_RAG_API_URL=$VITE_RAG_API_URL
 RUN npm run build
 
 FROM nginx:1.27-alpine

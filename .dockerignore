@@ -1,0 +1,15 @@
+.git
+.gitignore
+.claude
+venv
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+web/node_modules
+web/dist
+web/.vite
+rag/data/vector_db/*
+!rag/data/vector_db/.gitkeep

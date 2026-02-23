@@ -1,0 +1,27 @@
+services:
+  rag-api:
+    build:
+      context: .
+      dockerfile: rag/Dockerfile
+    container_name: portfolio-rag-api
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./rag/data/uploads:/app/rag/data/uploads
+      - ./rag/data/vector_db:/app/rag/data/vector_db
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        VITE_RAG_API_URL: ""
+    container_name: portfolio-web
+    depends_on:
+      - rag-api
+    ports:
+      - "8080:80"
+    restart: unless-stopped

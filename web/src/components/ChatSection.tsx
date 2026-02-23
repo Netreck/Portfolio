@@ -17,6 +17,17 @@ interface ChatSectionProps {
   onCollapseRequest?: () => void
 }
 
+interface ChatApiSource {
+  source_name: string
+  score: number
+  excerpt: string
+}
+
+interface ChatApiResponse {
+  answer: string
+  sources: ChatApiSource[]
+}
+
 const SUGGESTIONS = [
   "What's your experience?",
   'Tell me about your projects',
@@ -24,26 +35,8 @@ const SUGGESTIONS = [
   'Are you available for work?',
 ]
 
-const MOCK_RESPONSES: Record<string, string> = {
-  "what's your experience?":
-    "I've been building software for several years, focusing on full-stack web development and AI integrations. I've worked with Python, TypeScript, React, FastAPI, and various cloud platforms. I'm currently studying at UFABC and interning in tech.",
-  'tell me about your projects':
-    "I've built AI-powered tools, data dashboards, and automation systems. This portfolio itself is a chatbot interface that will soon be powered by a real AI backend! I'm always shipping something new.",
-  'what tech do you use?':
-    'My core stack is Python + TypeScript. Frontend: React, Tailwind, Framer Motion. Backend: FastAPI. For data & AI: PostgreSQL, LangChain, OpenAI APIs. I deploy with Docker on AWS.',
-  'are you available for work?':
-    "Yes! I'm open to freelance projects and full-time opportunities. Let's chat about what you're building.",
-}
-
-function getMockResponse(input: string): string {
-  const lower = input.toLowerCase().trim()
-  for (const [key, value] of Object.entries(MOCK_RESPONSES)) {
-    if (lower.includes(key.split(' ').slice(0, 3).join(' ').toLowerCase())) {
-      return value
-    }
-  }
-  return "Thanks for the message! The AI backend is coming soon — powered by FastAPI and LLMs. Try one of the quick questions to learn more about me!"
-}
+const RAG_API_BASE_URL =
+  import.meta.env.VITE_RAG_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '')
 
 const layoutSpring = { type: 'spring', stiffness: 130, damping: 20, mass: 0.85 } as const
 
@@ -84,7 +77,7 @@ Feel free to ask anything!`,
     list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' })
   }, [messages, isTyping])
 
-  const handleSend = (text?: string) => {
+  const handleSend = async (text?: string) => {
     const msg = (text ?? input).trim()
     if (!msg || isTyping) return
 
@@ -97,18 +90,51 @@ Feel free to ask anything!`,
     setInput('')
     setIsTyping(true)
 
-    setTimeout(() => {
-      setIsTyping(false)
+    try {
+      const response = await fetch(`${RAG_API_BASE_URL}/rag/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, top_k: 4 }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Backend returned ${response.status}`)
+      }
+
+      const data = (await response.json()) as ChatApiResponse
+      const sourcesSection =
+        Array.isArray(data.sources) && data.sources.length > 0
+          ? `\n\n---\n**Sources**\n${data.sources
+              .map(
+                (source, index) =>
+                  `${index + 1}. **${source.source_name}** (${source.score.toFixed(2)})\n> ${source.excerpt}`,
+              )
+              .join('\n')}`
+          : ''
+      const assistantMessage = `${data.answer}${sourcesSection}`
+
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, role: 'assistant', content: getMockResponse(msg) },
+        { id: Date.now() + 1, role: 'assistant', content: assistantMessage },
       ])
-    }, 1000 + Math.random() * 800)
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: 'assistant',
+          content:
+            'I could not reach the RAG API.\n\nCheck if backend is running on `http://localhost:8000` and ingestion has already been executed.',
+        },
+      ])
+    } finally {
+      setIsTyping(false)
+    }
   }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    handleSend()
+    void handleSend()
   }
 
   const chatCard = (
@@ -192,7 +218,7 @@ Feel free to ask anything!`,
         {SUGGESTIONS.map((s) => (
           <motion.button
             key={s}
-            onClick={() => handleSend(s)}
+            onClick={() => void handleSend(s)}
             disabled={isTyping}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
@@ -261,7 +287,7 @@ Feel free to ask anything!`,
       >
         {chatCard}
         <p className="mt-4 text-center font-mono text-[10px] text-dark-500">
-          AI backend powered by FastAPI — coming soon
+          Connected to RAG API
         </p>
       </motion.div>
     </section>
