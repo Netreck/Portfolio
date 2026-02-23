@@ -1,17 +1,27 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import GridBackground from './components/GridBackground'
 import ParticleField from './components/ParticleField'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Projects from './components/Projects'
 import ProjectPage from './components/ProjectPage'
-import { getProjectBySlug } from './data/projects'
+import { getProjectBySlug, type Language } from './data/projects'
 
 export default function App() {
+  const [language, setLanguage] = useState<Language>(() => {
+    const stored = window.localStorage.getItem('portfolio_lang')
+    return stored === 'br' ? 'br' : 'en'
+  })
+
   const routeMatch = window.location.pathname.match(/^\/project\/([^/]+)\/?$/)
   const projectSlug = routeMatch?.[1]
   const activeProject = projectSlug ? getProjectBySlug(projectSlug) ?? null : null
   const isProjectRoute = Boolean(routeMatch)
+
+  useEffect(() => {
+    window.localStorage.setItem('portfolio_lang', language)
+    document.documentElement.lang = language === 'br' ? 'pt-BR' : 'en'
+  }, [language])
 
   useEffect(() => {
     if (isProjectRoute) {
@@ -44,16 +54,19 @@ export default function App() {
       <div className="grain-overlay" />
       <div className="scanlines" />
 
+      <Navbar
+        language={language}
+        onLanguageChange={setLanguage}
+        isProjectRoute={isProjectRoute}
+      />
+
       {isProjectRoute ? (
-        <ProjectPage project={activeProject} />
+        <ProjectPage project={activeProject} language={language} />
       ) : (
-        <>
-          <Navbar />
           <main>
-            <Hero />
-            <Projects />
+          <Hero language={language} />
+          <Projects language={language} />
           </main>
-        </>
       )}
     </>
   )

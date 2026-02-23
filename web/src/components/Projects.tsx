@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ArrowRight, ExternalLink, Sparkles } from 'lucide-react'
-import { projects } from '../data/projects'
+import { projects, type Language } from '../data/projects'
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
@@ -15,9 +15,29 @@ const cardVariants = {
   }),
 }
 
-export default function Projects() {
+interface ProjectsProps {
+  language: Language
+}
+
+const copy = {
+  en: {
+    badge: 'Project Overview',
+    title: 'Real projects focused on infrastructure reliability and practical AI applications',
+    desc: 'These case studies document how I design systems end-to-end, from platform architecture and observability to model-driven product decisions.',
+    cta: 'Explore case study',
+  },
+  br: {
+    badge: 'Visão Geral de Projetos',
+    title: 'Projetos reais focados em confiabilidade ,Arquitetura e aplicações práticas de IA',
+    desc: 'Esses projetos demonstram minha capacidade de atuar de ponta a ponta no design de sistemas, incluindo arquitetura de plataformas, observabilidade e desenvolvimento de aplicações em Data Engineering e Machine Learning.',
+    cta: 'Explorar Case Study',
+  },
+} as const
+
+export default function Projects({ language }: ProjectsProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.12 })
+  const t = copy[language]
 
   return (
     <section id="projects" ref={sectionRef} className="relative z-10 py-24">
@@ -32,68 +52,71 @@ export default function Projects() {
         <div className="rounded-3xl border border-dark-600/60 bg-dark-800/50 p-7 backdrop-blur-sm md:p-8">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
             <Sparkles size={12} />
-            Project Overview
+            {t.badge}
           </div>
           <h2 className="max-w-3xl font-display text-3xl font-bold leading-tight text-cream sm:text-4xl">
-            Real projects focused on infrastructure reliability and practical AI applications
+            {t.title}
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-dark-300 sm:text-base">
-            These case studies document how I design systems end-to-end, from platform architecture and observability to model-driven product decisions.
+            {t.desc}
           </p>
         </div>
       </motion.div>
 
       <div className="grid gap-5 px-6 md:grid-cols-2 md:px-12 lg:px-20">
-        {projects.map((project, i) => (
-          <motion.a
-            key={project.slug}
-            href={`/project/${project.slug}`}
-            custom={i}
-            variants={cardVariants}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            whileHover={{ y: -8, transition: { duration: 0.28 } }}
-            className="group relative overflow-hidden rounded-3xl border border-dark-600/60 bg-dark-800/55 p-6 backdrop-blur-sm transition-all duration-300 hover:border-accent/45"
-          >
-            <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-accent/15 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
+        {projects.map((project, i) => {
+          const localized = language === 'br' && project.pt ? project.pt : project
+          return (
+            <motion.a
+              key={project.slug}
+              href={`/project/${project.slug}`}
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              whileHover={{ y: -8, transition: { duration: 0.28 } }}
+              className="group relative overflow-hidden rounded-3xl border border-dark-600/60 bg-dark-800/55 p-6 backdrop-blur-sm transition-all duration-300 hover:border-accent/45"
+            >
+              <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-accent/15 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
 
-            <div className="relative">
-              <div className="mb-5 flex items-center justify-between gap-4">
-                <span className="rounded-full border border-accent/35 bg-accent/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
-                  {project.status}
-                </span>
-                <ExternalLink size={14} className="text-dark-400 transition-colors group-hover:text-accent" />
-              </div>
-
-              <h3 className="font-display text-2xl font-semibold text-cream transition-colors group-hover:text-accent">
-                {project.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-dark-300">{project.subtitle}</p>
-              <p className="mt-4 text-sm leading-relaxed text-dark-300">{project.description}</p>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-md border border-dark-600/60 bg-dark-700/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-cream-muted"
-                  >
-                    {tag}
+              <div className="relative">
+                <div className="mb-5 flex items-center justify-between gap-4">
+                  <span className="rounded-full border border-accent/35 bg-accent/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+                    {localized.status}
                   </span>
-                ))}
-              </div>
+                  <ExternalLink size={14} className="text-dark-400 transition-colors group-hover:text-accent" />
+                </div>
 
-              <div className="mt-6 flex items-center justify-between border-t border-dark-600/45 pt-4">
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                  Explore case study
-                </span>
-                <ArrowRight
-                  size={15}
-                  className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
-                />
+                <h3 className="font-display text-2xl font-semibold text-cream transition-colors group-hover:text-accent">
+                  {localized.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-dark-300">{localized.subtitle}</p>
+                <p className="mt-4 text-sm leading-relaxed text-dark-300">{localized.description}</p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-md border border-dark-600/60 bg-dark-700/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-cream-muted"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex items-center justify-between border-t border-dark-600/45 pt-4">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+                    {t.cta}
+                  </span>
+                  <ArrowRight
+                    size={15}
+                    className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
+                  />
+                </div>
               </div>
-            </div>
-          </motion.a>
-        ))}
+            </motion.a>
+          )
+        })}
       </div>
     </section>
   )

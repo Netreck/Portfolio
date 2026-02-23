@@ -9,15 +9,54 @@ import {
   User,
   X,
 } from 'lucide-react'
-import type { Project, ProjectImage, ProjectStorySection } from '../data/projects'
+import type {
+  Language,
+  Project,
+  ProjectFlowStep,
+  ProjectImage,
+  ProjectStorySection,
+} from '../data/projects'
 
 interface ProjectPageProps {
   project: Project | null
+  language: Language
 }
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
-function EmptyProjectState() {
+const pageCopy = {
+  en: {
+    projectPage: 'Project Page',
+    projectNotFound: 'Project not found',
+    projectNotFoundDesc: 'The requested route does not match an available project page.',
+    backToProjects: 'Back to projects',
+    openImageAria: 'Open image in full screen',
+    flowTitle: 'How it is exposed to the internet',
+    flowDesc:
+      'This routing path exists because the ISP uses CGNAT, so the homelab does not receive a direct public IPv4 address. A public IPv4 VPS is used as the entry point, then traffic is securely forwarded into the home network.',
+    overview: 'Overview',
+    openOnGithub: 'Open on GitHub',
+    viewAllProjects: 'View all projects',
+    closeFullImage: 'Close full screen image',
+  },
+  br: {
+    projectPage: 'Página do Projeto',
+    projectNotFound: 'Projeto não encontrado',
+    projectNotFoundDesc: 'A rota solicitada não corresponde a uma página de projeto disponível.',
+    backToProjects: 'Voltar para projetos',
+    openImageAria: 'Abrir imagem em tela cheia',
+    flowTitle: 'Como é exposto na internet',
+    flowDesc:
+      'Esse caminho de roteamento existe porque a ISP usa CGNAT, então o homelab não recebe IPv4 público direto. Uma VPS com IPv4 público é usada como ponto de entrada, e depois o tráfego é encaminhado com segurança para a rede de casa.',
+    overview: 'Visão Geral',
+    openOnGithub: 'Abrir no GitHub',
+    viewAllProjects: 'Ver todos os projetos',
+    closeFullImage: 'Fechar imagem em tela cheia',
+  },
+} as const
+
+function EmptyProjectState({ language }: { language: Language }) {
+  const t = pageCopy[language]
   return (
     <main className="relative z-10 min-h-screen px-6 pb-16 pt-24 md:px-12 lg:px-20">
       <motion.div
@@ -26,17 +65,17 @@ function EmptyProjectState() {
         transition={{ duration: 0.6, ease }}
         className="mx-auto max-w-3xl rounded-3xl border border-dark-600/50 bg-dark-800/70 p-8 backdrop-blur-sm"
       >
-        <p className="font-mono text-xs uppercase tracking-widest text-accent">Project Page</p>
-        <h1 className="mt-3 font-display text-3xl font-bold text-cream">Project not found</h1>
+        <p className="font-mono text-xs uppercase tracking-widest text-accent">{t.projectPage}</p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-cream">{t.projectNotFound}</h1>
         <p className="mt-4 text-sm leading-relaxed text-dark-300">
-          The requested route does not match an available project page.
+          {t.projectNotFoundDesc}
         </p>
         <a
           href="/#projects"
           className="mt-8 inline-flex items-center gap-2 rounded-xl border border-dark-600/70 bg-dark-900/60 px-4 py-2 font-mono text-xs uppercase tracking-wider text-cream-muted transition-colors hover:border-accent/45 hover:text-accent"
         >
           <ArrowLeft size={14} />
-          Back to projects
+          {t.backToProjects}
         </a>
       </motion.div>
     </main>
@@ -46,9 +85,11 @@ function EmptyProjectState() {
 function StoryBlock({
   section,
   onImageClick,
+  openImageAriaLabel,
 }: {
   section: ProjectStorySection
   onImageClick: (image: ProjectImage) => void
+  openImageAriaLabel: string
 }) {
   return (
     <section className="mt-14 border-t border-dark-700/50 pt-10 first:mt-0 first:border-t-0 first:pt-0">
@@ -83,7 +124,7 @@ function StoryBlock({
                 type="button"
                 onClick={() => onImageClick(image)}
                 className="block w-full cursor-zoom-in overflow-hidden"
-                aria-label={`Open image in full screen: ${image.alt}`}
+                aria-label={`${openImageAriaLabel}: ${image.alt}`}
               >
                 <img
                   src={image.src}
@@ -103,7 +144,8 @@ function StoryBlock({
   )
 }
 
-function HowItWorks({ project }: { project: Project }) {
+function HowItWorks({ flow, language }: { flow: ProjectFlowStep[]; language: Language }) {
+  const t = pageCopy[language]
   const layout = [
     { x: 72, y: 52, w: 250 },
     { x: 390, y: 36, w: 250 },
@@ -127,11 +169,14 @@ function HowItWorks({ project }: { project: Project }) {
     <section className="mt-16 rounded-3xl border border-dark-600/65 bg-gradient-to-b from-dark-800/70 to-dark-900/40 p-6 md:p-8">
       <div className="mb-6 flex items-center gap-2">
         <Sparkles size={15} className="text-accent" />
-        <h2 className="font-display text-2xl font-semibold text-cream">How it works</h2>
+        <h2 className="font-display text-2xl font-semibold text-cream">{t.flowTitle}</h2>
       </div>
+      <p className="mb-6 max-w-4xl text-sm leading-relaxed text-dark-300 md:text-base">
+        {t.flowDesc}
+      </p>
 
       <div className="space-y-3 md:hidden">
-        {project.flow.map((step, index) => (
+        {flow.map((step, index) => (
           <article
             key={step.title}
             className="rounded-2xl border border-dark-600/65 bg-dark-900/55 p-4"
@@ -203,7 +248,7 @@ function HowItWorks({ project }: { project: Project }) {
           ))}
         </svg>
 
-        {project.flow.map((step, index) => {
+        {flow.map((step, index) => {
           const slot = layout[index] ?? { x: 70 + index * 120, y: 70 + index * 40, w: 240 }
           return (
             <motion.article
@@ -236,7 +281,8 @@ function HowItWorks({ project }: { project: Project }) {
   )
 }
 
-export default function ProjectPage({ project }: ProjectPageProps) {
+export default function ProjectPage({ project, language }: ProjectPageProps) {
+  const t = pageCopy[language]
   const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null)
 
   useEffect(() => {
@@ -256,7 +302,9 @@ export default function ProjectPage({ project }: ProjectPageProps) {
     }
   }, [selectedImage])
 
-  if (!project) return <EmptyProjectState />
+  if (!project) return <EmptyProjectState language={language} />
+
+  const localized = language === 'br' && project.pt ? project.pt : project
 
   return (
     <main className="relative z-10 min-h-screen px-6 pb-24 pt-24 md:px-12 lg:px-20">
@@ -273,20 +321,20 @@ export default function ProjectPage({ project }: ProjectPageProps) {
           className="mb-6 inline-flex items-center gap-2 rounded-xl border border-dark-600/70 bg-dark-900/60 px-4 py-2 font-mono text-xs uppercase tracking-wider text-cream-muted transition-colors hover:border-accent/45 hover:text-accent"
         >
           <ArrowLeft size={14} />
-          Back to projects
+          {t.backToProjects}
         </a>
 
         <header className="rounded-3xl border border-dark-600/60 bg-dark-800/55 p-7 backdrop-blur-sm md:p-9">
           <p className="inline-flex items-center rounded-full border border-accent/35 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
-            {project.status}
+            {localized.status}
           </p>
           <h1 className="mt-4 max-w-4xl font-display text-4xl font-bold leading-tight text-cream md:text-5xl">
-            {project.title}
+            {localized.title}
           </h1>
           <p className="mt-3 max-w-3xl text-base leading-relaxed text-dark-300 md:text-lg">
-            {project.subtitle}
+            {localized.subtitle}
           </p>
-          <p className="mt-6 max-w-3xl text-[17px] leading-8 text-dark-300">{project.intro}</p>
+          <p className="mt-6 max-w-3xl text-[17px] leading-8 text-dark-300">{localized.intro}</p>
 
           <div className="mt-6 flex flex-wrap gap-2">
             {project.tags.map((tag) => (
@@ -307,14 +355,14 @@ export default function ProjectPage({ project }: ProjectPageProps) {
               className="inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider text-dark-950 transition-colors hover:bg-accent-dim"
             >
               <Github size={15} />
-              Open on GitHub
+              {t.openOnGithub}
               <ExternalLink size={13} />
             </a>
             <a
               href="/#projects"
               className="inline-flex items-center gap-2 rounded-xl border border-dark-600/70 bg-dark-900/60 px-4 py-2.5 font-mono text-xs uppercase tracking-wider text-cream-muted transition-colors hover:border-accent/45 hover:text-accent"
             >
-              View all projects
+              {t.viewAllProjects}
             </a>
           </div>
         </header>
@@ -322,13 +370,13 @@ export default function ProjectPage({ project }: ProjectPageProps) {
         <section className="mt-10 rounded-3xl border border-dark-600/60 bg-dark-800/45 p-6 backdrop-blur-sm md:p-7">
           <div className="flex items-center gap-2">
             <Layers size={15} className="text-accent" />
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">Overview</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">{t.overview}</p>
           </div>
-          <p className="mt-4 max-w-4xl text-[17px] leading-8 text-dark-300">{project.overview}</p>
-          <p className="mt-4 max-w-4xl text-[17px] leading-8 text-dark-300">{project.description}</p>
+          <p className="mt-4 max-w-4xl text-[17px] leading-8 text-dark-300">{localized.overview}</p>
+          <p className="mt-4 max-w-4xl text-[17px] leading-8 text-dark-300">{localized.description}</p>
 
           <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {project.stats.map((stat) => (
+            {localized.stats.map((stat) => (
               <article
                 key={stat.label}
                 className="rounded-2xl border border-dark-600/60 bg-dark-900/50 p-4"
@@ -343,55 +391,20 @@ export default function ProjectPage({ project }: ProjectPageProps) {
           </div>
         </section>
 
+        <HowItWorks flow={localized.flow} language={language} />
+
         <div className="mt-12">
-          {project.story.map((section) => (
+          {localized.story
+            .filter((section) => !['roadmap', 'roteiro'].includes(section.label.toLowerCase()))
+            .map((section) => (
             <StoryBlock
               key={`${section.label}-${section.title}`}
               section={section}
               onImageClick={setSelectedImage}
+              openImageAriaLabel={t.openImageAria}
             />
           ))}
         </div>
-
-        <HowItWorks project={project} />
-
-        <section className="mt-14 rounded-3xl border border-dark-600/60 bg-dark-800/45 p-6 backdrop-blur-sm md:p-7">
-          <h2 className="font-display text-2xl font-semibold text-cream">Stack and domains</h2>
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
-            {project.stack.map((group) => (
-              <article
-                key={group.group}
-                className="rounded-2xl border border-dark-600/60 bg-dark-900/45 p-4"
-              >
-                <h3 className="font-display text-lg font-semibold text-cream">{group.group}</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-md border border-dark-600/60 bg-dark-700/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-cream-muted"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-3xl border border-dark-600/60 bg-dark-800/45 p-6 backdrop-blur-sm md:p-7">
-          <h2 className="font-display text-2xl font-semibold text-cream">Key implementation points</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            {project.highlights.map((item) => (
-              <li
-                key={item}
-                className="rounded-2xl border border-dark-600/55 bg-dark-900/45 px-4 py-3 text-sm leading-relaxed text-dark-300"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
       </motion.article>
 
       {selectedImage && (
@@ -406,7 +419,7 @@ export default function ProjectPage({ project }: ProjectPageProps) {
             type="button"
             onClick={() => setSelectedImage(null)}
             className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-dark-600 bg-dark-900/70 text-cream-muted transition-colors hover:border-accent/50 hover:text-accent md:right-7 md:top-7"
-            aria-label="Close full screen image"
+            aria-label={t.closeFullImage}
           >
             <X size={18} />
           </button>

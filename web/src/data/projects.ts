@@ -3,6 +3,8 @@ import proxmoxMainMenuImg from '../Assets/Home-lab/proxmox-main-menu.png'
 import proxmenuxExampleImg from '../Assets/Home-lab/proxmenux-example.png'
 import grafanaDashboardImg from '../Assets/Home-lab/grafana-dashboard.png'
 
+export type Language = 'en' | 'br'
+
 export interface ProjectStat {
   label: string
   value: string
@@ -32,6 +34,18 @@ export interface ProjectStorySection {
   images?: ProjectImage[]
 }
 
+export interface ProjectLocaleContent {
+  title: string
+  subtitle: string
+  status: string
+  description: string
+  intro: string
+  overview: string
+  flow: ProjectFlowStep[]
+  stats: ProjectStat[]
+  story: ProjectStorySection[]
+}
+
 export interface Project {
   slug: string
   title: string
@@ -47,6 +61,7 @@ export interface Project {
   flow: ProjectFlowStep[]
   stack: ProjectStackGroup[]
   story: ProjectStorySection[]
+  pt?: ProjectLocaleContent
 }
 
 const homelabArchitecture: ProjectImage = {
@@ -77,14 +92,14 @@ export const projects: Project[] = [
   {
     slug: 'homelab-pessoal',
     title: 'Personal Homelab',
-    subtitle: 'A 24/7 self-hosted platform for practical software engineering',
+    subtitle: 'A 24/7 self-hosted platform for real-world practice and personal project deployment.',
     status: 'Active',
     description:
-      'A production-like home infrastructure used to host personal services continuously while validating architecture, reliability, and operational workflows.',
+      'A production-style home infrastructure used to continuously host personal services while validating architecture, reliability, and operations.',
     intro:
-      'This project is my hands-on environment for platform engineering. It mixes a minimal public edge with private infrastructure at home, allowing controlled experiments with real constraints.',
+      'This project is my hands-on lab for platform engineering and for publishing my personal projects. It combines a VPS with a public IP and private infrastructure (a real physical server) at home to experiment under real constraints. I started this challenge to better understand development and maintenance processes in the area I want to grow in.',
     overview:
-      'The design follows a strict constraint documented in the README: keep the VPS minimal and low-cost, using it mostly for public IPv4 exposure. Because of CGNAT, secure connectivity is established through WireGuard with Netmaker orchestration, then routed internally by Nginx Proxy Manager.',
+      'This homelab is exposed to the internet through a VPS public IP. Inside it, I use Nginx Proxy Manager as a reverse proxy to map each subdomain to one of my Proxmox virtual machines. I also use the Grafana, Prometheus, and Loki stack for observability of logs and access across the homelab.',
     tags: ['Proxmox', 'WireGuard', 'CI/CD', 'Grafana', 'Self-hosting'],
     githubUrl: 'https://github.com/Netreck/myHomeLab',
     highlights: [
@@ -129,7 +144,7 @@ export const projects: Project[] = [
         detail: 'Traffic reaches the public VPS that acts as the internet edge.',
       },
       {
-        title: 'Caddy TLS Gateway',
+        title: 'Caddy TLS Gateway (VPS)',
         detail: 'Caddy terminates TLS and forwards requests through the secure tunnel.',
       },
       {
@@ -196,12 +211,104 @@ export const projects: Project[] = [
         ],
       },
     ],
+    pt: {
+      title: 'Homelab Pessoal',
+      subtitle: 'Uma plataforma self-hosted 24/7 para prática real e deploy dos meus projetos.',
+      status: 'Ativo',
+      description:
+        'Uma infraestrutura residencial em padrão de produção para hospedar serviços pessoais continuamente, validando arquitetura, confiabilidade e operação.',
+      intro:
+        'Este projeto é meu laboratório prático de platform engineering e para disponibilizar meus projetos pessoais. Ele combina uma vps com ip público com infraestrutura privada (servidor fisico real) em casa para experimentar sob restrições reais. Inicei esse desafio para entender melhor os processos do desenvolvimento e manutenção de projetos na minha área de interesse',
+      overview:
+        'Esse homelab é exposto na internet por meio do ip publico de uma vps, dentro dele utilizo Nginx proxy manager como proxy reverso para ligar cada subdominio a uma das minhas maquinas virtuais do proxmox.Além disso também utilizo a stack grafana, prometheus e loki para observabilidade de logs e acessos ao meu homelab. ',
+      flow: [
+        {
+          title: 'Requisição do Usuário',
+          detail: 'Um usuário tenta acessar um serviço publicado pelo homelab.',
+        },
+        {
+          title: 'Cloudflare DNS',
+          detail: 'O domínio é resolvido pelo Cloudflare DNS antes do roteamento.',
+        },
+        {
+          title: 'IP Público da VPS',
+          detail: 'O tráfego chega na VPS pública que funciona como borda da internet.',
+        },
+        {
+          title: 'Gateway TLS Caddy(VPS)',
+          detail: 'O Caddy termina TLS e encaminha requisições pelo túnel seguro.',
+        },
+        {
+          title: 'Nginx Proxy Manager (Proxmox)',
+          detail: 'Na rede de casa, o Nginx Proxy Manager roteia para os serviços internos.',
+        },
+      ],
+      stats: [
+        {
+          label: 'Disponibilidade',
+          value: '24/7',
+          detail: 'Workloads sempre ativos para operação e manutenção reais.',
+        },
+        {
+          label: 'Modelo de Borda',
+          value: 'VPS Minima',
+          detail: 'Ponto de entrada público de baixo custo e baixa complexidade.',
+        },
+        {
+          label: 'Runtime',
+          value: 'Proxmox VE',
+          detail: 'Estratégia combinada de VM e LXC em um único host.',
+        },
+        {
+          label: 'Observabilidade',
+          value: 'Stack Grafana',
+          detail: 'Métricas e logs agregados para visibilidade de serviço.',
+        },
+      ],
+      story: [
+        {
+          label: 'Visão Geral',
+          title: 'Projetando com restrições reais',
+          paragraphs: [
+            'A principal decisão de arquitetura veio de uma limitação da ISP: o CGNAT dificulta e encarece a exposição direta. Em vez de superdimensionar a borda, mantive a VPS propositalmente mínima para atuar como porta pública.',
+            'Dali, o tráfego é encaminhado com segurança para o homelab via WireGuard, mantendo os serviços privados fora da superfície pública com padrão previsível de acesso.',
+          ],
+          images: [homelabArchitecture],
+        },
+        {
+          label: 'Infraestrutura',
+          title: 'Virtualização como núcleo operacional',
+          paragraphs: [
+            'O Proxmox é a base do ambiente, executando VMs e containers LXC conforme a necessidade de cada workload. Isso garante isolamento claro com uso eficiente de recursos.',
+            'Os blocos centrais incluem proxy reverso, armazenamento, DNS e workloads de aplicação.',
+          ],
+          images: [proxmoxMainMenu],
+        },
+        {
+          label: 'Operação',
+          title: 'Fluxo orientado por monitoramento',
+          paragraphs: [
+            'Eu trato o homelab como plataforma em padrão de produção, então visibilidade é obrigatória. O ProxMenuX acelera o diagnóstico no host, e o Grafana aprofunda a leitura de saúde dos serviços.',
+            'Esse modelo observability-first reduz tentativa e erro em incidentes e permite iterações mais seguras.',
+          ],
+          images: [proxmenuxPanel, grafanaPanel],
+        },
+        {
+          label: 'Roteiro',
+          title: 'Próximos passos de segurança e resiliência',
+          paragraphs: [
+            'As próximas iterações seguem o roadmap do README: incluir uma camada WAF antes do roteamento interno e evoluir detecção de anomalias de rede.',
+            'O objetivo de longo prazo é consolidar uma plataforma self-hosted robusta e custo-eficiente.',
+          ],
+        },
+      ],
+    },
   },
   {
     slug: 'hirematch-ai',
     title: 'HireMatch AI',
     subtitle: 'ATS-style resume ranking and gap analysis with NLP + LLM',
-    status: 'In Development',
+    status: 'Active',
     description:
       'An AI-assisted ATS simulator that evaluates resume-job fit, producing a score and concrete recommendations for profile improvement.',
     intro:
@@ -300,6 +407,87 @@ export const projects: Project[] = [
         ],
       },
     ],
+    pt: {
+      title: 'HireMatch AI',
+      subtitle: 'Ranqueamento de currículo em estilo ATS com NLP + LLM',
+      status: 'Ativo',
+      description:
+        'Um simulador de ATS com IA que avalia aderência entre currículo e vaga, gerando score e recomendações práticas de melhoria.',
+      intro:
+        'O HireMatch AI transforma a opacidade do ATS em sinais claros. O usuário pode comparar com base de vagas ou enviar uma descrição de vaga personalizada.',
+      overview:
+        'O projeto nasceu como protótipo em cloud e está planejado para migração para o homelab. O foco é combinar ranking objetivo com explicação legível para ação.',
+      flow: [
+        {
+          title: 'Coleta de Entrada',
+          detail: 'Currículo e dados da vaga alvo são enviados pelo usuário.',
+        },
+        {
+          title: 'Parser Semântico',
+          detail: 'Habilidades e requisitos relevantes são extraídos para comparação.',
+        },
+        {
+          title: 'Estimativa de Fit',
+          detail: 'Um score em estilo ATS estima a aderência do perfil à vaga.',
+        },
+        {
+          title: 'Orientação por LLM',
+          detail: 'Recomendações narrativas explicam gaps e melhorias possíveis.',
+        },
+        {
+          title: 'Relatório Final',
+          detail: 'O usuário recebe score, pontos fortes e próximos passos priorizados.',
+        },
+      ],
+      stats: [
+        {
+          label: 'Objetivo Central',
+          value: 'Clareza de Fit',
+          detail: 'Tornar decisões ATS mais transparentes e acionáveis.',
+        },
+        {
+          label: 'Modos de Entrada',
+          value: '2 Modos',
+          detail: 'Comparação por base de vagas e por vaga personalizada.',
+        },
+        {
+          label: 'Núcleo de IA',
+          value: 'NLP + LLM',
+          detail: 'Extração semântica com feedback textual orientado.',
+        },
+        {
+          label: 'Plano de Deploy',
+          value: 'Cloud -> Homelab',
+          detail: 'Transição do protótipo em cloud para operação self-hosted.',
+        },
+      ],
+      story: [
+        {
+          label: 'Problema',
+          title: 'Transformando incerteza de ATS em sinais acionáveis',
+          paragraphs: [
+            'A maior parte dos candidatos recebe pouco retorno de sistemas automatizados de triagem. O HireMatch AI converte essa lógica em score transparente e recomendações diretas.',
+            'O objetivo não é apenas ranquear currículos, mas explicar como e por que um perfil se aproxima ou se afasta da vaga.',
+          ],
+        },
+        {
+          label: 'Abordagem',
+          title: 'Dois modos de comparação para uso prático',
+          paragraphs: [
+            'O usuário pode comparar com uma base existente de vagas ou enviar uma vaga personalizada. Isso atende tanto benchmark quanto preparação direcionada para uma aplicação real.',
+            'A camada de scoring é combinada com feedback via LLM para manter recomendações objetivas e legíveis.',
+          ],
+        },
+        {
+          label: 'Direção da Plataforma',
+          title: 'De protótipo em cloud para integração self-hosted',
+          paragraphs: [
+            'O projeto começou como implementação hospedada em cloud e está planejado para integrar com a stack do homelab.',
+            'Esse movimento melhora controle operacional, reduz custo recorrente e aumenta a capacidade de experimentação entre infra e IA.',
+          ],
+        },
+      ],
+    },
   },
 ]
 

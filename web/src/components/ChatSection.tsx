@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Maximize2, Send, Sparkles, X } from 'lucide-react'
 import ChatMessage from './ChatMessage'
+import type { Language } from '../data/projects'
 
 interface Message {
   id: number
@@ -10,6 +11,7 @@ interface Message {
 }
 
 interface ChatSectionProps {
+  language: Language
   featured?: boolean
   expandToFullWidth?: boolean
   onFirstUserMessage?: () => void
@@ -28,30 +30,16 @@ interface ChatApiResponse {
   sources: ChatApiSource[]
 }
 
-const SUGGESTIONS = [
-  "What's your experience?",
-  'Tell me about your projects',
-  'What tech do you use?',
-  'Are you available for work?',
-]
-
-const RAG_API_BASE_URL =
-  import.meta.env.VITE_RAG_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '')
-
-const layoutSpring = { type: 'spring', stiffness: 130, damping: 20, mass: 0.85 } as const
-
-export default function ChatSection({
-  featured = false,
-  expandToFullWidth = false,
-  onFirstUserMessage,
-  onExpandRequest,
-  onCollapseRequest,
-}: ChatSectionProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 0,
-      role: 'assistant',
-      content: `## Hello! 👋
+const CHAT_COPY = {
+  en: {
+    title: 'Chat with me',
+    online: 'Online',
+    fullscreen: 'Fullscreen chat',
+    closeFullscreen: 'Close fullscreen',
+    sources: 'Sources',
+    placeholder: 'Ask me anything...',
+    connected: 'Connected to RAG API',
+    initialMessage: `## Hello! 👋
 
 I’m a **RAG chatbot** powered by information about my skills and projects.
 
@@ -62,6 +50,64 @@ You can ask me about:
 - goals and interests
 
 Feel free to ask anything!`,
+    suggestions: [
+      'What is your professional experience?',
+      'What are your main personal projects?',
+      'Tell me more about yourself',
+      'Which technologies do you have experience with?',
+    ],
+    connectionError:
+      'I could not reach the RAG API.\n\nCheck if backend is running on `http://localhost:8000` and ingestion has already been executed.',
+  },
+  br: {
+    title: 'Converse comigo',
+    online: 'Online',
+    fullscreen: 'Expandir chat',
+    closeFullscreen: 'Fechar chat expandido',
+    sources: 'Fontes',
+    placeholder: 'Pergunte o que quiser...',
+    connected: 'Conectado à RAG API',
+    initialMessage: `## Olá! 👋
+
+Eu sou um **chatbot RAG** alimentado por informações sobre minhas habilidades e projetos.
+
+Você pode me perguntar sobre:
+- habilidades técnicas
+- experiência profissional
+- projetos que construí
+- objetivos e interesses
+
+Fique à vontade para perguntar qualquer coisa!`,
+    suggestions: [
+      'Qual sua experiência profissional?',
+      'Quais são seus principais projetos pessoais?',
+      'Me diga mais sobre você',
+      'Quais tecnologias você tem experiência?',
+    ],
+    connectionError:
+      'Não consegui conectar com a API RAG.\n\nVerifique se o backend está rodando em `http://localhost:8000` e se a ingestão já foi executada.',
+  },
+} as const
+
+const RAG_API_BASE_URL =
+  import.meta.env.VITE_RAG_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '')
+
+const layoutSpring = { type: 'spring', stiffness: 130, damping: 20, mass: 0.85 } as const
+
+export default function ChatSection({
+  language,
+  featured = false,
+  expandToFullWidth = false,
+  onFirstUserMessage,
+  onExpandRequest,
+  onCollapseRequest,
+}: ChatSectionProps) {
+  const copy = CHAT_COPY[language]
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 0,
+      role: 'assistant',
+      content: copy.initialMessage,
 },
   ])
   const [input, setInput] = useState('')
@@ -76,6 +122,14 @@ Feel free to ask anything!`,
     if (!list) return
     list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' })
   }, [messages, isTyping])
+
+  useEffect(() => {
+    setMessages((prev) => {
+      const hasUserMessage = prev.some((msg) => msg.role === 'user')
+      if (hasUserMessage) return prev
+      return [{ id: 0, role: 'assistant', content: copy.initialMessage }]
+    })
+  }, [copy.initialMessage])
 
   const handleSend = async (text?: string) => {
     const msg = (text ?? input).trim()
@@ -104,7 +158,7 @@ Feel free to ask anything!`,
       const data = (await response.json()) as ChatApiResponse
       const sourcesSection =
         Array.isArray(data.sources) && data.sources.length > 0
-          ? `\n\n---\n**Sources**\n${data.sources
+          ? `\n\n---\n**${copy.sources}**\n${data.sources
               .map(
                 (source, index) =>
                   `${index + 1}. **${source.source_name}** (${source.score.toFixed(2)})\n> ${source.excerpt}`,
@@ -123,8 +177,7 @@ Feel free to ask anything!`,
         {
           id: Date.now() + 1,
           role: 'assistant',
-          content:
-            'I could not reach the RAG API.\n\nCheck if backend is running on `http://localhost:8000` and ingestion has already been executed.',
+          content: copy.connectionError,
         },
       ])
     } finally {
@@ -158,10 +211,10 @@ Feel free to ask anything!`,
               <Sparkles size={16} className="text-accent" />
             </motion.div>
             <div>
-              <p className="text-sm font-semibold text-cream">Chat with me</p>
+              <p className="text-sm font-semibold text-cream">{copy.title}</p>
               <div className="flex items-center gap-1.5">
                 <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
-                <span className="font-mono text-[10px] text-accent">Online</span>
+                <span className="font-mono text-[10px] text-accent">{copy.online}</span>
               </div>
             </div>
           </div>
@@ -171,8 +224,8 @@ Feel free to ask anything!`,
             {!expandToFullWidth && (
               <motion.button
                 type="button"
-                title="Fullscreen chat"
-                aria-label="Fullscreen chat"
+                title={copy.fullscreen}
+                aria-label={copy.fullscreen}
                 onClick={onExpandRequest}
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.92 }}
@@ -184,8 +237,8 @@ Feel free to ask anything!`,
             {expandToFullWidth && (
               <motion.button
                 type="button"
-                title="Close fullscreen"
-                aria-label="Close fullscreen"
+                title={copy.closeFullscreen}
+                aria-label={copy.closeFullscreen}
                 onClick={onCollapseRequest}
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.92 }}
@@ -215,7 +268,7 @@ Feel free to ask anything!`,
       </div>
 
       <div className="flex flex-wrap gap-2 border-t border-dark-600/30 bg-dark-900/30 px-5 py-3">
-        {SUGGESTIONS.map((s) => (
+        {copy.suggestions.map((s) => (
           <motion.button
             key={s}
             onClick={() => void handleSend(s)}
@@ -234,7 +287,7 @@ Feel free to ask anything!`,
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask me anything..."
+          placeholder={copy.placeholder}
           disabled={isTyping}
           className="flex-1 bg-transparent text-sm text-cream placeholder:text-dark-400 outline-none disabled:opacity-40"
         />
@@ -287,7 +340,7 @@ Feel free to ask anything!`,
       >
         {chatCard}
         <p className="mt-4 text-center font-mono text-[10px] text-dark-500">
-          Connected to RAG API
+          {copy.connected}
         </p>
       </motion.div>
     </section>

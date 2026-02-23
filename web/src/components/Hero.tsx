@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react'
 import ChatSection from './ChatSection'
+import type { Language } from '../data/projects'
 
 const container = {
   hidden: {},
@@ -28,7 +29,11 @@ const socials = [
   { icon: Mail, href: '#', label: 'Email' },
 ]
 
-export default function Hero() {
+interface HeroProps {
+  language: Language
+}
+
+export default function Hero({ language }: HeroProps) {
   const [isChatExpanded, setIsChatExpanded] = useState(false)
   const scrollToProjects = () => {
     document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -95,8 +100,8 @@ export default function Hero() {
   variants={fadeUp} 
   className="mt-3 font-mono text-base text-cream-muted"
 >
-  Tech Intern - Bank of America <br />
-  Computer Science - Universidade Federal do ABC
+  Tech Rotation Intern - Bank of America <br />
+  Computer Science - Universidade Federal do ABC (UFABC)
 </motion.p>
 
           <motion.p
@@ -141,6 +146,7 @@ export default function Hero() {
             </motion.p>
           </AnimatePresence>
           <ChatSection
+            language={language}
             featured
             expandToFullWidth={isChatExpanded}
             onFirstUserMessage={() => setIsChatExpanded(true)}
