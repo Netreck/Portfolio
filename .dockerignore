@@ -13,3 +13,5 @@ web/dist
 web/.vite
 rag/data/vector_db/*
 !rag/data/vector_db/.gitkeep
+rag/data/uploads/*
+!rag/data/uploads/README.md

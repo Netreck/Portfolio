@@ -1,15 +1,15 @@
 # Python dependencies for the whole backend stack (including /rag).
 # Keep this file as the single source of truth.
-fastapi>=0.115.0
-uvicorn[standard]>=0.34.0
-pydantic-settings>=2.7.0
-python-dotenv>=1.0.1
-python-multipart>=0.0.18
-langchain>=0.3.18
-langchain-openai>=0.3.4
-langchain-chroma>=0.2.0
-langchain-text-splitters>=0.3.6
-langchain-huggingface>=0.1.2
-chromadb>=0.5.23
-sentence-transformers>=3.3.1
-tiktoken>=0.8.0
+fastapi==0.129.2
+uvicorn[standard]==0.41.0
+pydantic-settings==2.13.1
+python-dotenv==1.2.1
+python-multipart==0.0.22
+langchain==1.2.10
+langchain-openai==1.1.10
+langchain-chroma==1.1.0
+langchain-text-splitters==1.1.1
+langchain-huggingface==1.2.0
+chromadb==1.5.1
+sentence-transformers==5.2.3
+tiktoken==0.12.0

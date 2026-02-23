@@ -6,11 +6,13 @@ services:
     container_name: portfolio-rag-api
     env_file:
       - .env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
-      - ./rag/data/uploads:/app/rag/data/uploads
-      - ./rag/data/vector_db:/app/rag/data/vector_db
+      - rag_uploads:/app/rag/data/uploads
+      - rag_vector_db:/app/rag/data/vector_db
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
 
   web:
@@ -23,5 +25,11 @@ services:
     depends_on:
       - rag-api
     ports:
-      - "8080:80"
+      - "8080:8080"
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+
+volumes:
+  rag_uploads:
+  rag_vector_db:
