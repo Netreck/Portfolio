@@ -28,7 +28,7 @@ export default function Navbar({ language, onLanguageChange, isProjectRoute = fa
         className="font-mono text-sm font-semibold text-accent"
         whileHover={{ scale: 1.05 }}
       >
-        {'<dev />'}
+        {'<Gabriel Gonçalves />'}
       </motion.span>
 
       <div className="flex items-center gap-1">

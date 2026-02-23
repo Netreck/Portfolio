@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react'
 import ChatSection from './ChatSection'
 import type { Language } from '../data/projects'
+import gabrielProfileImage from '../Assets/Main/Gabriel-Goncalves.png'
 
 const container = {
   hidden: {},
@@ -70,9 +71,11 @@ export default function Hero({ language }: HeroProps) {
           <motion.div variants={scaleIn} className="relative mb-8">
             <div className="absolute -inset-3 rounded-full bg-accent/10 blur-2xl" />
             <div className="relative h-32 w-32 overflow-hidden rounded-2xl border-2 border-dark-600 bg-dark-800 ring-1 ring-accent/20">
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="font-display text-4xl font-bold text-accent">G</span>
-              </div>
+              <img
+                src={gabrielProfileImage}
+                alt="Gabriel Goncalves"
+                className="h-full w-full object-cover"
+              />
             </div>
             <motion.div
               className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-[3px] border-dark-950 bg-accent"
