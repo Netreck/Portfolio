@@ -10,9 +10,15 @@ interface ChatMessageProps {
   isTyping?: boolean
 }
 
+function unwrapSingleMarkdownFence(text: string): string {
+  const match = text.match(/^\s*```(?:[\w-]+)?\s*([\s\S]*?)\s*```\s*$/)
+  return match ? match[1].trim() : text
+}
+
 export default function ChatMessage({ role, content, isTyping }: ChatMessageProps) {
   const isBot = role === 'assistant'
-  const markdownClass = isBot ? 'text-cream-muted' : 'text-cream'
+  const markdownClass = isBot ? 'text-cream-muted break-words' : 'text-cream break-words'
+  const normalizedContent = unwrapSingleMarkdownFence(content)
 
   return (
     <motion.div
@@ -35,7 +41,7 @@ export default function ChatMessage({ role, content, isTyping }: ChatMessageProp
       </motion.div>
 
       <div
-        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+        className={`max-w-[85%] break-words rounded-2xl px-4 py-3 text-sm leading-relaxed ${
           isBot
             ? 'rounded-tl-md bg-dark-700/70 text-cream-muted border border-dark-600/50'
             : 'rounded-tr-md bg-accent/10 text-cream border border-accent/15'
@@ -86,7 +92,7 @@ export default function ChatMessage({ role, content, isTyping }: ChatMessageProp
                 pre: (props) => (
                   <pre
                     {...props}
-                    className="mb-2 overflow-x-auto rounded-xl border border-dark-600/60 bg-dark-900/70 p-3 last:mb-0"
+                    className="mb-2 whitespace-pre-wrap break-words bg-transparent p-0 font-body text-sm leading-relaxed last:mb-0"
                   />
                 ),
                 code: ({ className, children, ...props }: ComponentPropsWithoutRef<'code'>) => {
@@ -94,7 +100,10 @@ export default function ChatMessage({ role, content, isTyping }: ChatMessageProp
 
                   if (isCodeBlock) {
                     return (
-                      <code {...props} className={`font-mono text-[12px] ${className ?? ''}`}>
+                      <code
+                        {...props}
+                        className={`whitespace-pre-wrap break-words font-body text-inherit ${className ?? ''}`}
+                      >
                         {children}
                       </code>
                     )
@@ -103,7 +112,7 @@ export default function ChatMessage({ role, content, isTyping }: ChatMessageProp
                   return (
                     <code
                       {...props}
-                      className="rounded-md bg-dark-900/70 px-1.5 py-0.5 font-mono text-[12px] text-accent"
+                      className="break-all rounded-md bg-dark-900/70 px-1.5 py-0.5 font-mono text-[12px] text-accent"
                     >
                       {children}
                     </code>
@@ -111,7 +120,7 @@ export default function ChatMessage({ role, content, isTyping }: ChatMessageProp
                 },
               }}
             >
-              {content}
+              {normalizedContent}
             </ReactMarkdown>
           </div>
         )}
