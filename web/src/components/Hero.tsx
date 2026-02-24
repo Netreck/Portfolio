@@ -25,9 +25,14 @@ const scaleIn = {
 const layoutSpring = { type: 'spring', stiffness: 120, damping: 20, mass: 0.85 } as const
 
 const socials = [
-  { icon: Github, href: '#', label: 'GitHub' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Mail, href: '#', label: 'Email' },
+  { icon: Github, href: 'https://github.com/Netreck', label: 'GitHub', external: true },
+  {
+    icon: Linkedin,
+    href: 'https://www.linkedin.com/in/gabriel-victor-71187b223',
+    label: 'LinkedIn',
+    external: true,
+  },
+  { icon: Mail, href: 'mailto:gabrielvgonc@gmail.com', label: 'Email', external: false },
 ]
 
 interface HeroProps {
@@ -115,11 +120,13 @@ export default function Hero({ language }: HeroProps) {
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex items-center gap-3">
-            {socials.map(({ icon: Icon, href, label }) => (
+            {socials.map(({ icon: Icon, href, label, external }) => (
               <motion.a
                 key={label}
                 href={href}
                 aria-label={label}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noreferrer' : undefined}
                 whileHover={{ scale: 1.15, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex h-10 w-10 items-center justify-center rounded-xl border border-dark-600 bg-dark-800/60 text-cream-muted transition-colors duration-300 hover:border-accent/40 hover:bg-accent-glow hover:text-accent"
