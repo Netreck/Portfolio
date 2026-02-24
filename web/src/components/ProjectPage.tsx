@@ -391,7 +391,9 @@ export default function ProjectPage({ project, language }: ProjectPageProps) {
           </div>
         </section>
 
-        <HowItWorks flow={localized.flow} language={language} />
+        {project.slug !== 'hirematch-ai' && (
+          <HowItWorks flow={localized.flow} language={language} />
+        )}
 
         <div className="mt-12">
           {localized.story

@@ -2,6 +2,10 @@ import homelabArchitectureImg from '../Assets/Home-lab/homelab-arquitetura.png'
 import proxmoxMainMenuImg from '../Assets/Home-lab/proxmox-main-menu.png'
 import proxmenuxExampleImg from '../Assets/Home-lab/proxmenux-example.png'
 import grafanaDashboardImg from '../Assets/Home-lab/grafana-dashboard.png'
+import hirematchHomepageImg from '../Assets/HirematchAI/HirematchHomepage.png'
+import chooseModePageImg from '../Assets/HirematchAI/choose-mode-page.png'
+import resumeMatchingImg from '../Assets/HirematchAI/resume-matching.png'
+import feedbackImg from '../Assets/HirematchAI/feedback.png'
 
 export type Language = 'en' | 'br'
 
@@ -86,6 +90,54 @@ const grafanaPanel: ProjectImage = {
   src: grafanaDashboardImg,
   alt: 'Grafana dashboard',
   caption: 'Centralized observability view with metrics and service health.',
+}
+
+const hirematchHomepage: ProjectImage = {
+  src: hirematchHomepageImg,
+  alt: 'HireMatch homepage',
+  caption: 'Landing page with product pitch and main candidate flow entry points.',
+}
+
+const hirematchChooseMode: ProjectImage = {
+  src: chooseModePageImg,
+  alt: 'HireMatch choose mode page',
+  caption: 'Mode selection screen for dataset-based matching or custom job comparison.',
+}
+
+const hirematchResumeMatching: ProjectImage = {
+  src: resumeMatchingImg,
+  alt: 'HireMatch resume matching screen',
+  caption: 'Resume-to-job matching screen where skills and requirements are compared.',
+}
+
+const hirematchFeedback: ProjectImage = {
+  src: feedbackImg,
+  alt: 'HireMatch feedback view',
+  caption: 'Feedback page showing fit score, strengths, and prioritized improvements.',
+}
+
+const hirematchHomepagePt: ProjectImage = {
+  src: hirematchHomepageImg,
+  alt: 'Página inicial do HireMatch',
+  caption: 'Página inicial com proposta do produto e pontos de entrada para o fluxo do candidato.',
+}
+
+const hirematchChooseModePt: ProjectImage = {
+  src: chooseModePageImg,
+  alt: 'Página de seleção de modo do HireMatch',
+  caption: 'Tela de seleção entre comparação por base de vagas ou vaga personalizada.',
+}
+
+const hirematchResumeMatchingPt: ProjectImage = {
+  src: resumeMatchingImg,
+  alt: 'Tela de comparação de currículo no HireMatch',
+  caption: 'Tela de matching currículo-vaga onde habilidades e requisitos são comparados.',
+}
+
+const hirematchFeedbackPt: ProjectImage = {
+  src: feedbackImg,
+  alt: 'Tela de feedback do HireMatch',
+  caption: 'Tela final com score de aderência, pontos fortes e melhorias priorizadas.',
 }
 
 export const projects: Project[] = [
@@ -335,14 +387,14 @@ export const projects: Project[] = [
         detail: 'Job dataset matching and custom job description matching.',
       },
       {
-        label: 'AI Core',
+        label: 'Tech',
         value: 'NLP + LLM',
-        detail: 'Semantic extraction with guided language feedback.',
+        detail: 'Semantic extraction + Retriever for scores and LLM for feedbacks.',
       },
       {
-        label: 'Deployment Plan',
-        value: 'Cloud -> Homelab',
-        detail: 'Transition from cloud prototype to self-hosted operation.',
+        label: 'Infra',
+        value: 'Cloud based',
+        detail: 'Running on GCP cloud run with basic CI/CD build after each commit',
       },
     ],
     flow: [
@@ -389,6 +441,7 @@ export const projects: Project[] = [
           'Most candidates receive little feedback from automated screening systems. HireMatch AI addresses this by converting matching logic into transparent scoring and direct recommendations.',
           'The objective is not only to rank resumes, but to explain how and why a profile aligns or misses a role.',
         ],
+        images: [hirematchHomepage],
       },
       {
         label: 'Approach',
@@ -397,6 +450,7 @@ export const projects: Project[] = [
           'Users can evaluate against an existing job dataset or submit a custom vacancy. This enables both benchmark analysis and role-specific preparation for real applications.',
           'The scoring layer is paired with LLM-generated feedback to keep recommendations practical and readable.',
         ],
+        images: [hirematchChooseMode, hirematchResumeMatching],
       },
       {
         label: 'Platform Direction',
@@ -405,7 +459,9 @@ export const projects: Project[] = [
           'The project started as a cloud-hosted implementation and is planned to integrate with the homelab stack over time.',
           'This move supports tighter operational control, lower recurring costs, and better experimentation with infrastructure + AI workflows together.',
         ],
+        images: [hirematchFeedback],
       },
+      
     ],
     pt: {
       title: 'HireMatch AI',
@@ -451,14 +507,14 @@ export const projects: Project[] = [
           detail: 'Comparação por base de vagas e por vaga personalizada.',
         },
         {
-          label: 'Núcleo de IA',
+          label: 'Tecnologia',
           value: 'NLP + LLM',
-          detail: 'Extração semântica com feedback textual orientado.',
+          detail: 'Extração semântica + Retriever para scores e LLM para feedbacks.',
         },
         {
-          label: 'Plano de Deploy',
-          value: 'Cloud -> Homelab',
-          detail: 'Transição do protótipo em cloud para operação self-hosted.',
+          label: 'Infraestrutura',
+          value: 'Baseado em cloud',
+          detail: 'Rodando no GCP Cloud Run com build básico de CI/CD a cada commit.',
         },
       ],
       story: [
@@ -469,6 +525,7 @@ export const projects: Project[] = [
             'A maior parte dos candidatos recebe pouco retorno de sistemas automatizados de triagem. O HireMatch AI converte essa lógica em score transparente e recomendações diretas.',
             'O objetivo não é apenas ranquear currículos, mas explicar como e por que um perfil se aproxima ou se afasta da vaga.',
           ],
+          images: [hirematchHomepagePt],
         },
         {
           label: 'Abordagem',
@@ -477,6 +534,7 @@ export const projects: Project[] = [
             'O usuário pode comparar com uma base existente de vagas ou enviar uma vaga personalizada. Isso atende tanto benchmark quanto preparação direcionada para uma aplicação real.',
             'A camada de scoring é combinada com feedback via LLM para manter recomendações objetivas e legíveis.',
           ],
+          images: [hirematchChooseModePt, hirematchResumeMatchingPt],
         },
         {
           label: 'Direção da Plataforma',
@@ -485,6 +543,7 @@ export const projects: Project[] = [
             'O projeto começou como implementação hospedada em cloud e está planejado para integrar com a stack do homelab.',
             'Esse movimento melhora controle operacional, reduz custo recorrente e aumenta a capacidade de experimentação entre infra e IA.',
           ],
+          images: [hirematchFeedbackPt],
         },
       ],
     },
