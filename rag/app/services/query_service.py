@@ -10,6 +10,7 @@ from langchain_openai import ChatOpenAI
 
 from rag.app.core.paths import UPLOADS_DIR
 from rag.app.core.settings import get_settings
+from rag.app.services.ingestion_service import IngestionService
 from rag.app.services.vector_store import get_vector_store
 
 
@@ -25,6 +26,36 @@ def _openai_api_key() -> str:
 
 
 class QueryService:
+    @staticmethod
+    def _is_embedding_dimension_mismatch_error(error: Exception) -> bool:
+        message = str(error).lower()
+        return (
+            "expecting embedding with dimension" in message
+            and "got" in message
+        )
+
+    def _search_with_auto_reindex(self, query: str, k: int) -> list[tuple[Any, float]]:
+        vector_store = get_vector_store()
+        try:
+            return vector_store.similarity_search_with_score(query, k=k)
+        except Exception as exc:
+            if not self._is_embedding_dimension_mismatch_error(exc):
+                raise
+
+            try:
+                IngestionService().ingest_uploads_to_vector_db(reset_collection=True)
+            except Exception as rebuild_exc:
+                raise HTTPException(
+                    status_code=500,
+                    detail=(
+                        "Embedding dimension mismatch detected and automatic reindex failed. "
+                        "Clear vector DB and ingest again."
+                    ),
+                ) from rebuild_exc
+
+            vector_store = get_vector_store()
+            return vector_store.similarity_search_with_score(query, k=k)
+
     @staticmethod
     def _extract_requested_count(query: str) -> int | None:
         q = query.lower()
@@ -234,8 +265,16 @@ class QueryService:
         is_list_query = self._is_list_query(query)
         requested_count = self._extract_requested_count(query)
 
-        vector_store = get_vector_store()
-        raw_results = vector_store.similarity_search_with_score(query, k=max(top_k * 3, top_k))
+        search_k = max(top_k * 3, top_k)
+        raw_results = self._search_with_auto_reindex(query=query, k=search_k)
+        if not raw_results:
+            try:
+                ingested = IngestionService().ingest_uploads_to_vector_db(reset_collection=False)
+                if ingested.get("chunks", 0) > 0:
+                    raw_results = self._search_with_auto_reindex(query=query, k=search_k)
+            except Exception:
+                # If bootstrap ingestion fails, keep graceful no-context fallback below.
+                pass
 
         filtered_results: list[tuple[Any, float]] = []
         for doc, distance in raw_results:
