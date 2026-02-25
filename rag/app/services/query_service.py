@@ -196,6 +196,7 @@ class QueryService:
         return best
 
     def _rewrite_to_paraphrase(self, llm: ChatOpenAI, answer: str, contexts: list[str]) -> str:
+        context_block = "\n\n".join(contexts)
         rewrite_prompt = (
             "Reescreva a resposta abaixo em portugues, mantendo os mesmos fatos. "
             "Regras obrigatorias: "
@@ -205,7 +206,7 @@ class QueryService:
             "4) Resposta curta e objetiva em markdown.\n\n"
             f"Resposta original:\n{answer}\n\n"
             "Contexto de referencia:\n"
-            f"{'\n\n'.join(contexts)}"
+            f"{context_block}"
         )
         rewritten = llm.invoke(rewrite_prompt)
         return rewritten.content if isinstance(rewritten.content, str) else str(rewritten.content)
@@ -218,6 +219,7 @@ class QueryService:
         contexts: list[str],
         requested_count: int | None,
     ) -> str:
+        context_block = "\n\n".join(contexts)
         count_instruction = (
             f"Entregue exatamente {requested_count} itens numerados (1., 2., 3...). "
             if requested_count
@@ -235,7 +237,7 @@ class QueryService:
             f"Pergunta:\n{query}\n\n"
             f"Resposta atual:\n{answer}\n\n"
             "Contexto:\n"
-            f"{'\n\n'.join(contexts)}"
+            f"{context_block}"
         )
         rewritten = llm.invoke(rewrite_prompt)
         return rewritten.content if isinstance(rewritten.content, str) else str(rewritten.content)
@@ -335,6 +337,7 @@ class QueryService:
                 "sources": [],
             }
 
+        context_block = "\n\n".join(context_parts)
         prompt = (
             "Voce deve responder como candidato em uma entrevista de emprego, sempre em primeira pessoa "
             "(eu/meu/minha), com tom profissional e direto. "
@@ -356,7 +359,7 @@ class QueryService:
             "11) Resposta curta e objetiva em markdown.\n\n"
             f"Pergunta do usuario:\n{query}\n\n"
             "Contexto:\n"
-            f"{'\n\n'.join(context_parts)}"
+            f"{context_block}"
         )
 
         try:

@@ -57,7 +57,8 @@ Feel free to ask anything!`,
       'Which technologies do you have experience with?',
     ],
     connectionError:
-      'I could not reach the RAG API.\n\nCheck if backend is running on `http://localhost:8000` and ingestion has already been executed.',
+      'I could not complete the request to the RAG API.\n\nCheck if backend is running and available through `/rag/chat`.',
+    backendErrorPrefix: 'Backend error',
   },
   br: {
     title: 'Converse comigo',
@@ -85,7 +86,8 @@ Fique à vontade para perguntar qualquer coisa!`,
       'Quais tecnologias você tem experiência?',
     ],
     connectionError:
-      'Não consegui conectar com a API RAG.\n\nVerifique se o backend está rodando em `http://localhost:8000` e se a ingestão já foi executada.',
+      'Não consegui concluir a requisição para a API RAG.\n\nVerifique se o backend está ativo e acessível em `/rag/chat`.',
+    backendErrorPrefix: 'Erro do backend',
   },
 } as const
 
@@ -152,7 +154,16 @@ export default function ChatSection({
       })
 
       if (!response.ok) {
-        throw new Error(`Backend returned ${response.status}`)
+        let backendDetail = `HTTP ${response.status}`
+        try {
+          const errorData = (await response.json()) as { detail?: string }
+          if (errorData.detail?.trim()) {
+            backendDetail = errorData.detail.trim()
+          }
+        } catch {
+          // Keep status-only detail when response body is not JSON.
+        }
+        throw new Error(backendDetail)
       }
 
       const data = (await response.json()) as ChatApiResponse
@@ -171,13 +182,17 @@ export default function ChatSection({
         ...prev,
         { id: Date.now() + 1, role: 'assistant', content: assistantMessage },
       ])
-    } catch {
+    } catch (error) {
+      const backendErrorLine =
+        error instanceof Error && error.message
+          ? `\n\n${copy.backendErrorPrefix}: ${error.message}`
+          : ''
       setMessages((prev) => [
         ...prev,
         {
           id: Date.now() + 1,
           role: 'assistant',
-          content: copy.connectionError,
+          content: `${copy.connectionError}${backendErrorLine}`,
         },
       ])
     } finally {
