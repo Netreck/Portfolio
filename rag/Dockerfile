@@ -11,7 +11,8 @@ RUN addgroup --system --gid 10001 app \
     && adduser --system --uid 10001 --ingroup app --home /home/app app
 
 COPY requirements.txt ./requirements.txt
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install --no-compile --prefer-binary -r requirements.txt
 
 COPY rag ./rag
 

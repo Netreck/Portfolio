@@ -12,7 +12,7 @@ class RAGSettings(BaseSettings):
         extra="ignore",
     )
 
-    embeddings_provider: Literal["openai", "sentence_transformers"] = "sentence_transformers"
+    embeddings_provider: Literal["openai", "sentence_transformers"] = "openai"
     show_sources: bool = False
     retrieval_min_score: float = 0.22
     min_document_chars: int = 120

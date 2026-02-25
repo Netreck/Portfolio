@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: rag/Dockerfile
+      provenance: false
+      sbom: false
     container_name: portfolio-rag-api
     env_file:
       - .env
@@ -19,6 +21,8 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
+      provenance: false
+      sbom: false
       args:
         VITE_RAG_API_URL: ""
     container_name: portfolio-web
