@@ -11,6 +11,6 @@ __pycache__
 .claude
 rag/.chroma
 rag/data/uploads/*
-rag/data/vector_db/*
+#rag/data/vector_db/*
 !rag/data/uploads/.gitkeep
 !rag/data/vector_db/.gitkeep
