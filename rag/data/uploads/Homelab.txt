@@ -1,0 +1,93 @@
+Homelab Pessoal
+Uma plataforma self-hosted 24/7 para prática real e deploy dos meus projetos.
+
+Este projeto é meu laboratório prático de platform engineering e para disponibilizar meus projetos pessoais. Ele combina uma vps com ip público com infraestrutura privada (servidor fisico real) em casa para experimentar sob restrições reais. Inicei esse desafio para entender melhor os processos do desenvolvimento e manutenção de projetos na minha área de interesse
+
+Proxmox
+WireGuard
+CI/CD
+Grafana
+Self-hosting
+Abrir no GitHub
+Ver todos os projetos
+Visão Geral
+
+Esse homelab é exposto na internet por meio do ip publico de uma vps, dentro dele utilizo Nginx proxy manager como proxy reverso para ligar cada subdominio a uma das minhas maquinas virtuais do proxmox.Além disso também utilizo a stack grafana, prometheus e loki para observabilidade de logs e acessos ao meu homelab.
+
+Uma infraestrutura residencial em padrão de produção para hospedar serviços pessoais continuamente, validando arquitetura, confiabilidade e operação.
+
+Disponibilidade
+
+24/7
+
+Workloads sempre ativos para operação e manutenção reais.
+
+Modelo de Borda
+
+VPS Minima
+
+Ponto de entrada público de baixo custo e baixa complexidade.
+
+Runtime
+
+Proxmox VE
+
+Estratégia combinada de VM e LXC em um único host.
+
+Observabilidade
+
+Stack Grafana
+
+Métricas e logs agregados para visibilidade de serviço.
+
+Como é exposto na internet
+Esse caminho de roteamento existe porque a ISP usa CGNAT, então o homelab não recebe IPv4 público direto. Uma VPS com IPv4 público é usada como ponto de entrada, e depois o tráfego é encaminhado com segurança para a rede de casa.
+
+Requisição do Usuário
+Um usuário tenta acessar um serviço publicado pelo homelab.
+
+2
+Cloudflare DNS
+O domínio é resolvido pelo Cloudflare DNS antes do roteamento.
+
+3
+IP Público da VPS
+O tráfego chega na VPS pública que funciona como borda da internet.
+
+4
+Gateway TLS Caddy(VPS)
+O Caddy termina TLS e encaminha requisições pelo túnel seguro.
+
+5
+Nginx Proxy Manager (Proxmox)
+Na rede de casa, o Nginx Proxy Manager roteia para os serviços internos.
+
+Visão Geral
+
+Projetando com restrições reais
+A principal decisão de arquitetura veio de uma limitação da ISP: o CGNAT dificulta e encarece a exposição direta. Em vez de superdimensionar a borda, mantive a VPS propositalmente mínima para atuar como porta pública.
+
+Dali, o tráfego é encaminhado com segurança para o homelab via WireGuard, mantendo os serviços privados fora da superfície pública com padrão previsível de acesso.
+
+Homelab architecture diagram
+Traffic path from public edge to private services in the homelab.
+Infraestrutura
+
+Virtualização como núcleo operacional
+O Proxmox é a base do ambiente, executando VMs e containers LXC conforme a necessidade de cada workload. Isso garante isolamento claro com uso eficiente de recursos.
+
+Os blocos centrais incluem proxy reverso, armazenamento, DNS e workloads de aplicação.
+
+Proxmox control panel
+Proxmox interface where VMs and LXC containers are orchestrated.
+Operação
+
+Fluxo orientado por monitoramento
+Eu trato o homelab como plataforma em padrão de produção, então visibilidade é obrigatória. O ProxMenuX acelera o diagnóstico no host, e o Grafana aprofunda a leitura de saúde dos serviços.
+
+Esse modelo observability-first reduz tentativa e erro em incidentes e permite iterações mais seguras.
+
+ProxMenuX monitoring panel
+Live operational panel with resource usage, logs, and system status.
+Grafana dashboard
+Centralized observability view with metrics and service health.

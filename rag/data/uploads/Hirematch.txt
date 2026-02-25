@@ -1,0 +1,71 @@
+HireMatch AI
+Ranqueamento de currículo em estilo ATS com NLP + LLM
+
+O HireMatch AI transforma a opacidade do ATS em sinais claros. O usuário pode comparar com base de vagas ou enviar uma descrição de vaga personalizada.
+
+Python
+NLP
+LLM
+ATS
+Resume Analysis
+Abrir no GitHub
+Ver todos os projetos
+Visão Geral
+
+O projeto nasceu como protótipo em cloud e está planejado para migração para o homelab. O foco é combinar ranking objetivo com explicação legível para ação.
+
+Um simulador de ATS com IA que avalia aderência entre currículo e vaga, gerando score e recomendações práticas de melhoria.
+
+Objetivo Central
+
+Clareza de Fit
+
+Tornar decisões ATS mais transparentes e acionáveis.
+
+Modos de Entrada
+
+2 Modos
+
+Comparação por base de vagas e por vaga personalizada.
+
+Tecnologia
+
+NLP + LLM
+
+Extração semântica + Retriever para scores e LLM para feedbacks.
+
+Infraestrutura
+
+Baseado em cloud
+
+Rodando no GCP Cloud Run com build básico de CI/CD a cada commit.
+
+Problema
+
+Transformando incerteza de ATS em sinais acionáveis
+A maior parte dos candidatos recebe pouco retorno de sistemas automatizados de triagem. O HireMatch AI converte essa lógica em score transparente e recomendações diretas.
+
+O objetivo não é apenas ranquear currículos, mas explicar como e por que um perfil se aproxima ou se afasta da vaga.
+
+Página inicial do HireMatch
+Página inicial com proposta do produto e pontos de entrada para o fluxo do candidato.
+Abordagem
+
+Dois modos de comparação para uso prático
+O usuário pode comparar com uma base existente de vagas ou enviar uma vaga personalizada. Isso atende tanto benchmark quanto preparação direcionada para uma aplicação real.
+
+A camada de scoring é combinada com feedback via LLM para manter recomendações objetivas e legíveis.
+
+Página de seleção de modo do HireMatch
+Tela de seleção entre comparação por base de vagas ou vaga personalizada.
+Tela de comparação de currículo no HireMatch
+Tela de matching currículo-vaga onde habilidades e requisitos são comparados.
+Direção da Plataforma
+
+De protótipo em cloud para integração self-hosted
+O projeto começou como implementação hospedada em cloud e está planejado para integrar com a stack do homelab.
+
+Esse movimento melhora controle operacional, reduz custo recorrente e aumenta a capacidade de experimentação entre infra e IA.
+
+Tela de feedback do HireMatch
+Tela final com score de aderência, pontos fortes e melhorias priorizadas.

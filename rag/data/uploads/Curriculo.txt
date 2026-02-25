@@ -1,0 +1,40 @@
+GABRIEL VICTOR LIMA GONC ̧ ALVES+55 (11) 94924-4811 ⋄Santo Andr ́e, SP
+gabrielvgonc@gmail.com ⋄www.linkedin.com/in/gabriel-victor-71187b223
+OBJETIVO
+Buscando oportunidades na  ́area de engenharia de software.
+FORMAC ̧  ̃AO ACADˆEMICA
+Bacharelado em Ciˆencia da Computa ̧c ̃ao, Universidade Federal do ABC Previs ̃ao de Conclus ̃ao: 2027
+HABILIDADES
+Soft Skills: Proatividade, Resiliencia, Adaptabilidade, Pensamento Anal ́ıtico
+Linguagens: Python, SQL, Java, java script
+Tecnologias: ETL, Modelagem de Dados, Rest API, Automa ̧c ̃ao e Git
+Metodologias: Scrum, Agile
+Idiomas: Portuguˆes (nativo), Inglˆes (fluente)
+EXPERIˆENCIA PROFISSIONAL
+Estagi ́ario – Bank of America Jun 2025 – Presente
+VP Global Technology – Tech Rotation Program
+•Desenvolvimento de automa ̧c ̃ao de testes e ferramentas para equipes de QA em sistemas de pagamento.
+•Participa ̧c ̃ao em iniciativas internas de automa ̧c ̃ao, melhoria cont ́ınua e otimiza ̧c ̃ao de processos.
+•Atua ̧c ̃ao em ambiente altamente colaborativo utilizando metodologias Scrum e Agile, com participa ̧c ̃ao
+em sprint plannings, dailies, reviews e retrospectivas.
+•Tecnologias: Java, Python, Git, SQL, Node.js, HTML, CSS.
+ATIVIDADES EXTRACURRICULARES
+Coordenador Frente de Dados – Green Team Hacker Club (UFABC) Jan 2025 – Set 2025
+•Entidade estudantil de Computa ̧c ̃ao registrada na UFABC
+•Defini ̧c ̃ao e gest ̃ao da stack tecnol ́ogica para projetos com foco em escalabilidade, desempenho e inte-
+gra ̧c ̃ao.
+•Gest ̃ao de atividades da equipe, incluindo delega ̧c ̃ao de tarefas, acompanhamento de progresso e suporte
+t ́ecnico e administrar aulas.
+•Experiˆencia pr ́atica com ETL, pipelines de automa ̧c ̃ao, SQL, PostgreSQL, visualiza ̧c ̃ao de dados (Seaborn,
+Matplotlib), modelagem de dados e machine learning (Scikit-learn, TensorFlow).
+•Cria ̧c ̃ao de Chatbot da entidade estudantil utilizando RAG.
+
+
+projetos
+HIREMATCH AI - Projeto pessoal que simula ATS de sistemas de selecao de candidatos para vagas, nele voce pode de forma transparente comparar seu curriculo a vagas e ter um feedback de melhorias e pontos positivos
+link>> hirematch.gabriel-goncalves.com
+Homelab - Servidor fisico(em casa) pessoal 24h onde hospedo meus projetos pessoais e aprendo sobre CI/CD infra e etc.
+github link >>> https://github.com/Netreck/myHomeLab
+Chatbot Green Team - chatbot onde fiz e liderei um time no desenvolvimento onde atraves de RAG e uma pipeline de extracao de dados atualizados da faculdade alimentamos ela com dados da faculdade para ajudar calouros
+
+
