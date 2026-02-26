@@ -3,7 +3,7 @@ import re
 import unicodedata
 from difflib import SequenceMatcher
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import HTTPException
 from langchain_openai import ChatOpenAI
@@ -26,6 +26,81 @@ def _openai_api_key() -> str:
 
 
 class QueryService:
+    @staticmethod
+    def _detect_query_language(query: str) -> Literal["pt", "en"]:
+        q = query.lower()
+        tokens = re.findall(r"[a-zA-ZÀ-ÿ']+", q)
+
+        pt_markers = {
+            "qual",
+            "quais",
+            "como",
+            "quem",
+            "onde",
+            "quando",
+            "porque",
+            "por",
+            "que",
+            "voce",
+            "você",
+            "sobre",
+            "projeto",
+            "projetos",
+            "experiencia",
+            "experiência",
+            "habilidades",
+            "curriculo",
+            "currículo",
+            "trabalho",
+            "construiu",
+            "seu",
+            "sua",
+        }
+        en_markers = {
+            "what",
+            "which",
+            "how",
+            "who",
+            "where",
+            "when",
+            "why",
+            "about",
+            "project",
+            "projects",
+            "experience",
+            "skills",
+            "resume",
+            "work",
+            "built",
+            "your",
+            "you",
+            "can",
+            "tell",
+            "list",
+        }
+
+        pt_score = sum(1 for token in tokens if token in pt_markers)
+        en_score = sum(1 for token in tokens if token in en_markers)
+
+        if re.search(r"[ãõçáéíóúâêôà]", q):
+            pt_score += 2
+
+        if en_score > pt_score:
+            return "en"
+        if pt_score > en_score:
+            return "pt"
+        return "en"
+
+    @staticmethod
+    def _language_name(response_language: Literal["pt", "en"]) -> str:
+        return "Portuguese" if response_language == "pt" else "English"
+
+    @staticmethod
+    def _missing_info_message(response_language: Literal["pt", "en"]) -> str:
+        if response_language == "pt":
+            return "Nao encontrei essa informacao nos documentos carregados."
+        return "I could not find this information in the uploaded documents."
+
     @staticmethod
     def _is_embedding_dimension_mismatch_error(error: Exception) -> bool:
         message = str(error).lower()
@@ -195,17 +270,24 @@ class QueryService:
             best = max(best, score)
         return best
 
-    def _rewrite_to_paraphrase(self, llm: ChatOpenAI, answer: str, contexts: list[str]) -> str:
+    def _rewrite_to_paraphrase(
+        self,
+        llm: ChatOpenAI,
+        answer: str,
+        contexts: list[str],
+        response_language: Literal["pt", "en"],
+    ) -> str:
         context_block = "\n\n".join(contexts)
+        language_name = self._language_name(response_language)
         rewrite_prompt = (
-            "Reescreva a resposta abaixo em portugues, mantendo os mesmos fatos. "
-            "Regras obrigatorias: "
-            "1) Nao copiar frases literais do contexto. "
-            "2) Nao usar mais de 6 palavras consecutivas iguais ao contexto. "
-            "3) Nao adicionar fatos novos. "
-            "4) Resposta curta e objetiva em markdown.\n\n"
-            f"Resposta original:\n{answer}\n\n"
-            "Contexto de referencia:\n"
+            f"Rewrite the answer below in {language_name}, preserving the same facts. "
+            "Mandatory rules: "
+            "1) Do not copy literal sentences from context. "
+            "2) Do not use more than 6 consecutive words equal to context. "
+            "3) Do not add new facts. "
+            "4) Short and objective markdown response.\n\n"
+            f"Original answer:\n{answer}\n\n"
+            "Reference context:\n"
             f"{context_block}"
         )
         rewritten = llm.invoke(rewrite_prompt)
@@ -218,36 +300,45 @@ class QueryService:
         query: str,
         contexts: list[str],
         requested_count: int | None,
+        response_language: Literal["pt", "en"],
     ) -> str:
         context_block = "\n\n".join(contexts)
+        language_name = self._language_name(response_language)
         count_instruction = (
-            f"Entregue exatamente {requested_count} itens numerados (1., 2., 3...). "
+            f"Deliver exactly {requested_count} numbered items (1., 2., 3...). "
             if requested_count
-            else "Entregue uma lista numerada objetiva com os principais itens. "
+            else "Deliver an objective numbered list with the most relevant items. "
         )
         rewrite_prompt = (
-            "Reestruture a resposta abaixo para formato de lista em markdown. "
-            "Regras obrigatorias: "
-            "1) Nao invente itens. "
-            "2) Baseie-se somente no contexto. "
-            "3) Em caso de informacao insuficiente para a quantidade pedida, "
-            "explique em uma frase curta e liste apenas os itens suportados. "
-            "4) Evite copia literal do contexto.\n\n"
+            f"Restructure the answer below into a markdown list in {language_name}. "
+            "Mandatory rules: "
+            "1) Do not invent items. "
+            "2) Use only the context. "
+            "3) If there is not enough information for the requested count, "
+            "explain it in one short sentence and list only supported items. "
+            "4) Avoid literal copies from context.\n\n"
             f"{count_instruction}\n"
-            f"Pergunta:\n{query}\n\n"
-            f"Resposta atual:\n{answer}\n\n"
-            "Contexto:\n"
+            f"Question:\n{query}\n\n"
+            f"Current answer:\n{answer}\n\n"
+            "Context:\n"
             f"{context_block}"
         )
         rewritten = llm.invoke(rewrite_prompt)
         return rewritten.content if isinstance(rewritten.content, str) else str(rewritten.content)
 
-    def _fallback_answer(self, has_context: bool) -> str:
+    def _fallback_answer(self, has_context: bool, response_language: Literal["pt", "en"]) -> str:
         if not has_context:
-            return "Nao encontrei informacao confiavel nos documentos carregados para responder."
+            if response_language == "pt":
+                return "Nao encontrei informacao confiavel nos documentos carregados para responder."
+            return "I could not find reliable information in the uploaded documents to answer."
+        if response_language == "pt":
+            return (
+                "Nao foi possivel gerar resposta com o modelo agora. "
+                "Verifique `OPENAI_API_KEY` na `.env` e tente novamente."
+            )
         return (
-            "Nao foi possivel gerar resposta com o modelo agora. "
-            "Verifique `OPENAI_API_KEY` na `.env` e tente novamente."
+            "I could not generate an answer with the model right now. "
+            "Check `OPENAI_API_KEY` in `.env` and try again."
         )
 
     def _build_llm(self) -> ChatOpenAI:
@@ -263,6 +354,9 @@ class QueryService:
         query = message.strip()
         if not query:
             raise HTTPException(status_code=400, detail="message cannot be empty")
+        response_language = self._detect_query_language(query)
+        language_name = self._language_name(response_language)
+        missing_info_message = self._missing_info_message(response_language)
         is_project_query = self._is_project_query(query)
         is_list_query = self._is_list_query(query)
         requested_count = self._extract_requested_count(query)
@@ -329,36 +423,43 @@ class QueryService:
             )
 
         if not raw_contexts:
-            return {
-                "answer": (
+            if response_language == "pt":
+                no_context_answer = (
                     "Nao encontrei informacao confiavel o suficiente para responder com precisao. "
                     "Adicione conteudo em `rag/data/uploads/Curriculo.txt` e rode a ingestao novamente."
-                ),
+                )
+            else:
+                no_context_answer = (
+                    "I could not find enough reliable information to answer precisely. "
+                    "Add content to `rag/data/uploads/Curriculo.txt` and run ingestion again."
+                )
+            return {
+                "answer": no_context_answer,
                 "sources": [],
             }
 
         context_block = "\n\n".join(context_parts)
         prompt = (
-            "Voce deve responder como candidato em uma entrevista de emprego, sempre em primeira pessoa "
-            "(eu/meu/minha), com tom profissional e direto. "
-            "Use APENAS os fatos presentes no contexto recuperado. "
-            f"Tipo da pergunta: {'projetos' if is_project_query else 'geral/carreira'}. "
-            f"Formato de resposta: {'lista em markdown' if is_list_query else 'texto curto em markdown'}. "
-            "Regras obrigatorias: "
-            "1) Nao invente informacoes. "
-            "2) Nao chute datas, empresas ou tecnologias. "
-            "3) Se algo nao estiver claro no contexto, responda exatamente: "
-            "\"Nao encontrei essa informacao nos documentos carregados.\" "
-            "4) Nao copie frases do contexto literalmente; sempre parafraseie. "
-            "5) Nao usar mais de 6 palavras consecutivas iguais ao contexto. "
-            "6) Em perguntas sobre projetos, priorize os arquivos de projetos e use o curriculo apenas como apoio. "
-            "7) Em perguntas de carreira geral, use o curriculo como base principal. "
-            "8) Estruture como resposta para entrevistador de emprego. "
-            "9) Se a pergunta pedir lista, responda em itens numerados. "
-            f"10) Se a pergunta pedir uma quantidade, tente entregar exatamente essa quantidade: {requested_count if requested_count else 'nao especificada'}. "
-            "11) Resposta curta e objetiva em markdown.\n\n"
-            f"Pergunta do usuario:\n{query}\n\n"
-            "Contexto:\n"
+            "Answer as a job candidate in first person, with professional and direct tone. "
+            "Use ONLY facts present in retrieved context. "
+            f"Response language: {language_name}. Always respond in {language_name}, even if sources contain mixed languages. "
+            f"Question type: {'projects' if is_project_query else 'general/career'}. "
+            f"Response format: {'markdown list' if is_list_query else 'short markdown text'}. "
+            "Mandatory rules: "
+            "1) Do not invent information. "
+            "2) Do not guess dates, companies, or technologies. "
+            "3) If something is unclear in context, reply exactly: "
+            f"\"{missing_info_message}\" "
+            "4) Do not copy context sentences literally; always paraphrase. "
+            "5) Do not use more than 6 consecutive words equal to context. "
+            "6) For project questions, prioritize project files and use resume as support only. "
+            "7) For general career questions, use resume as primary base. "
+            "8) Structure as an answer to a job interviewer. "
+            "9) If question asks for a list, respond with numbered items. "
+            f"10) If question asks for a quantity, try to deliver exactly that count: {requested_count if requested_count else 'not specified'}. "
+            "11) Keep the answer short and objective in markdown.\n\n"
+            f"User question:\n{query}\n\n"
+            "Context:\n"
             f"{context_block}"
         )
 
@@ -373,7 +474,12 @@ class QueryService:
 
             similarity = self._max_similarity_with_context(answer=answer, contexts=raw_contexts)
             if similarity > 0.82:
-                answer = self._rewrite_to_paraphrase(llm=llm, answer=answer, contexts=raw_contexts)
+                answer = self._rewrite_to_paraphrase(
+                    llm=llm,
+                    answer=answer,
+                    contexts=raw_contexts,
+                    response_language=response_language,
+                )
 
             if is_list_query:
                 current_items = self._count_markdown_list_items(answer)
@@ -387,8 +493,12 @@ class QueryService:
                         query=query,
                         contexts=raw_contexts,
                         requested_count=requested_count,
+                        response_language=response_language,
                     )
         except Exception:
-            answer = self._fallback_answer(has_context=bool(sources))
+            answer = self._fallback_answer(
+                has_context=bool(sources),
+                response_language=response_language,
+            )
 
         return {"answer": answer, "sources": sources if settings.show_sources else []}

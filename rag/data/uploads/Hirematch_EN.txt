@@ -1,0 +1,98 @@
+HireMatch AI
+
+ATS-Style Resume Ranking with NLP + LLM
+
+HireMatch AI transforms ATS opacity into clear, actionable signals. Users can compare their resume against a job database or submit a custom job description.
+
+Python
+NLP
+LLM
+ATS
+Resume Analysis
+
+Open on GitHub
+View all projects
+
+⸻
+
+Overview
+
+The project started as a cloud-based prototype and is planned for migration to a homelab environment. The focus is to combine objective ranking with clear, actionable explanations.
+
+An AI-powered ATS simulator that evaluates alignment between a resume and a job description, generating a score and practical improvement recommendations.
+
+⸻
+
+Core Objective
+
+Fit Clarity
+
+Make ATS decisions more transparent and actionable.
+
+⸻
+
+Input Modes
+
+2 Modes
+
+Comparison against a job database or a custom job description.
+
+⸻
+
+Technology
+
+NLP + LLM
+
+Semantic extraction + retriever for scoring, and LLM for feedback generation.
+
+⸻
+
+Infrastructure
+
+Cloud-Based
+
+Running on GCP Cloud Run with a basic CI/CD build triggered on every commit.
+
+⸻
+
+The Problem
+
+Turning ATS Uncertainty into Actionable Signals
+
+Most candidates receive little to no feedback from automated screening systems. HireMatch AI converts this opaque logic into a transparent score and direct recommendations.
+
+The goal is not just to rank resumes, but to explain how and why a profile aligns with — or diverges from — a specific job opportunity.
+
+⸻
+
+Homepage
+
+HireMatch homepage presenting the product value proposition and candidate entry points.
+
+⸻
+
+Approach
+
+Two Comparison Modes for Practical Use
+
+Users can compare against an existing job database or submit a custom job description. This supports both benchmarking and targeted preparation for a real application.
+
+The scoring layer is combined with LLM-generated feedback to ensure recommendations remain objective and readable.
+	•	Mode selection page (job database vs. custom job)
+	•	Resume-job comparison screen highlighting skills and requirements
+
+⸻
+
+Platform Direction
+
+From Cloud Prototype to Self-Hosted Integration
+
+The project began as a cloud-hosted implementation and is planned to integrate with a homelab stack.
+
+This transition improves operational control, reduces recurring costs, and increases experimentation capacity across infrastructure and AI.
+
+⸻
+
+Feedback Screen
+
+Final screen displaying alignment score, strengths, and prioritized improvement suggestions.

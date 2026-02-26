@@ -1,0 +1,129 @@
+Personal Homelab
+
+A 24/7 self-hosted platform for real-world practice and deployment of my projects.
+
+This project is my hands-on platform engineering lab and the environment where I host my personal projects. It combines a VPS with a public IP and a private home infrastructure (a real physical server) to experiment under real-world constraints.
+
+I started this challenge to better understand the development and maintenance processes of projects within my field of interest.
+
+Technologies and Concepts
+	•	Proxmox
+	•	WireGuard
+	•	CI/CD
+	•	Grafana
+	•	Self-hosting
+
+Open on GitHub
+View all projects
+
+⸻
+
+Overview
+
+This homelab is exposed to the internet through the public IP of a VPS. Inside the environment, I use Nginx Proxy Manager as a reverse proxy to connect each subdomain to one of my Proxmox virtual machines.
+
+Additionally, I use the Grafana, Prometheus, and Loki stack for observability, monitoring logs and access across the homelab.
+
+A residential infrastructure designed with production-grade standards to continuously host personal services — validating architecture, reliability, and operations.
+
+⸻
+
+Availability
+
+24/7
+
+Workloads are always active to simulate real operations and maintenance scenarios.
+
+⸻
+
+Edge Model
+
+Minimal VPS
+
+A low-cost, low-complexity public entry point.
+
+⸻
+
+Runtime
+
+Proxmox VE
+
+A combined VM and LXC container strategy running on a single host.
+
+⸻
+
+Observability
+
+Grafana Stack
+
+Aggregated metrics and logs for service visibility.
+
+⸻
+
+How It’s Exposed to the Internet
+
+This routing path exists because my ISP uses CGNAT, which prevents the homelab from receiving a direct public IPv4 address.
+
+A VPS with a public IPv4 is used as the internet entry point, and traffic is securely forwarded to the home network.
+
+Traffic Flow
+	1.	User Request
+A user attempts to access a service published by the homelab.
+	2.	Cloudflare DNS
+The domain is resolved through Cloudflare DNS before routing.
+	3.	VPS Public IP
+Traffic reaches the public VPS acting as the internet edge.
+	4.	Caddy TLS Gateway (VPS)
+Caddy terminates TLS and forwards requests through a secure tunnel.
+	5.	Nginx Proxy Manager (Proxmox)
+Inside the home network, Nginx Proxy Manager routes traffic to internal services.
+
+⸻
+
+Designing with Real Constraints
+
+The main architectural decision was driven by an ISP limitation: CGNAT makes direct exposure difficult and costly.
+
+Instead of overengineering the edge, I intentionally kept the VPS minimal to act purely as a public gateway.
+
+From there, traffic is securely forwarded to the homelab via WireGuard, keeping private services outside the public surface while maintaining a predictable access pattern.
+
+Homelab architecture diagram
+Traffic path from public edge to private services in the homelab.
+
+⸻
+
+Infrastructure
+
+Virtualization as the Operational Core
+
+Proxmox is the foundation of the environment, running VMs and LXC containers according to each workload’s needs.
+
+This ensures clear isolation while maintaining efficient resource usage.
+
+Core building blocks include:
+	•	Reverse proxy
+	•	Storage
+	•	DNS
+	•	Application workloads
+
+Proxmox control panel
+Proxmox interface where VMs and LXC containers are orchestrated.
+
+⸻
+
+Operations
+
+Monitoring-Driven Workflow
+
+I treat the homelab as a production-grade platform, so visibility is mandatory.
+
+ProxMenuX accelerates host-level diagnostics, and Grafana provides deeper insight into service health.
+
+This observability-first model reduces trial and error during incidents and enables safer iteration cycles.
+
+ProxMenuX monitoring panel
+Live operational panel with resource usage, logs, and system status.
+
+Grafana dashboard
+Centralized observability view with metrics and service health.

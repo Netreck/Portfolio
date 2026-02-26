@@ -1,0 +1,94 @@
+GABRIEL VICTOR LIMA GONÇALVES
+
+number > personal info not display in chatbot rag, contact on linkedin
+Sao Paulo, SP – Brazil
+gabrielvgonc@gmail.com
+www.linkedin.com/in/gabriel-victor-71187b223
+
+⸻
+
+OBJECTIVE
+
+Seeking opportunities in the field of Software Engineering.
+
+⸻
+
+EDUCATION
+
+Bachelor’s Degree in Computer Science
+Federal University of ABC (UFABC)
+Expected Graduation: 2027
+
+⸻
+
+SKILLS
+
+Soft Skills:
+
+Proactivity, Resilience, Adaptability, Analytical Thinking
+
+Programming Languages:
+
+Python, SQL, Java, JavaScript
+
+Technologies:
+
+ETL, Data Modeling, REST APIs, Automation, Git
+
+Methodologies:
+
+Scrum, Agile
+
+Languages:
+
+Portuguese (Native), English (Fluent)
+
+⸻
+
+PROFESSIONAL EXPERIENCE
+
+Intern – Bank of America
+
+VP Global Technology – Tech Rotation Program
+Jun 2025 – Present
+	•	Developed test automation tools and frameworks for QA teams in payment systems.
+	•	Contributed to internal automation, continuous improvement, and process optimization initiatives.
+	•	Worked in a highly collaborative environment using Scrum and Agile methodologies, participating in sprint plannings, daily stand-ups, reviews, and retrospectives.
+	•	Technologies used: Java, Python, Git, SQL, Node.js, HTML, CSS.
+
+⸻
+
+EXTRACURRICULAR ACTIVITIES
+
+Data Team Lead – Green Team Hacker Club (UFABC)
+
+Jan 2025 – Sep 2025
+	•	Official Computer Science student organization at UFABC.
+	•	Defined and managed the technology stack for projects focused on scalability, performance, and integration.
+	•	Led team activities, including task delegation, progress tracking, technical support, and teaching classes.
+	•	Hands-on experience with ETL, automation pipelines, SQL, PostgreSQL, data visualization (Seaborn, Matplotlib), data modeling, and machine learning (Scikit-learn, TensorFlow).
+	•	Led the development of the organization’s chatbot using RAG (Retrieval-Augmented Generation).
+
+⸻
+
+PROJECTS
+
+HIREMATCH AI
+
+Personal project that simulates an ATS (Applicant Tracking System) used in recruitment processes. It allows users to transparently compare their résumé against job descriptions and receive feedback on strengths and areas for improvement.
+🔗 hirematch.gabriel-goncalves.com
+
+⸻
+
+HomeLab
+
+24/7 personal physical server hosted at home where I deploy personal projects and deepen my knowledge in infrastructure, CI/CD, and DevOps practices.
+🔗 https://github.com/Netreck/myHomeLab
+
+⸻
+
+Green Team Chatbot
+
+Chatbot project where I led a development team. Using RAG and a data extraction pipeline, we fed the model with up-to-date university data to assist freshman students with academic information.
+
+⸻
