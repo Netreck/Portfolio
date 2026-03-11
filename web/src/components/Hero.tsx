@@ -116,7 +116,7 @@ export default function Hero({ language }: HeroProps) {
             variants={fadeUp}
             className="mt-5 max-w-lg font-body text-base leading-relaxed text-dark-300"
           >
-            Interest in Data Science, Devops and Data Engineering.
+            Interest in Software Engineering, Data Science and Devops.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex items-center gap-3">
