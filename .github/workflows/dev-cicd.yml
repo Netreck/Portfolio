@@ -1,0 +1,39 @@
+name: Dev CI/CD
+
+on:
+  push:
+    branches: [Dev]
+  workflow_dispatch:
+
+concurrency:
+  group: dev-cicd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rebuild-and-ingest:
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Build compose
+        run: |
+          docker compose down
+          docker builder prune -af
+          docker image prune -af
+          COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache rag-api
+          COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache web
+          docker compose up -d
+
+      - name: Upload rag
+        run: |
+          docker compose exec rag-api sh -lc "mkdir -p /app/rag/data/uploads && ls -lah /app/rag/data/uploads"
+          docker compose cp rag/data/uploads/. rag-api:/app/rag/data/uploads/
+          docker compose exec rag-api sh -lc "ls -lah /app/rag/data/uploads"
+          docker compose exec rag-api python -c "from rag.app.services.ingestion_service import IngestionService; print(IngestionService().ingest_uploads_to_vector_db(reset_collection=True))"
