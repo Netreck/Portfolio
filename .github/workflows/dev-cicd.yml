@@ -17,6 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create .env
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          ls -lah .env
+
       - name: Verify Docker
         run: |
           docker --version
@@ -30,6 +35,9 @@ jobs:
           COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache rag-api
           COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache web
           docker compose up -d
+
+      - name: Wait services
+        run: sleep 15
 
       - name: Upload rag
         run: |
