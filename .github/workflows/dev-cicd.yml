@@ -24,9 +24,9 @@ jobs:
 
       - name: Build compose
         run: |
-          docker compose down
-          docker builder prune -af
-          docker image prune -af
+          docker compose down || true
+          docker builder prune -af || true
+          docker image prune -af || true
           COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache rag-api
           COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache web
           docker compose up -d
