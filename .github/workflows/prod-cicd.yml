@@ -1,0 +1,47 @@
+name: Prod CI/CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: prod-cicd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rebuild-and-ingest:
+    runs-on: [self-hosted, linux, prod]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          ls -lah .env
+
+      - name: Verify Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Build compose
+        run: |
+          docker compose down || true
+          docker builder prune -af || true
+          docker image prune -af || true
+          COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache rag-api
+          COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache web
+          docker compose up -d
+
+      - name: Wait services
+        run: sleep 15
+
+      - name: Upload rag
+        run: |
+          docker compose exec rag-api sh -lc "mkdir -p /app/rag/data/uploads && ls -lah /app/rag/data/uploads"
+          docker compose cp rag/data/uploads/. rag-api:/app/rag/data/uploads/
+          docker compose exec rag-api sh -lc "ls -lah /app/rag/data/uploads"
+          docker compose exec rag-api python -c "from rag.app.services.ingestion_service import IngestionService; print(IngestionService().ingest_uploads_to_vector_db(reset_collection=True))"
