@@ -1,17 +1,17 @@
-name: Dev CI/CD
+name: Prod CI/CD
 
 on:
   push:
-    branches: [Dev]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
-  group: dev-cicd-${{ github.ref }}
+  group: prod-cicd-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   rebuild-and-ingest:
-    runs-on: [self-hosted, linux, dev]
+    runs-on: [self-hosted, linux, prod]
 
     steps:
       - name: Checkout
