@@ -215,8 +215,8 @@ export default function ChatSection({
             : 'glow-card border-dark-600/60 bg-dark-800/50'
       }`}
     >
-      <div className="flex items-center justify-between border-b border-dark-600/40 px-5 py-4">
-        <div>
+      <div className="flex items-center justify-between gap-3 border-b border-dark-600/40 px-4 py-4 sm:px-5">
+        <div className="min-w-0">
           <div className="flex items-center gap-3">
             <motion.div
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10"
@@ -225,8 +225,8 @@ export default function ChatSection({
             >
               <Sparkles size={16} className="text-accent" />
             </motion.div>
-            <div>
-              <p className="text-sm font-semibold text-cream">{copy.title}</p>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-cream">{copy.title}</p>
               <div className="flex items-center gap-1.5">
                 <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
                 <span className="font-mono text-[10px] text-accent">{copy.online}</span>
@@ -244,7 +244,7 @@ export default function ChatSection({
                 onClick={onExpandRequest}
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.92 }}
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-dark-600/70 bg-dark-700/50 text-cream-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent"
+                className="hidden h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-dark-600/70 bg-dark-700/50 text-cream-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent lg:flex"
               >
                 <Maximize2 size={14} />
               </motion.button>
@@ -257,7 +257,7 @@ export default function ChatSection({
                 onClick={onCollapseRequest}
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.92 }}
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-dark-600/70 bg-dark-700/50 text-cream-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent"
+                className="hidden h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-dark-600/70 bg-dark-700/50 text-cream-muted transition-colors duration-200 hover:border-accent/40 hover:text-accent lg:flex"
               >
                 <X size={14} />
               </motion.button>
@@ -268,12 +268,12 @@ export default function ChatSection({
 
       <div
         ref={messagesListRef}
-        className={`flex flex-col gap-4 overflow-y-auto p-5 ${
+        className={`flex flex-col gap-4 overflow-y-auto px-4 py-4 sm:p-5 ${
           featured
             ? expandToFullWidth
-              ? 'h-[52vh] min-h-[430px] max-h-[650px]'
-              : 'h-[400px]'
-            : 'h-[380px]'
+              ? 'h-[58svh] min-h-[340px] max-h-[680px] sm:min-h-[420px]'
+              : 'h-[50svh] min-h-[300px] max-h-[420px] sm:h-[400px] sm:min-h-0 sm:max-h-[400px]'
+            : 'h-[48svh] min-h-[280px] max-h-[380px] sm:h-[380px] sm:min-h-0 sm:max-h-[380px]'
         }`}
       >
         {messages.map((msg) => (
@@ -282,7 +282,7 @@ export default function ChatSection({
         {isTyping && <ChatMessage role="assistant" content="" isTyping />}
       </div>
 
-      <div className="flex flex-wrap gap-2 border-t border-dark-600/30 bg-dark-900/30 px-5 py-3">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto border-t border-dark-600/30 bg-dark-900/30 px-4 py-3 sm:flex-wrap sm:px-5">
         {copy.suggestions.map((s) => (
           <motion.button
             key={s}
@@ -290,21 +290,24 @@ export default function ChatSection({
             disabled={isTyping}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="cursor-pointer rounded-full border border-dark-600/60 bg-dark-700/40 px-3 py-1.5 font-mono text-[11px] text-cream-muted transition-all duration-200 hover:border-accent/30 hover:text-accent disabled:cursor-not-allowed disabled:opacity-30"
+            className="shrink-0 cursor-pointer rounded-full border border-dark-600/60 bg-dark-700/40 px-3 py-1.5 font-mono text-[11px] text-cream-muted transition-all duration-200 hover:border-accent/30 hover:text-accent disabled:cursor-not-allowed disabled:opacity-30 sm:shrink"
           >
             {s}
           </motion.button>
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center gap-3 border-t border-dark-600/40 px-5 py-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center gap-2 border-t border-dark-600/40 px-4 py-4 sm:gap-3 sm:px-5"
+      >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={copy.placeholder}
           disabled={isTyping}
-          className="flex-1 bg-transparent text-sm text-cream placeholder:text-dark-400 outline-none disabled:opacity-40"
+          className="min-w-0 flex-1 bg-transparent text-sm text-cream placeholder:text-dark-400 outline-none disabled:opacity-40"
         />
         <motion.button
           type="submit"
@@ -337,7 +340,7 @@ export default function ChatSection({
       >
         <div
           className={`pointer-events-none absolute -z-10 rounded-[2rem] bg-accent/18 blur-3xl transition-all duration-700 ${
-            expandToFullWidth ? '-inset-8' : '-inset-5'
+            expandToFullWidth ? '-inset-4 sm:-inset-6 lg:-inset-8' : '-inset-3 sm:-inset-5'
           }`}
         />
         {chatCard}
