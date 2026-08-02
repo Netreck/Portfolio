@@ -20,7 +20,10 @@ class RAGSettings(BaseSettings):
     fixed_resume_max_chars: int = 1600
     sentence_transformers_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     openai_embedding_model: str = "text-embedding-3-small"
-    openai_chat_model: str = "gpt-4o-mini"
+    openai_chat_model: str = "gpt-5.6-luna"
+    openai_reasoning_effort: Literal["none", "low", "medium", "high", "xhigh", "max"] = (
+        "medium"
+    )
     openai_api_key: str | None = None
 
 
