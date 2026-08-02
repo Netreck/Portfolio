@@ -346,7 +346,7 @@ class QueryService:
         return ChatOpenAI(
             model=settings.openai_chat_model,
             api_key=_openai_api_key(),
-            temperature=0.2,
+            reasoning_effort=settings.openai_reasoning_effort,
         )
 
     def query(self, message: str, top_k: int = 4) -> dict[str, Any]:

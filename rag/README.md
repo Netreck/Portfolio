@@ -30,7 +30,7 @@ Current stack:
 - Vector DB: Chroma (`rag/data/vector_db/`)
 - Chunking: LangChain `RecursiveCharacterTextSplitter`
 - Embeddings: sentence-transformers (`all-MiniLM-L6-v2`) by default
-- LLM answer generation: OpenAI (`gpt-4o-mini`)
+- LLM answer generation: OpenAI (`gpt-5.6-luna`, medium reasoning)
 - Optional OpenAI embeddings: `EMBEDDINGS_PROVIDER=openai`
 
 Ingestion flow:
@@ -42,7 +42,8 @@ Environment variables:
 - `OPENAI_API_KEY=<your-key>`
 - `EMBEDDINGS_PROVIDER=sentence_transformers` (default) or `openai`
 - `OPENAI_EMBEDDING_MODEL=text-embedding-3-small`
-- `OPENAI_CHAT_MODEL=gpt-4o-mini`
+- `OPENAI_CHAT_MODEL=gpt-5.6-luna`
+- `OPENAI_REASONING_EFFORT=medium`
 - `SENTENCE_TRANSFORMERS_MODEL=sentence-transformers/all-MiniLM-L6-v2`
 
 Data directories:
