@@ -1,0 +1,42 @@
+Resumo para atualizar pagina com informacoes atualizadas do curriculo
+GABRIEL VICTOR LIMA GONC¸ ALVES
+Santo Andr´e, SP, Brazil — +55 (11) 94924-4811
+gabrielvgonc@gmail.com — LinkedIn — Portfolio
+PROFESSIONAL SUMMARY
+Software Engineer with experience in backend development, platform engineering, test automation,
+and AI agents development. Hands-on with Java, Python, REST APIs, CI/CD, observability,
+cloud infrastructure, and AI-assisted development, designing reusable frameworks and internal sdks.
+TECHNICAL SKILLS
+Tech Skills: Java, Python, REST APIs, SQL/NoSQL, MCP , Concurrent Programming, Design Patterns,
+Clean Code, Node.js, JavaScript, React, HTML/CSS
+Cloud, DevOps & Observability: Docker, Kubernetes, Git, GitHub Actions, CI/CD, Linux, Grafana,
+Prometheus, Loki, Monitoring
+PROFESSIONAL EXPERIENCE
+Software Engineer I – Bank of America Jun 2026 – Present
+• Brazil AI Lead: Selected to represent Brazil Payments Technology in weekly global forums, contribut-
+ing to decisions on the adoption of frontier AI models and tools, reviewing governance standards for the
+development and use of AI agents across Bank of America’s global technology organization.
+• Engineer in the Global Payments Systems team, building backend services, internal applications,
+reusable libraries, and AI-powered agents and tools for business-critical Brazilian payment systems.
+• Design scalable automation and platform solutions across QA, Release Management, and engineering work-
+flows, focusing on architecture, reliability, maintainability, and performance.
+• Architected a reusable Java monitoring library integrated with an enterprise Selenium framework, cen-
+tralizing execution telemetry and improving observability and maintainability.
+• Built an AI engineering assistant combining technical documentation, system architecture, and business
+workflows to support 8+ engineers and QA professionals.
+Software Engineer Intern – Bank of America – Tech Rotation Jul 2025 – Jun 2026
+• Developed Java frameworks, APIs, internal platforms, and end-to-end automation for enterprise
+financial applications.
+• Contributed to payment software architecture, evaluating scalable designs and integrations focused on
+throughput, reliability, and transaction performance.
+• Automated regression and smoke tests with GitHub Actions and Jenkins CI/CD, and developed tooling
+for production release operations.
+ENGINEERING PROJECTS
+Distributed Systems HomeLab – Designed and operate a 24/7 environment using Kubernetes, Docker,
+networking, CI/CD, Grafana, Prometheus, Loki, security, and distributed services.
+Data Lead – Green Team Hacker Club, UFABC Jan 2024 – Dec 2025
+Led data and AI projects using Python, PostgreSQL, ETL, RAG, machine learning, and backend
+services, including architecture decisions and technical mentoring.
+EDUCATION
+Federal University of ABC (UFABC) – B.Sc. Computer Science Expected Jun 2027
+Federal University of ABC (UFABC) – B.Sc. Science and Technology Expected Dec 2026

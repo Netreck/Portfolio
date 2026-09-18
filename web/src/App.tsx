@@ -3,6 +3,7 @@ import GridBackground from './components/GridBackground'
 import ParticleField from './components/ParticleField'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import Experience from './components/Experience'
 import Projects from './components/Projects'
 import ProjectPage from './components/ProjectPage'
 import { getProjectBySlug, type Language } from './data/projects'
@@ -65,6 +66,7 @@ export default function App() {
       ) : (
           <main>
           <Hero language={language} />
+          <Experience language={language} />
           <Projects language={language} />
           </main>
       )}

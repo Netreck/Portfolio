@@ -150,7 +150,7 @@ export default function ChatSection({
       const response = await fetch(`${RAG_API_BASE_URL}/rag/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, top_k: 4 }),
+        body: JSON.stringify({ message: msg, top_k: 4, language: language === 'br' ? 'pt' : 'en' }),
       })
 
       if (!response.ok) {

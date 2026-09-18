@@ -17,7 +17,8 @@ class RAGSettings(BaseSettings):
     retrieval_min_score: float = 0.22
     min_document_chars: int = 120
     fixed_resume_filename: str = "Curriculo.txt"
-    fixed_resume_max_chars: int = 1600
+    fixed_resume_en_filename: str = "Resume.txt"
+    fixed_resume_max_chars: int = 12000
     sentence_transformers_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     openai_embedding_model: str = "text-embedding-3-small"
     openai_chat_model: str = "gpt-5.6-luna"

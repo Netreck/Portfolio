@@ -1,94 +1,42 @@
 GABRIEL VICTOR LIMA GONÇALVES
 
-number > personal info not display in chatbot rag, contact on linkedin
-Sao Paulo, SP – Brazil
+Santo André, SP, Brazil
 gabrielvgonc@gmail.com
-www.linkedin.com/in/gabriel-victor-71187b223
+https://www.linkedin.com/in/gabriel-victor-71187b223
 
-⸻
-
-OBJECTIVE
-
-Seeking opportunities in the field of Software Engineering.
-
-⸻
-
-EDUCATION
-
-Bachelor’s Degree in Computer Science
-Federal University of ABC (UFABC)
-Expected Graduation: 2027
-
-⸻
-
-SKILLS
-
-Soft Skills:
-
-Proactivity, Resilience, Adaptability, Analytical Thinking
-
-Programming Languages:
-
-Python, SQL, Java, JavaScript
-
-Technologies:
-
-ETL, Data Modeling, REST APIs, Automation, Git
-
-Methodologies:
-
-Scrum, Agile
-
-Languages:
-
-Portuguese (Native), English (Fluent)
-
-⸻
+PROFESSIONAL SUMMARY
+Software Engineer I — Bank of America
+Software engineer working with backend development, platform engineering, test automation and AI agents. I build reusable frameworks and internal SDKs with Java, Python, REST APIs, CI/CD, observability and cloud infrastructure.
 
 PROFESSIONAL EXPERIENCE
 
-Intern – Bank of America
+Software Engineer I — Bank of America
+Jun 2026 — Present
+• Brazil AI Lead: representing Brazil Payments Technology in weekly global forums, contributing to the adoption of frontier AI models and tools and reviewing governance standards for AI agents.
+• Building backend services, internal applications, reusable libraries and AI agents in the Global Payments Systems team for business-critical Brazilian payment systems.
+• Designing scalable automation and platform solutions for QA, Release Management and engineering workflows, focusing on reliability, maintainability and performance.
+• Architected a reusable Java monitoring library integrated with an enterprise Selenium framework to centralize execution telemetry.
+• Built an AI engineering assistant combining technical documentation, system architecture and business workflows to support 8+ engineers and QA professionals.
 
-VP Global Technology – Tech Rotation Program
-Jun 2025 – Present
-	•	Developed test automation tools and frameworks for QA teams in payment systems.
-	•	Contributed to internal automation, continuous improvement, and process optimization initiatives.
-	•	Worked in a highly collaborative environment using Scrum and Agile methodologies, participating in sprint plannings, daily stand-ups, reviews, and retrospectives.
-	•	Technologies used: Java, Python, Git, SQL, Node.js, HTML, CSS.
+Software Engineer Intern — Tech Rotation — Bank of America
+Jul 2025 — Jun 2026
+• Developed Java frameworks, APIs, internal platforms and end-to-end automation for enterprise financial applications.
+• Contributed to payment software architecture, evaluating scalable designs and integrations for throughput, reliability and transaction performance.
+• Automated regression and smoke tests with GitHub Actions and Jenkins CI/CD, and developed tooling for production release operations.
 
-⸻
+UNIVERSITY LEADERSHIP
+Data Lead — Green Team Hacker Club, UFABC
+Jan 2024 — Dec 2025
+Led data and AI projects using Python, PostgreSQL, ETL, RAG, machine learning and backend services, including architecture decisions and technical mentoring.
 
-EXTRACURRICULAR ACTIVITIES
+ENGINEERING PROJECTS
+Distributed Systems HomeLab — Designed and operate a 24/7 environment using Kubernetes, Docker, networking, CI/CD, Grafana, Prometheus, Loki, security and distributed services.
 
-Data Team Lead – Green Team Hacker Club (UFABC)
+EDUCATION
+Federal University of ABC (UFABC)
+B.Sc. Computer Science — Expected Jun 2027
+B.Sc. Science and Technology — Expected Dec 2026
 
-Jan 2025 – Sep 2025
-	•	Official Computer Science student organization at UFABC.
-	•	Defined and managed the technology stack for projects focused on scalability, performance, and integration.
-	•	Led team activities, including task delegation, progress tracking, technical support, and teaching classes.
-	•	Hands-on experience with ETL, automation pipelines, SQL, PostgreSQL, data visualization (Seaborn, Matplotlib), data modeling, and machine learning (Scikit-learn, TensorFlow).
-	•	Led the development of the organization’s chatbot using RAG (Retrieval-Augmented Generation).
-
-⸻
-
-PROJECTS
-
-HIREMATCH AI
-
-Personal project that simulates an ATS (Applicant Tracking System) used in recruitment processes. It allows users to transparently compare their résumé against job descriptions and receive feedback on strengths and areas for improvement.
-🔗 hirematch.gabriel-goncalves.com
-
-⸻
-
-HomeLab
-
-24/7 personal physical server hosted at home where I deploy personal projects and deepen my knowledge in infrastructure, CI/CD, and DevOps practices.
-🔗 https://github.com/Netreck/myHomeLab
-
-⸻
-
-Green Team Chatbot
-
-Chatbot project where I led a development team. Using RAG and a data extraction pipeline, we fed the model with up-to-date university data to assist freshman students with academic information.
-
-⸻
+TECHNICAL SKILLS
+Software engineering: Java, Python, REST APIs, SQL/NoSQL, MCP, concurrent programming, design patterns, Clean Code, Node.js, JavaScript, React, HTML/CSS
+Cloud, DevOps & observability: Docker, Kubernetes, Git, GitHub Actions, CI/CD, Linux, Grafana, Prometheus, Loki, monitoring

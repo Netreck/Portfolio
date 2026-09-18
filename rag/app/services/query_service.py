@@ -237,9 +237,13 @@ class QueryService:
         text = re.sub(r"\n{3,}", "\n\n", text)
         return text.strip()
 
-    def _load_fixed_resume_context(self) -> str:
+    def _resume_filename(self, response_language: Literal["pt", "en"]) -> str:
         settings = get_settings()
-        resume_path = UPLOADS_DIR / settings.fixed_resume_filename
+        return settings.fixed_resume_en_filename if response_language == "en" else settings.fixed_resume_filename
+
+    def _load_fixed_resume_context(self, response_language: Literal["pt", "en"] = "pt") -> str:
+        settings = get_settings()
+        resume_path = UPLOADS_DIR / self._resume_filename(response_language)
         if not resume_path.exists() or not resume_path.is_file():
             return ""
 
@@ -349,12 +353,12 @@ class QueryService:
             reasoning_effort=settings.openai_reasoning_effort,
         )
 
-    def query(self, message: str, top_k: int = 4) -> dict[str, Any]:
+    def query(self, message: str, top_k: int = 4, language: Literal["pt", "en"] | None = None) -> dict[str, Any]:
         settings = get_settings()
         query = message.strip()
         if not query:
             raise HTTPException(status_code=400, detail="message cannot be empty")
-        response_language = self._detect_query_language(query)
+        response_language = language or self._detect_query_language(query)
         language_name = self._language_name(response_language)
         missing_info_message = self._missing_info_message(response_language)
         is_project_query = self._is_project_query(query)
@@ -391,7 +395,8 @@ class QueryService:
         context_parts: list[str] = []
         raw_contexts: list[str] = []
         sources: list[dict[str, Any]] = []
-        fixed_resume_context = self._load_fixed_resume_context()
+        fixed_resume_filename = self._resume_filename(response_language)
+        fixed_resume_context = self._load_fixed_resume_context(response_language)
 
         for idx, (doc, distance) in enumerate(results, start=1):
             score = round(1 / (1 + float(distance)), 4)
@@ -412,11 +417,11 @@ class QueryService:
 
         if fixed_resume_context:
             # Keep resume always available as requested, but after retrieved chunks to avoid overshadowing.
-            context_parts.append(f"[CV_FIXO] ({settings.fixed_resume_filename})\n{fixed_resume_context}")
+            context_parts.append(f"[CV_FIXO] ({fixed_resume_filename})\n{fixed_resume_context}")
             raw_contexts.append(fixed_resume_context)
             sources.append(
                 {
-                    "source_name": settings.fixed_resume_filename,
+                    "source_name": fixed_resume_filename,
                     "score": 1.0,
                     "excerpt": f"{fixed_resume_context[:320]}{'...' if len(fixed_resume_context) > 320 else ''}",
                 }

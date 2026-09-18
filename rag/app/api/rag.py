@@ -9,5 +9,5 @@ query_service = QueryService()
 
 @router.post("/chat", response_model=ChatResponse)
 def chat(payload: ChatRequest) -> ChatResponse:
-    result = query_service.query(message=payload.message, top_k=payload.top_k)
+    result = query_service.query(message=payload.message, top_k=payload.top_k, language=payload.language)
     return ChatResponse(**result)
