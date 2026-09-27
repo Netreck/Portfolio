@@ -72,12 +72,6 @@ export default function Chronology({ language, lit }: ChronologyProps) {
   const orgCount = (organization: string) => tracks.filter((track) => track.job.organization === organization).length
   const shortRole = (role: string) => role.split(/\s+[—–-]\s+/)[0]
 
-  const universityShort = copy.university.match(/\(([^)]+)\)/)?.[1] ?? copy.university
-
-  const milestones = copy.education
-    .map((course) => ({ course, month: toMonth(course.completion, today) }))
-    .filter((m): m is typeof m & { month: number } => m.month !== null)
-
   const rows = [
     ...copy.experience.map((job) => ({ job, group: 'work' as const })),
     { job: copy.community, group: 'community' as const },
@@ -88,7 +82,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
       <div className="px-4 pb-20 pt-16 sm:px-8 lg:px-12 lg:pb-28 lg:pt-24">
         <h2
           id="experience-title"
-          className="lc max-w-[14ch] text-[clamp(2.5rem,5.2vw,4.75rem)] font-bold leading-[0.95] tracking-[-0.035em]"
+          className="max-w-[14ch] text-[clamp(2.5rem,5.2vw,4.75rem)] font-bold leading-[0.95] tracking-[-0.035em]"
         >
           {copy.experienceTitle}
         </h2>
@@ -120,7 +114,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
                 return (
                   <li key={`${job.organization}-${job.role}`} className="relative h-11 sm:h-14">
                     <span
-                      className={`lc absolute top-0 z-10 -mx-1 whitespace-nowrap px-1 text-[13px] font-semibold leading-none sm:text-sm ${
+                      className={`absolute top-0 z-10 -mx-1 whitespace-nowrap px-1 text-[13px] font-semibold leading-none sm:text-sm ${
                         isLit ? 'bg-signal text-ink' : 'bg-paper text-ink'
                       }`}
                       style={anchorRight ? { right: `calc(100% - ${pct(to)} + 0.875rem)` } : { left: pct(from) }}
@@ -147,22 +141,6 @@ export default function Chronology({ language, lit }: ChronologyProps) {
                 )
               })}
 
-              <li className="relative h-11 sm:h-14" aria-hidden="true">
-                {milestones.map(({ course, month }) => (
-                  <span
-                    key={course.degree}
-                    className="absolute bottom-0 h-5 w-5 -translate-x-1/2 border-2 border-ink sm:h-7 sm:w-7"
-                    style={{ left: pct(month) }}
-                  />
-                ))}
-                <span
-                  className="lc absolute top-0 z-10 whitespace-nowrap text-[13px] font-semibold leading-none sm:text-sm"
-                  style={{ left: `calc(${pct(today + now.getDate() / 31)} + 0.875rem)` }}
-                >
-                  <span className="sm:hidden">{universityShort}</span>
-                  <span className="hidden sm:inline">{copy.university}</span>
-                </span>
-              </li>
             </ul>
 
             <div
@@ -170,7 +148,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
               style={{ left: pct(today + now.getDate() / 31) }}
               aria-hidden="true"
             >
-              <span className="lc absolute -top-7 left-1.5 text-[13px] font-semibold text-cobalt sm:text-sm">{t.today}</span>
+              <span className="absolute -top-7 left-1.5 text-[13px] font-semibold text-cobalt sm:text-sm">{t.today}</span>
             </div>
           </div>
         </figure>
@@ -186,7 +164,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
             return (
               <div key={`${job.organization}-${job.role}`}>
                 {showCommunityHeading && (
-                  <h3 className="lc border-b-2 border-ink pb-4 pt-12 text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">
+                  <h3 className="border-b-2 border-ink pb-4 pt-12 text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">
                     {copy.communityTitle}
                   </h3>
                 )}
@@ -200,7 +178,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
                     <p className="mt-1 pl-7 text-xl font-semibold leading-snug">{job.organization}</p>
                     <div className="mt-3 flex flex-wrap gap-2 pl-7">
                       {job.current && (
-                        <span className="lc inline-flex items-center gap-2 bg-ink px-2.5 py-1 text-sm font-semibold text-paper">
+                        <span className="inline-flex items-center gap-2 bg-ink px-2.5 py-1 text-sm font-semibold text-paper">
                           <span aria-hidden="true" className="h-2.5 w-2.5 bg-signal" />
                           {copy.currentLabel}
                         </span>
@@ -233,7 +211,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
         {/* Education and skills */}
         <div className="mt-16 grid gap-14 lg:mt-24 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <h3 className="lc text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">{copy.educationTitle}</h3>
+            <h3 className="text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">{copy.educationTitle}</h3>
             <p className={`mt-5 inline-block text-[17px] font-medium ${lit.has('ufabc') ? 'bg-signal px-1' : ''}`}>
               {copy.university}
             </p>
@@ -251,7 +229,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
           </div>
 
           <div className="lg:col-span-8">
-            <h3 className="lc text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">{copy.skillsTitle}</h3>
+            <h3 className="text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">{copy.skillsTitle}</h3>
             <dl className="mt-5 grid gap-8 sm:grid-cols-2">
               {copy.skills.map((group) => (
                 <div key={group.label} className={`border-t-2 pt-4 ${lit.has('skills') ? 'border-signal' : 'border-ink'}`}>

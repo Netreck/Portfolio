@@ -9,7 +9,7 @@ export default function Closing({ language }: { language: Language }) {
     <footer id="contact" className="on-cobalt scroll-mt-28 bg-cobalt text-paper">
       <div className="grid gap-12 px-4 pb-10 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:pb-12 lg:pt-24">
         <div className="lg:col-span-8">
-          <h2 className="lc text-[clamp(2.5rem,5.2vw,4.75rem)] font-bold leading-[0.95] tracking-[-0.035em]">
+          <h2 className="text-[clamp(2.5rem,5.2vw,4.75rem)] font-bold leading-[0.95] tracking-[-0.035em]">
             {t.closeTitle}
           </h2>
           <p className="mt-6 text-lg text-cobalt-tint">{t.closeLead}</p>
@@ -49,7 +49,7 @@ export default function Closing({ language }: { language: Language }) {
                 className="inline-flex h-12 items-center gap-2.5 bg-signal px-4 font-semibold text-ink no-underline hover:bg-paper"
               >
                 <ArrowUp size={18} aria-hidden="true" />
-                <span className="lc">{t.askAgain}</span>
+                <span>{t.askAgain}</span>
               </a>
             </li>
           </ul>
@@ -63,7 +63,7 @@ export default function Closing({ language }: { language: Language }) {
               href="/project/homelab-pessoal"
               className="mt-4 inline-flex items-center gap-2 font-semibold text-signal underline hover:bg-signal hover:text-ink hover:no-underline"
             >
-              <span className="lc">{t.proofLink}</span>
+              <span>{t.proofLink}</span>
               <ArrowRight size={18} aria-hidden="true" />
             </a>
           </div>
@@ -71,7 +71,7 @@ export default function Closing({ language }: { language: Language }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-cobalt-line px-4 py-5 text-sm text-cobalt-tint sm:px-8 lg:px-12">
-        <span className="lc font-semibold text-paper">Gabriel Gonçalves</span>
+        <span className="font-semibold text-paper">Gabriel Gonçalves</span>
         <span className="tnum">{new Date().getFullYear()}</span>
       </div>
     </footer>

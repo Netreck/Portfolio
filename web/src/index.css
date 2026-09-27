@@ -183,9 +183,6 @@ html[data-world="concreto"] { scrollbar-color: var(--color-ink) var(--color-pape
 
 .cz .tnum { font-variant-numeric: tabular-nums; }
 
-/* Lowercase display voice */
-.cz .lc { text-transform: lowercase; }
-
 /* Question field */
 .cz-question {
   display: block;
@@ -208,7 +205,6 @@ html[data-world="concreto"] { scrollbar-color: var(--color-ink) var(--color-pape
 .cz-question::placeholder {
   color: var(--color-signal);
   opacity: 1;
-  text-transform: lowercase;
 }
 
 .cz-question[data-size="xl"] { font-size: clamp(2.5rem, 5.6vw, 5.5rem); }
@@ -227,7 +223,7 @@ html[data-world="concreto"] { scrollbar-color: var(--color-ink) var(--color-pape
 /* Answer markdown on cobalt */
 .cz-answer { color: var(--color-paper); font-size: 1.0625rem; line-height: 1.65; }
 .cz-answer > * + * { margin-top: 0.8em; }
-.cz-answer h1, .cz-answer h2, .cz-answer h3 { font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; text-transform: lowercase; }
+.cz-answer h1, .cz-answer h2, .cz-answer h3 { font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
 .cz-answer h1, .cz-answer h2 { font-size: 1.5rem; }
 .cz-answer h3 { font-size: 1.2rem; }
 .cz-answer strong { font-weight: 700; color: #ffffff; }

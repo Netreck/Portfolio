@@ -4,22 +4,29 @@ import { LANDING } from './copy'
 interface ConcretoNavProps {
   language: Language
   onLanguageChange: (language: Language) => void
-  litSections: { experience: boolean; projects: boolean }
+  litSections?: { experience: boolean; projects: boolean }
+  // '/' on other routes, so the links return to the landing sections
+  base?: string
 }
 
-export default function ConcretoNav({ language, onLanguageChange, litSections }: ConcretoNavProps) {
+export default function ConcretoNav({
+  language,
+  onLanguageChange,
+  litSections = { experience: false, projects: false },
+  base = '',
+}: ConcretoNavProps) {
   const t = LANDING[language]
   const links = [
-    { href: '#about', label: t.nav.about, lit: false },
-    { href: '#experience', label: t.nav.experience, lit: litSections.experience },
-    { href: '#projects', label: t.nav.projects, lit: litSections.projects },
-    { href: '#contact', label: t.nav.contact, lit: false },
+    { href: `${base}#about`, label: t.nav.about, lit: false },
+    { href: `${base}#experience`, label: t.nav.experience, lit: litSections.experience },
+    { href: `${base}#projects`, label: t.nav.projects, lit: litSections.projects },
+    { href: `${base}#contact`, label: t.nav.contact, lit: false },
   ]
 
   return (
     <header className="sticky top-0 z-50 border-b-2 border-ink bg-paper">
       <nav className="flex flex-wrap items-stretch justify-between gap-x-6 px-4 sm:px-8 lg:px-12">
-        <a href="#about" className="lc flex h-16 items-center gap-3 text-lg font-bold tracking-tight text-ink no-underline">
+        <a href={`${base}#about`} className="flex h-16 items-center gap-3 text-lg font-bold tracking-tight text-ink no-underline">
           <span aria-hidden="true" className="h-3.5 w-3.5 bg-signal" />
           Gabriel Gonçalves
         </a>
@@ -29,7 +36,7 @@ export default function ConcretoNav({ language, onLanguageChange, litSections }:
             <li key={link.href} className="flex">
               <a
                 href={link.href}
-                className={`lc flex h-12 items-center gap-2 whitespace-nowrap px-4 text-[15px] font-medium text-ink no-underline hover:bg-signal sm:h-16 ${
+                className={`flex h-12 items-center gap-2 whitespace-nowrap px-4 text-[15px] font-medium text-ink no-underline hover:bg-signal sm:h-16 ${
                   link.lit ? 'bg-signal' : ''
                 }`}
               >
@@ -52,7 +59,7 @@ export default function ConcretoNav({ language, onLanguageChange, litSections }:
                 language === code ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-signal'
               }`}
             >
-              {code === 'en' ? 'en' : 'pt'}
+              {code === 'en' ? 'EN' : 'PT'}
             </button>
           ))}
         </div>

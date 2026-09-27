@@ -38,7 +38,7 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
       <div className="grid gap-6 px-4 pb-16 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:pb-20 lg:pt-24">
         <h2
           id="projects-title"
-          className="lc text-[clamp(2.25rem,4.4vw,4rem)] font-bold leading-[0.98] tracking-[-0.035em] lg:col-span-8"
+          className="text-[clamp(2.25rem,4.4vw,4rem)] font-bold leading-[0.98] tracking-[-0.035em] lg:col-span-8"
         >
           {t.projectsTitle}
         </h2>
@@ -62,7 +62,7 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
             <div className={`flex flex-col lg:col-span-5 ${mirrored ? 'lg:order-2 lg:col-start-8' : ''}`}>
               <h3
                 id={`project-${project.slug}`}
-                className="lc text-[clamp(2.25rem,4vw,3.75rem)] font-extrabold leading-[0.95] tracking-[-0.035em]"
+                className="text-[clamp(2.25rem,4vw,3.75rem)] font-extrabold leading-[0.95] tracking-[-0.035em]"
               >
                 {localized.title}
               </h3>
@@ -70,7 +70,7 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
               <p className={`mt-4 max-w-[52ch] text-[17px] leading-relaxed ${style.muted}`}>{localized.description}</p>
 
               <p className={`mt-6 border-t-2 pt-4 text-[15px] font-medium ${style.rule}`}>
-                <span className="lc font-bold">{localized.status}</span> / {project.tags.join(' / ')}
+                <span className="font-bold">{localized.status}</span> / {project.tags.join(' / ')}
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-10">
@@ -78,7 +78,7 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
                   href={`/project/${project.slug}`}
                   className={`group inline-flex h-14 items-center gap-3 px-5 text-[17px] font-semibold no-underline ${style.cta}`}
                 >
-                  <span className="lc">{t.caseStudy}</span>
+                  <span>{t.caseStudy}</span>
                   <ArrowRight size={20} strokeWidth={2.25} aria-hidden="true" />
                 </a>
                 <a
@@ -88,7 +88,7 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
                   className={`inline-flex h-14 items-center gap-2.5 border-2 px-5 text-[17px] font-semibold no-underline hover:bg-paper hover:text-ink ${style.rule}`}
                 >
                   <Github size={18} strokeWidth={2} aria-hidden="true" />
-                  <span className="lc">{t.code}</span>
+                  <span>{t.code}</span>
                 </a>
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
               <span
                 className={`absolute top-0 flex h-16 w-16 ${mirrored ? 'left-0' : 'right-0'} items-end p-2 sm:h-24 sm:w-24 ${index % 2 === 0 ? 'bg-signal text-ink' : 'bg-ink text-signal'}`}
               >
-                <span className="lc text-xs font-bold leading-tight sm:text-sm">{t.inAnswer}</span>
+                <span className="text-xs font-bold leading-tight sm:text-sm">{t.inAnswer}</span>
               </span>
             )}
           </article>

@@ -32,7 +32,7 @@ export default function ConcretoHero({ language, onAnswer }: ConcretoHeroProps) 
               className="h-20 w-20 shrink-0 object-cover object-[50%_26%] sm:h-28 sm:w-28 lg:h-36 lg:w-36"
             />
 
-            <h1 className="lc -mb-1.5 text-[clamp(2.75rem,4.6vw,4.5rem)] font-extrabold leading-[0.95] tracking-[-0.035em] text-ink lg:mb-0 lg:mt-8">
+            <h1 className="-mb-1.5 text-[clamp(2.75rem,4.6vw,4.5rem)] font-extrabold leading-[0.95] tracking-[-0.035em] text-ink lg:mb-0 lg:mt-8">
               Gabriel
               <br />
               Gonçalves

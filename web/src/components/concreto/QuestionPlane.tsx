@@ -209,7 +209,7 @@ export default function QuestionPlane({ language, onAnswer }: QuestionPlaneProps
                   <button
                     type="button"
                     onClick={() => void ask(suggestion)}
-                    className="cz-ghost lc cursor-pointer text-left text-[clamp(1.375rem,2.3vw,2.125rem)] font-semibold leading-[1.15] tracking-[-0.02em]"
+                    className="cz-ghost cursor-pointer text-left text-[clamp(1.375rem,2.3vw,2.125rem)] font-semibold leading-[1.15] tracking-[-0.02em]"
                   >
                     {suggestion}
                   </button>
@@ -234,7 +234,7 @@ export default function QuestionPlane({ language, onAnswer }: QuestionPlaneProps
                 return (
                 <li key={exchange.id} data-latest={isLatest ? '' : undefined} className="scroll-mt-32">
                   <h2
-                    className={`lc font-bold tracking-[-0.035em] text-signal ${
+                    className={`font-bold tracking-[-0.035em] text-signal ${
                       isLatest
                         ? 'text-[clamp(2.75rem,5vw,5rem)] leading-[0.98]'
                         : 'text-[clamp(1.5rem,2.4vw,2.125rem)] leading-tight'
@@ -258,7 +258,7 @@ export default function QuestionPlane({ language, onAnswer }: QuestionPlaneProps
 
                       {exchange.sources && exchange.sources.length > 0 && (
                         <div className="mt-6 max-w-[68ch] border-t-2 border-cobalt-line pt-4">
-                          <p className="lc text-sm font-semibold text-paper">{t.sources}</p>
+                          <p className="text-sm font-semibold text-paper">{t.sources}</p>
                           <ol className="mt-3 space-y-3">
                             {exchange.sources.map((source, index) => (
                               <li key={`${source.source_name}-${index}`} className="flex gap-3">
@@ -292,7 +292,7 @@ export default function QuestionPlane({ language, onAnswer }: QuestionPlaneProps
                         type="button"
                         onClick={() => retry(exchange)}
                         disabled={pending}
-                        className="lc mt-4 h-11 cursor-pointer bg-signal px-4 font-semibold text-ink hover:bg-paper disabled:cursor-not-allowed disabled:opacity-50"
+                        className="mt-4 h-11 cursor-pointer bg-signal px-4 font-semibold text-ink hover:bg-paper disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {STATUS[language].retry}
                       </button>

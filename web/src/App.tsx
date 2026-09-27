@@ -4,6 +4,7 @@ import ParticleField from './components/ParticleField'
 import Navbar from './components/Navbar'
 import ProjectPage from './components/ProjectPage'
 import Landing from './components/concreto/Landing'
+import HomelabPage from './components/concreto/HomelabPage'
 import { getProjectBySlug, type Language } from './data/projects'
 
 export default function App() {
@@ -16,11 +17,13 @@ export default function App() {
   const projectSlug = routeMatch?.[1]
   const activeProject = projectSlug ? getProjectBySlug(projectSlug) ?? null : null
   const isProjectRoute = Boolean(routeMatch)
+  // Case studies migrate to the Concreto world one at a time.
+  const isConcretoRoute = !isProjectRoute || projectSlug === 'homelab-pessoal'
 
   useEffect(() => {
-    // Landing lives in the Concreto world; case studies keep the lab world for now.
-    document.documentElement.dataset.world = isProjectRoute ? 'lab' : 'concreto'
-  }, [isProjectRoute])
+    // Concreto routes: the landing and migrated case studies; the rest keep the lab world.
+    document.documentElement.dataset.world = isConcretoRoute ? 'concreto' : 'lab'
+  }, [isConcretoRoute])
 
   useEffect(() => {
     window.localStorage.setItem('portfolio_lang', language)
@@ -53,6 +56,10 @@ export default function App() {
 
   if (!isProjectRoute) {
     return <Landing language={language} onLanguageChange={setLanguage} />
+  }
+
+  if (projectSlug === 'homelab-pessoal') {
+    return <HomelabPage language={language} onLanguageChange={setLanguage} />
   }
 
   return (
