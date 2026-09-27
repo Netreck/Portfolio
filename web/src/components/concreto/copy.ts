@@ -7,6 +7,7 @@ interface LandingCopy {
   suggestionsLabel: string
   send: string
   newQuestion: string
+  clearChat: string
   sources: string
   today: string
   expected: string
@@ -32,6 +33,7 @@ export const LANDING: Record<Language, LandingCopy> = {
     suggestionsLabel: 'Suggested questions',
     send: 'Send question',
     newQuestion: 'Ask another question',
+    clearChat: 'Clear chat',
     sources: 'Sources',
     today: 'Today',
     expected: 'expected',
@@ -57,6 +59,7 @@ export const LANDING: Record<Language, LandingCopy> = {
     suggestionsLabel: 'Perguntas sugeridas',
     send: 'Enviar pergunta',
     newQuestion: 'Fazer outra pergunta',
+    clearChat: 'Limpar conversa',
     sources: 'Fontes',
     today: 'Hoje',
     expected: 'previsto',

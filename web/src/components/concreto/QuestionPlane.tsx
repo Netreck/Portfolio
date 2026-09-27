@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
-import { ArrowRight, CornerDownLeft } from 'lucide-react'
+import { ArrowRight, CornerDownLeft, RotateCcw } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Language } from '../../data/projects'
@@ -148,6 +148,12 @@ export default function QuestionPlane({ language }: QuestionPlaneProps) {
     void ask(exchange.question)
   }
 
+  const clear = () => {
+    setExchanges([])
+    setInput('')
+    fieldRef.current?.focus({ preventScroll: true })
+  }
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     void ask()
@@ -220,6 +226,17 @@ export default function QuestionPlane({ language }: QuestionPlaneProps) {
         </div>
       ) : (
         <>
+          <div className="mb-5 hidden shrink-0 justify-end lg:flex">
+            <button
+              type="button"
+              onClick={clear}
+              disabled={pending}
+              className="inline-flex h-10 cursor-pointer items-center gap-2 border-2 border-cobalt-line px-3.5 text-[15px] font-semibold text-paper hover:border-signal hover:bg-signal hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <RotateCcw size={16} strokeWidth={2.25} aria-hidden="true" />
+              {t.clearChat}
+            </button>
+          </div>
           <div
             ref={threadRef}
             className="cz-thread lg:-mr-3 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-3"
@@ -314,6 +331,17 @@ export default function QuestionPlane({ language }: QuestionPlaneProps) {
           </div>
 
           <div className="shrink-0 pt-2">{field}</div>
+          <div className="mt-5 flex lg:hidden">
+              <button
+                type="button"
+                onClick={clear}
+                disabled={pending}
+                className="inline-flex h-10 cursor-pointer items-center gap-2 border-2 border-cobalt-line px-3.5 text-[15px] font-semibold text-paper hover:border-signal hover:bg-signal hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <RotateCcw size={16} strokeWidth={2.25} aria-hidden="true" />
+                {t.clearChat}
+              </button>
+          </div>
         </>
       )}
     </div>
