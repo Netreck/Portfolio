@@ -8,7 +8,6 @@ interface LandingCopy {
   send: string
   newQuestion: string
   sources: string
-  inAnswer: string
   today: string
   expected: string
   roles: string
@@ -32,7 +31,6 @@ export const LANDING: Record<Language, LandingCopy> = {
     send: 'Send question',
     newQuestion: 'Ask another question',
     sources: 'Sources',
-    inAnswer: 'In the answer',
     today: 'Today',
     expected: 'expected',
     roles: 'Roles on a timeline',
@@ -56,7 +54,6 @@ export const LANDING: Record<Language, LandingCopy> = {
     send: 'Enviar pergunta',
     newQuestion: 'Fazer outra pergunta',
     sources: 'Fontes',
-    inAnswer: 'Na resposta',
     today: 'Hoje',
     expected: 'previsto',
     roles: 'Cargos na linha do tempo',

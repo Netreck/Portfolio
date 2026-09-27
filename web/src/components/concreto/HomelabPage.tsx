@@ -133,6 +133,29 @@ export default function HomelabPage({ language, onLanguageChange }: HomelabPageP
         </dl>
       </header>
 
+      <section
+        aria-label={t.practiceTitle}
+        className="grid gap-10 border-b-2 border-ink px-4 py-12 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12 lg:py-16"
+      >
+        <p className="max-w-[40ch] text-[clamp(1.375rem,2.3vw,2rem)] font-medium leading-[1.3] tracking-[-0.015em] lg:col-span-7">
+          {t.intro}
+        </p>
+        <div className="lg:col-span-5">
+          <h2 className="text-[17px] font-semibold">{t.practiceTitle}</h2>
+          <dl className="mt-3 border-t-2 border-ink">
+            {t.practice.map((item) => (
+              <div key={item.area} className="grid gap-1 border-b-2 border-ink py-3 sm:grid-cols-[9.5rem_1fr] sm:gap-4">
+                <dt className="flex items-center gap-2.5 text-[16px] font-bold">
+                  <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 bg-cobalt" />
+                  {item.area}
+                </dt>
+                <dd className="text-[16px] leading-relaxed text-ink-soft">{item.detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       <div className="grid grid-cols-1 px-4 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <nav aria-label={t.questionsLabel} className="py-8 lg:sticky lg:top-[66px] lg:col-span-3 lg:self-start lg:py-12">
           <p className="text-[14px] font-semibold text-ink-soft">{t.questionsLabel}</p>

@@ -47,7 +47,7 @@ export const PROFILE: Record<Language, Profile> = {
         period: 'Jun 2026 — Present',
         current: true,
         highlights: [
-          'Brazil AI Lead: AI adoption and agent governance in global forums.',
+          'Member of the Brazil AI Lead Committee: AI adoption and agent governance in global forums.',
           'Backend services, reusable libraries and AI agents for Brazilian payment systems.',
           'Java monitoring library and an AI assistant supporting 8+ engineers and QA professionals.',
         ],
@@ -112,7 +112,7 @@ export const PROFILE: Record<Language, Profile> = {
         period: 'Jun 2026 — Presente',
         current: true,
         highlights: [
-          'Brazil AI Lead: adoção de IA e governança de agentes em fóruns globais.',
+          'Membro do Comitê Brazil AI Lead: adoção de IA e governança de agentes em fóruns globais.',
           'Serviços backend, bibliotecas reutilizáveis e agentes de IA para pagamentos brasileiros.',
           'Biblioteca Java de monitoramento e assistente de IA para 8 ou mais profissionais de engenharia e QA.',
         ],

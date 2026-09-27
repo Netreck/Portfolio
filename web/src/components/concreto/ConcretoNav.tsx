@@ -4,7 +4,6 @@ import { LANDING } from './copy'
 interface ConcretoNavProps {
   language: Language
   onLanguageChange: (language: Language) => void
-  litSections?: { experience: boolean; projects: boolean }
   // '/' on other routes, so the links return to the landing sections
   base?: string
 }
@@ -12,15 +11,14 @@ interface ConcretoNavProps {
 export default function ConcretoNav({
   language,
   onLanguageChange,
-  litSections = { experience: false, projects: false },
   base = '',
 }: ConcretoNavProps) {
   const t = LANDING[language]
   const links = [
-    { href: `${base}#about`, label: t.nav.about, lit: false },
-    { href: `${base}#experience`, label: t.nav.experience, lit: litSections.experience },
-    { href: `${base}#projects`, label: t.nav.projects, lit: litSections.projects },
-    { href: `${base}#contact`, label: t.nav.contact, lit: false },
+    { href: `${base}#about`, label: t.nav.about },
+    { href: `${base}#experience`, label: t.nav.experience },
+    { href: `${base}#projects`, label: t.nav.projects },
+    { href: `${base}#contact`, label: t.nav.contact },
   ]
 
   return (
@@ -36,11 +34,8 @@ export default function ConcretoNav({
             <li key={link.href} className="flex">
               <a
                 href={link.href}
-                className={`flex h-12 items-center gap-2 whitespace-nowrap px-4 text-[15px] font-medium text-ink no-underline hover:bg-signal sm:h-16 ${
-                  link.lit ? 'bg-signal' : ''
-                }`}
+                className="flex h-12 items-center whitespace-nowrap px-4 text-[15px] font-medium text-ink no-underline hover:bg-signal sm:h-16"
               >
-                {link.lit && <span aria-hidden="true" className="h-2 w-2 bg-ink" />}
                 {link.label}
               </a>
             </li>

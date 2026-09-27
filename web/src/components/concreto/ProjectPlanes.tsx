@@ -3,11 +3,9 @@ import { projects, type Language } from '../../data/projects'
 import proxmenuxMonitor from '../../Assets/Home-lab/proxmenux-example.png'
 import hirematchHomepage from '../../Assets/HirematchAI/HirematchHomepage.png'
 import { LANDING } from './copy'
-import { projectKey, type LitKey } from './lit'
 
 interface ProjectPlanesProps {
   language: Language
-  lit: Set<LitKey>
 }
 
 const COVERS: Record<string, { src: string; alt: Record<Language, string> }> = {
@@ -30,7 +28,7 @@ const PLANES = [
   { plane: 'on-signal bg-signal text-ink', muted: 'text-[#3d3500]', rule: 'border-ink', cta: 'bg-ink text-paper hover:bg-cobalt' },
 ]
 
-export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
+export default function ProjectPlanes({ language }: ProjectPlanesProps) {
   const t = LANDING[language]
 
   return (
@@ -49,8 +47,6 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
         const localized = language === 'br' && project.pt ? project.pt : project
         const style = PLANES[index % PLANES.length]
         const cover = COVERS[project.slug]
-        const key = projectKey(project.slug)
-        const isLit = key !== null && lit.has(key)
         const mirrored = index % 2 === 1
 
         return (
@@ -110,13 +106,6 @@ export default function ProjectPlanes({ language, lit }: ProjectPlanesProps) {
               </a>
             )}
 
-            {isLit && (
-              <span
-                className={`absolute top-0 flex h-16 w-16 ${mirrored ? 'left-0' : 'right-0'} items-end p-2 sm:h-24 sm:w-24 ${index % 2 === 0 ? 'bg-signal text-ink' : 'bg-ink text-signal'}`}
-              >
-                <span className="text-xs font-bold leading-tight sm:text-sm">{t.inAnswer}</span>
-              </span>
-            )}
           </article>
         )
       })}

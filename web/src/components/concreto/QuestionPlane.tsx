@@ -21,7 +21,6 @@ interface Exchange {
 
 interface QuestionPlaneProps {
   language: Language
-  onAnswer: (litText: string) => void
 }
 
 const PLACEHOLDER: Record<Language, string> = {
@@ -74,7 +73,7 @@ function unwrapFence(text: string): string {
   return match ? match[1].trim() : text
 }
 
-export default function QuestionPlane({ language, onAnswer }: QuestionPlaneProps) {
+export default function QuestionPlane({ language }: QuestionPlaneProps) {
   const t = LANDING[language]
   const [exchanges, setExchanges] = useState<Exchange[]>([])
   const [input, setInput] = useState('')
@@ -135,7 +134,6 @@ export default function QuestionPlane({ language, onAnswer }: QuestionPlaneProps
       const data = (await response.json()) as { answer: string; sources: Source[] }
       const sources = Array.isArray(data.sources) ? data.sources : []
       setExchanges((prev) => prev.map((ex) => (ex.id === id ? { ...ex, answer: data.answer, sources } : ex)))
-      onAnswer([data.answer, ...sources.map((source) => source.source_name)].join('\n'))
     } catch (error) {
       console.error('RAG chat request failed', error)
       setExchanges((prev) => prev.map((ex) => (ex.id === id ? { ...ex, failed: true } : ex)))

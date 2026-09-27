@@ -7,7 +7,6 @@ import QuestionPlane from './QuestionPlane'
 
 interface ConcretoHeroProps {
   language: Language
-  onAnswer: (litText: string) => void
 }
 
 const socials = [
@@ -16,7 +15,7 @@ const socials = [
   { icon: Mail, href: `mailto:${CONTACT.email}`, label: 'Email', external: false },
 ]
 
-export default function ConcretoHero({ language, onAnswer }: ConcretoHeroProps) {
+export default function ConcretoHero({ language }: ConcretoHeroProps) {
   const copy = PROFILE[language]
 
   return (
@@ -72,7 +71,7 @@ export default function ConcretoHero({ language, onAnswer }: ConcretoHeroProps) 
           aria-hidden="true"
           className="absolute -top-7 right-6 h-14 w-14 bg-signal sm:right-10 lg:-left-8 lg:right-auto lg:top-[58%] lg:h-16 lg:w-16"
         />
-        <QuestionPlane language={language} onAnswer={onAnswer} />
+        <QuestionPlane language={language} />
       </div>
     </section>
   )

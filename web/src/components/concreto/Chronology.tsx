@@ -3,11 +3,9 @@ import { motion, useReducedMotion } from 'framer-motion'
 import type { Language } from '../../data/projects'
 import { PROFILE } from '../../data/profile'
 import { LANDING } from './copy'
-import { orgKey, stepEase, type LitKey } from './lit'
 
 interface ChronologyProps {
   language: Language
-  lit: Set<LitKey>
 }
 
 const MONTHS: Record<string, number> = {
@@ -52,9 +50,12 @@ function barStyle(from: number, to: number, color: string) {
   } as CSSProperties
 }
 
+// Stepped easing: bars grow in whole grid steps.
+const stepEase = (steps: number) => (t: number) => Math.min(1, Math.ceil(t * steps) / steps)
+
 const pct = (month: number) => `${(Math.min(Math.max(month, 0), AXIS_MONTHS) / AXIS_MONTHS) * 100}%`
 
-export default function Chronology({ language, lit }: ChronologyProps) {
+export default function Chronology({ language }: ChronologyProps) {
   const copy = PROFILE[language]
   const t = LANDING[language]
   const reduceMotion = useReducedMotion()
@@ -100,11 +101,9 @@ export default function Chronology({ language, lit }: ChronologyProps) {
 
             <ul className="relative mt-5 space-y-3">
               {tracks.map(({ job, tone, span: [from, to] }, index) => {
-                const key = orgKey(job.organization)
-                const isLit = key !== null && lit.has(key)
                 const anchorRight = from / AXIS_MONTHS > 0.5
                 const barColor =
-                  tone === 'signal' || isLit
+                  tone === 'signal'
                     ? 'var(--color-signal)'
                     : tone === 'outline'
                       ? 'var(--color-cobalt)'
@@ -115,7 +114,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
                   <li key={`${job.organization}-${job.role}`} className="relative h-11 sm:h-14">
                     <span
                       className={`absolute top-0 z-10 -mx-1 whitespace-nowrap px-1 text-[13px] font-semibold leading-none sm:text-sm ${
-                        isLit ? 'bg-signal text-ink' : 'bg-paper text-ink'
+                        'bg-paper text-ink'
                       }`}
                       style={anchorRight ? { right: `calc(100% - ${pct(to)} + 0.875rem)` } : { left: pct(from) }}
                     >
@@ -156,10 +155,8 @@ export default function Chronology({ language, lit }: ChronologyProps) {
         {/* Roles */}
         <div className="mt-16 border-t-2 border-ink lg:mt-24">
           {rows.map(({ job, group }, index) => {
-            const key = orgKey(job.organization)
-            const isLit = key !== null && lit.has(key)
             const showCommunityHeading = group === 'community' && rows[index - 1]?.group !== 'community'
-            const keyColor = job.current || isLit ? 'bg-signal' : group === 'community' ? 'bg-cobalt' : 'bg-ink'
+            const keyColor = job.current ? 'bg-signal' : group === 'community' ? 'bg-cobalt' : 'bg-ink'
 
             return (
               <div key={`${job.organization}-${job.role}`}>
@@ -169,9 +166,8 @@ export default function Chronology({ language, lit }: ChronologyProps) {
                   </h3>
                 )}
                 <article className="grid gap-4 border-b-2 border-ink py-5 sm:py-7 lg:grid-cols-12 lg:gap-8">
-                  <div className={`-mx-3 self-start px-3 py-3 lg:col-span-4 ${isLit ? 'bg-signal' : ''}`}>
-                    {isLit && <span className="sr-only">{t.inAnswer}: </span>}
-                    <p className={`tnum flex items-center gap-3 text-[15px] font-medium ${isLit ? 'text-ink' : 'text-ink-soft'}`}>
+                  <div className="self-start py-3 lg:col-span-4">
+                    <p className="tnum flex items-center gap-3 text-[15px] font-medium text-ink-soft">
                       <span aria-hidden="true" className={`h-4 w-4 shrink-0 border-2 border-ink ${keyColor}`} />
                       {job.period}
                     </p>
@@ -212,7 +208,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
         <div className="mt-16 grid gap-14 lg:mt-24 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
             <h3 className="text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">{copy.educationTitle}</h3>
-            <p className={`mt-5 inline-block text-[17px] font-medium ${lit.has('ufabc') ? 'bg-signal px-1' : ''}`}>
+            <p className="mt-5 text-[17px] font-medium">
               {copy.university}
             </p>
             <ul className="mt-5 space-y-5">
@@ -232,7 +228,7 @@ export default function Chronology({ language, lit }: ChronologyProps) {
             <h3 className="text-[clamp(1.75rem,2.6vw,2.25rem)] font-bold tracking-[-0.02em]">{copy.skillsTitle}</h3>
             <dl className="mt-5 grid gap-8 sm:grid-cols-2">
               {copy.skills.map((group) => (
-                <div key={group.label} className={`border-t-2 pt-4 ${lit.has('skills') ? 'border-signal' : 'border-ink'}`}>
+                <div key={group.label} className="border-t-2 border-ink pt-4">
                   <dt className="text-[17px] font-semibold">{group.label}</dt>
                   <dd className="mt-2 text-[17px] leading-relaxed text-ink-soft">{group.details}</dd>
                 </div>

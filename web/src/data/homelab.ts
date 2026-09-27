@@ -133,6 +133,9 @@ export const HOMELAB_COPY: Record<
     facts: { label: string; value: string }[]
     snapshot: string
     repo: string
+    intro: string
+    practiceTitle: string
+    practice: { area: string; detail: string }[]
     questionsLabel: string
     q: { id: string; title: string }[]
     ingressWhy: string[]
@@ -169,6 +172,15 @@ export const HOMELAB_COPY: Record<
     ],
     snapshot: 'Architecture as of',
     repo: 'Repository on GitHub',
+    intro:
+      'This is my private server, running at home. It hosts the servers for my personal projects, this portfolio included, and it is where I learn architecture, networking, security and software development by operating real services on real hardware.',
+    practiceTitle: 'What I practice here',
+    practice: [
+      { area: 'Architecture', detail: 'Segmented networks, reverse proxies and a minimal cloud edge.' },
+      { area: 'Security', detail: 'Firewall policy between zones and administration only over VPN.' },
+      { area: 'Development', detail: 'My projects run here, shipped by GitHub Actions to Dev and Prod.' },
+      { area: 'Operations', detail: 'Monitoring, logs and keeping 24/7 services healthy.' },
+    ],
     questionsLabel: 'Questions',
     q: [
       { id: 'ingress', title: 'How does a request get in?' },
@@ -227,6 +239,15 @@ export const HOMELAB_COPY: Record<
     ],
     snapshot: 'Arquitetura em',
     repo: 'Repositório no GitHub',
+    intro:
+      'Este é o meu servidor privado, rodando em casa. Ele hospeda os servidores dos meus projetos pessoais, incluindo este portfólio, e é onde eu aprendo arquitetura, redes, segurança e desenvolvimento de software operando serviços reais em hardware real.',
+    practiceTitle: 'O que eu pratico aqui',
+    practice: [
+      { area: 'Arquitetura', detail: 'Redes segmentadas, proxies reversos e uma borda mínima na nuvem.' },
+      { area: 'Segurança', detail: 'Política de firewall entre zonas e administração só por VPN.' },
+      { area: 'Desenvolvimento', detail: 'Meus projetos rodam aqui, publicados pelo GitHub Actions em Dev e Prod.' },
+      { area: 'Operação', detail: 'Monitoramento, logs e serviços 24/7 saudáveis.' },
+    ],
     questionsLabel: 'Perguntas',
     q: [
       { id: 'ingress', title: 'Como uma requisição entra?' },
