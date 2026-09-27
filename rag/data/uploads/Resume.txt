@@ -8,6 +8,9 @@ PROFESSIONAL SUMMARY
 Software Engineer I — Bank of America
 Software engineer working with backend development, platform engineering, test automation and AI agents. I build reusable frameworks and internal SDKs with Java, Python, REST APIs, CI/CD, observability and cloud infrastructure.
 
+INTERESTS
+AI agents, cloud architecture, software development and architecture, and machine learning.
+
 PROFESSIONAL EXPERIENCE
 
 Software Engineer I — Bank of America
@@ -23,6 +26,14 @@ Jul 2025 — Jun 2026
 • Developed Java frameworks, APIs, internal platforms and end-to-end automation for enterprise financial applications.
 • Contributed to payment software architecture, evaluating scalable designs and integrations for throughput, reliability and transaction performance.
 • Automated regression and smoke tests with GitHub Actions and Jenkins CI/CD, and developed tooling for production release operations.
+
+Data / Machine Learning Engineering Intern — Vivo (Telefônica Brasil)
+Jan 2025 — Jun 2025 (6 months)
+• Developed automations using LLMs and machine learning for engineering teams.
+• Created dashboards and reports to support data-driven decisions.
+• Analyzed and interpreted engineering data.
+• Supported process optimization with data and AI solutions.
+• Technologies: Python, SQL, Power BI, Excel and machine learning tools.
 
 UNIVERSITY LEADERSHIP
 Data Lead — Green Team Hacker Club, UFABC

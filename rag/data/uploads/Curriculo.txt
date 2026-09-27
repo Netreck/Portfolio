@@ -8,6 +8,9 @@ RESUMO PROFISSIONAL
 Engenheiro de Software I — Bank of America
 Engenheiro de software com atuação em desenvolvimento backend, engenharia de plataforma, automação de testes e agentes de IA. Desenvolvo frameworks reutilizáveis e SDKs internos com Java, Python, APIs REST, CI/CD, observabilidade e infraestrutura em nuvem.
 
+INTERESSES
+Agentes de IA, arquitetura em nuvem, desenvolvimento e arquitetura de software e machine learning.
+
 EXPERIÊNCIA PROFISSIONAL
 
 Engenheiro de Software I — Bank of America
@@ -23,6 +26,14 @@ Jul 2025 — Jun 2026
 • Desenvolvimento de frameworks Java, APIs, plataformas internas e automação de ponta a ponta para aplicações financeiras corporativas.
 • Contribuição à arquitetura de software de pagamentos, avaliando projetos e integrações escaláveis com foco em capacidade de processamento, confiabilidade e desempenho das transações.
 • Automação de testes de regressão e smoke com GitHub Actions e Jenkins CI/CD e desenvolvimento de ferramentas para operações de release em produção.
+
+Estagiário de Dados / Engenharia de Machine Learning — Vivo (Telefônica Brasil)
+Jan 2025 — Jun 2025 (6 meses)
+• Desenvolvimento de automações com LLMs e machine learning para equipes de engenharia.
+• Criação de dashboards e relatórios para apoiar decisões orientadas por dados.
+• Análise e interpretação de dados de engenharia.
+• Apoio à otimização de processos com soluções de dados e IA.
+• Tecnologias: Python, SQL, Power BI, Excel e ferramentas de machine learning.
 
 LIDERANÇA UNIVERSITÁRIA
 Líder de Dados — Green Team Hacker Club, UFABC

@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 import GridBackground from './components/GridBackground'
 import ParticleField from './components/ParticleField'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Experience from './components/Experience'
-import Projects from './components/Projects'
 import ProjectPage from './components/ProjectPage'
+import Landing from './components/concreto/Landing'
 import { getProjectBySlug, type Language } from './data/projects'
 
 export default function App() {
@@ -18,6 +16,11 @@ export default function App() {
   const projectSlug = routeMatch?.[1]
   const activeProject = projectSlug ? getProjectBySlug(projectSlug) ?? null : null
   const isProjectRoute = Boolean(routeMatch)
+
+  useEffect(() => {
+    // Landing lives in the Concreto world; case studies keep the lab world for now.
+    document.documentElement.dataset.world = isProjectRoute ? 'lab' : 'concreto'
+  }, [isProjectRoute])
 
   useEffect(() => {
     window.localStorage.setItem('portfolio_lang', language)
@@ -48,6 +51,10 @@ export default function App() {
     })
   }, [isProjectRoute])
 
+  if (!isProjectRoute) {
+    return <Landing language={language} onLanguageChange={setLanguage} />
+  }
+
   return (
     <>
       <GridBackground />
@@ -61,15 +68,7 @@ export default function App() {
         isProjectRoute={isProjectRoute}
       />
 
-      {isProjectRoute ? (
-        <ProjectPage project={activeProject} language={language} />
-      ) : (
-          <main>
-          <Hero language={language} />
-          <Experience language={language} />
-          <Projects language={language} />
-          </main>
-      )}
+      <ProjectPage project={activeProject} language={language} />
     </>
   )
 }

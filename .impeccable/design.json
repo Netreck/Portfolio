@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-27T17:03:21+00:00",
+  "title": "Design System: Gabriel Gonçalves Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Poster Paper",
+        "canonical": "#f4f4f0",
+        "tonalRamp": [
+          "oklch(15% 0.006 106)",
+          "oklch(25% 0.006 106)",
+          "oklch(35% 0.006 106)",
+          "oklch(45% 0.006 106)",
+          "oklch(58% 0.006 106)",
+          "oklch(70% 0.006 106)",
+          "oklch(82% 0.006 106)",
+          "oklch(95% 0.006 106)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Press Ink",
+        "canonical": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(25% 0 0)",
+          "oklch(35% 0 0)",
+          "oklch(45% 0 0)",
+          "oklch(58% 0 0)",
+          "oklch(70% 0 0)",
+          "oklch(82% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#4a4a45",
+        "tonalRamp": [
+          "oklch(15% 0.007 106)",
+          "oklch(25% 0.007 106)",
+          "oklch(35% 0.007 106)",
+          "oklch(45% 0.007 106)",
+          "oklch(58% 0.007 106)",
+          "oklch(70% 0.007 106)",
+          "oklch(82% 0.007 106)",
+          "oklch(95% 0.007 106)"
+        ]
+      },
+      "cobalt": {
+        "role": "primary",
+        "displayName": "Ruptura Cobalt",
+        "canonical": "#1d3bd1",
+        "tonalRamp": [
+          "oklch(15% 0.08 267)",
+          "oklch(25% 0.13 267)",
+          "oklch(35% 0.18 267)",
+          "oklch(45% 0.22 267)",
+          "oklch(58% 0.19 267)",
+          "oklch(70% 0.13 270)",
+          "oklch(82% 0.08 272)",
+          "oklch(95% 0.025 275)"
+        ]
+      },
+      "cobalt-deep": {
+        "role": "primary",
+        "displayName": "Deep Cobalt",
+        "canonical": "#152c9e",
+        "tonalRamp": [
+          "oklch(15% 0.08 267)",
+          "oklch(25% 0.13 267)",
+          "oklch(35% 0.18 267)",
+          "oklch(45% 0.22 267)",
+          "oklch(58% 0.19 267)",
+          "oklch(70% 0.13 270)",
+          "oklch(82% 0.08 272)",
+          "oklch(95% 0.025 275)"
+        ]
+      },
+      "cobalt-tint": {
+        "role": "neutral",
+        "displayName": "Cobalt Tint",
+        "canonical": "#c9d1ff",
+        "tonalRamp": [
+          "oklch(15% 0.06 275)",
+          "oklch(25% 0.09 275)",
+          "oklch(35% 0.12 275)",
+          "oklch(45% 0.14 275)",
+          "oklch(58% 0.14 275)",
+          "oklch(70% 0.12 275)",
+          "oklch(82% 0.08 275)",
+          "oklch(95% 0.025 275)"
+        ]
+      },
+      "cobalt-line": {
+        "role": "neutral",
+        "displayName": "Cobalt Line",
+        "canonical": "#8e9cf0",
+        "tonalRamp": [
+          "oklch(15% 0.07 273)",
+          "oklch(25% 0.1 273)",
+          "oklch(35% 0.13 273)",
+          "oklch(45% 0.15 273)",
+          "oklch(58% 0.15 273)",
+          "oklch(70% 0.13 273)",
+          "oklch(82% 0.08 273)",
+          "oklch(95% 0.025 273)"
+        ]
+      },
+      "signal": {
+        "role": "secondary",
+        "displayName": "Cadmium Signal",
+        "canonical": "#f2c200",
+        "tonalRamp": [
+          "oklch(15% 0.03 88)",
+          "oklch(25% 0.05 88)",
+          "oklch(35% 0.07 88)",
+          "oklch(45% 0.09 88)",
+          "oklch(58% 0.12 88)",
+          "oklch(70% 0.15 88)",
+          "oklch(83% 0.17 88)",
+          "oklch(95% 0.06 95)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Question Display",
+        "purpose": "The question field and the latest asked question; always the largest type on the landing."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Lowercase section titles (experience, projects, close) and project names."
+      },
+      "title": {
+        "displayName": "Subsection Title",
+        "purpose": "Community, education and skills titles; role titles at 600."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose and highlights, 52-68ch; answers on cobalt at 1.0625rem/1.65."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav items, dates, tags, ruler labels, source names; tabular numerals for dates."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "step-grid",
+        "value": "stepEase(8): t => ceil(t*8)/8, 0.64s, stagger 0.12s",
+        "purpose": "Ruler bars draw in whole grid steps; skipped under prefers-reduced-motion."
+      },
+      {
+        "name": "lit-step",
+        "value": "steps(1, end) 0.9s infinite, 0.3s offsets",
+        "purpose": "Typing indicator lights three squares in sequence; reduced motion holds the first square lit."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "ruler-quarter (container)",
+        "value": "700px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Send Square",
+      "kind": "button",
+      "refersTo": "button-send",
+      "description": "Yellow square submit on the cobalt question plane; outlined yellow when disabled.",
+      "html": "<div class=\"ds-send-wrap\"><button class=\"ds-send\" aria-label=\"Send\"><svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button><button class=\"ds-send\" disabled aria-label=\"Send\"><svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></div>",
+      "css": ".ds-send-wrap { display: flex; gap: 16px; padding: 24px; background: var(--color-cobalt, #1d3bd1); } .ds-send { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border: 0; border-radius: 0; background: var(--color-signal, #f2c200); color: var(--color-ink, #111111); cursor: pointer; } .ds-send:focus-visible { outline: 3px solid var(--color-signal, #f2c200); outline-offset: 3px; } .ds-send:disabled { background: transparent; color: var(--color-signal, #f2c200); outline: 2px solid var(--color-signal, #f2c200); outline-offset: -2px; cursor: not-allowed; }"
+    },
+    {
+      "name": "Signal Button",
+      "kind": "button",
+      "refersTo": "button-signal",
+      "description": "Yellow fill, ink lowercase label; the primary action on cobalt and ink planes.",
+      "html": "<div class=\"ds-plane-cobalt\"><a href=\"#\" class=\"ds-btn-signal\">ask another question</a></div>",
+      "css": ".ds-plane-cobalt { padding: 24px; background: var(--color-cobalt, #1d3bd1); } .ds-btn-signal { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); display: inline-flex; align-items: center; height: 48px; padding: 0 16px; background: var(--color-signal, #f2c200); color: var(--color-ink, #111111); font-weight: 600; font-size: 16px; text-transform: lowercase; text-decoration: none; border-radius: 0; } .ds-btn-signal:hover { background: var(--color-paper, #f4f4f0); } .ds-btn-signal:focus-visible { outline: 3px solid var(--color-signal, #f2c200); outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button on Cobalt",
+      "kind": "button",
+      "refersTo": "button-outline-on-cobalt",
+      "description": "2px paper border on cobalt or ink; fills paper on hover.",
+      "html": "<div class=\"ds-plane-cobalt-o\"><a href=\"#\" class=\"ds-btn-outline\">linkedin</a></div>",
+      "css": ".ds-plane-cobalt-o { padding: 24px; background: var(--color-cobalt, #1d3bd1); } .ds-btn-outline { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); display: inline-flex; align-items: center; height: 48px; padding: 0 16px; border: 2px solid var(--color-paper, #f4f4f0); color: var(--color-paper, #f4f4f0); font-weight: 600; font-size: 16px; text-transform: lowercase; text-decoration: none; border-radius: 0; } .ds-btn-outline:hover { background: var(--color-paper, #f4f4f0); color: var(--color-cobalt, #1d3bd1); } .ds-btn-outline:focus-visible { outline: 3px solid var(--color-signal, #f2c200); outline-offset: 3px; }"
+    },
+    {
+      "name": "Icon Square",
+      "kind": "button",
+      "refersTo": "icon-square",
+      "description": "48px bordered social link on paper; inverts to ink on hover.",
+      "html": "<a href=\"#\" class=\"ds-icon-sq\" aria-label=\"Email\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\"/><path d=\"m22 7-10 5L2 7\"/></svg></a>",
+      "css": ".ds-icon-sq { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 2px solid var(--color-ink, #111111); color: var(--color-ink, #111111); background: var(--color-paper, #f4f4f0); border-radius: 0; } .ds-icon-sq:hover { background: var(--color-ink, #111111); color: var(--color-paper, #f4f4f0); } .ds-icon-sq:focus-visible { outline: 3px solid var(--color-cobalt, #1d3bd1); outline-offset: 3px; }"
+    },
+    {
+      "name": "Question Field",
+      "kind": "input",
+      "refersTo": "question-field",
+      "description": "Borderless display-size textarea on cobalt; the underline turns yellow on focus.",
+      "html": "<form class=\"ds-qfield\"><label class=\"ds-sr\" for=\"ds-q\">Ask</label><textarea id=\"ds-q\" rows=\"1\" class=\"ds-q\" placeholder=\"ask me anything...\"></textarea><div class=\"ds-q-rule\"></div></form>",
+      "css": ".ds-qfield { padding: 32px; background: var(--color-cobalt, #1d3bd1); } .ds-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .ds-q { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); display: block; width: 100%; resize: none; border: 0; padding: 0; background: transparent; color: var(--color-paper, #f4f4f0); caret-color: var(--color-signal, #f2c200); font-size: 56px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.02; outline: none; } .ds-q::placeholder { color: var(--color-signal, #f2c200); opacity: 1; text-transform: lowercase; } .ds-q-rule { height: 2px; margin-top: 16px; background: var(--color-cobalt-line, #8e9cf0); } .ds-qfield:focus-within .ds-q-rule { background: var(--color-signal, #f2c200); }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Sticky paper bar with lowercase items; hover and lit items fill yellow, lit items gain an ink square.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-brand\"><span class=\"ds-nav-mark\"></span>gabriel gonçalves</a><ul class=\"ds-nav-list\"><li><a href=\"#\" class=\"ds-nav-item\">about</a></li><li><a href=\"#\" class=\"ds-nav-item ds-lit\"><span class=\"ds-nav-dot\"></span>experience</a></li><li><a href=\"#\" class=\"ds-nav-item\">projects</a></li></ul><div class=\"ds-lang\"><button class=\"ds-lang-btn ds-on\" aria-pressed=\"true\">en</button><button class=\"ds-lang-btn\" aria-pressed=\"false\">pt</button></div></nav>",
+      "css": ".ds-nav { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); display: flex; align-items: stretch; justify-content: space-between; gap: 24px; padding: 0 32px; background: var(--color-paper, #f4f4f0); border-bottom: 2px solid var(--color-ink, #111111); } .ds-nav-brand { display: flex; align-items: center; gap: 12px; height: 64px; font-size: 18px; font-weight: 700; color: var(--color-ink, #111111); text-decoration: none; } .ds-nav-mark { width: 14px; height: 14px; background: var(--color-signal, #f2c200); } .ds-nav-list { display: flex; margin: 0; padding: 0; list-style: none; } .ds-nav-item { display: flex; align-items: center; gap: 8px; height: 64px; padding: 0 16px; font-size: 15px; font-weight: 500; color: var(--color-ink, #111111); text-decoration: none; } .ds-nav-item:hover, .ds-nav-item.ds-lit { background: var(--color-signal, #f2c200); } .ds-nav-item:focus-visible { outline: 3px solid var(--color-cobalt, #1d3bd1); outline-offset: 3px; } .ds-nav-dot { width: 8px; height: 8px; background: var(--color-ink, #111111); } .ds-lang { display: flex; align-items: center; } .ds-lang-btn { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); width: 44px; height: 36px; margin-left: -2px; border: 2px solid var(--color-ink, #111111); border-radius: 0; background: var(--color-paper, #f4f4f0); color: var(--color-ink, #111111); font-size: 14px; font-weight: 600; cursor: pointer; } .ds-lang-btn:first-child { margin-left: 0; } .ds-lang-btn:hover { background: var(--color-signal, #f2c200); } .ds-lang-btn.ds-on { background: var(--color-ink, #111111); color: var(--color-paper, #f4f4f0); }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag-ink",
+      "description": "Ink tag with a leading yellow square, used for role markers.",
+      "html": "<span class=\"ds-tag\"><span class=\"ds-tag-sq\"></span>current</span>",
+      "css": ".ds-tag { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; background: var(--color-ink, #111111); color: var(--color-paper, #f4f4f0); font-size: 14px; font-weight: 600; text-transform: lowercase; } .ds-tag-sq { width: 10px; height: 10px; background: var(--color-signal, #f2c200); }"
+    },
+    {
+      "name": "Ghost Questions",
+      "kind": "custom",
+      "description": "Unasked suggestions as outlined words on cobalt; they fill yellow on hover or focus.",
+      "html": "<ul class=\"ds-ghosts\"><li><button class=\"ds-ghost\">what is your professional experience?</button></li><li><button class=\"ds-ghost\">tell me more about yourself</button></li></ul>",
+      "css": ".ds-ghosts { list-style: none; margin: 0; padding: 32px; background: var(--color-cobalt, #1d3bd1); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; } .ds-ghost { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); border: 0; padding: 0; background: none; cursor: pointer; text-align: left; font-size: 32px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; text-transform: lowercase; color: var(--color-cobalt, #1d3bd1); -webkit-text-stroke: 2.5px var(--color-cobalt-tint, #c9d1ff); paint-order: stroke fill; } .ds-ghost:hover, .ds-ghost:focus-visible { color: var(--color-signal, #f2c200); -webkit-text-stroke: 2.5px var(--color-signal, #f2c200); outline: none; }"
+    },
+    {
+      "name": "Year Ruler",
+      "kind": "custom",
+      "description": "Role bars built from square month cells: ink past, yellow current or lit, cobalt community; a cobalt line marks today.",
+      "html": "<div class=\"ds-ruler\"><div class=\"ds-years\"><span>2024</span><span>2025</span><span>2026</span><span>2027</span></div><div class=\"ds-track\"><span class=\"ds-rlabel\">vivo</span><span class=\"ds-bar\" style=\"--bar:#111111;left:12.5%;width:12.5%;--cells:6\"></span></div><div class=\"ds-track\"><span class=\"ds-rlabel ds-rlit\" style=\"left:50%\">bank of america</span><span class=\"ds-bar\" style=\"--bar:#f2c200;left:50%;width:27%;--cells:13\"></span></div><span class=\"ds-today\" style=\"left:66%\"></span></div>",
+      "css": ".ds-ruler { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); position: relative; padding: 24px; background: var(--color-paper, #f4f4f0); color: var(--color-ink, #111111); } .ds-years { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 2px solid var(--color-ink, #111111); } .ds-years span { border-left: 2px solid var(--color-ink, #111111); padding: 0 0 8px 8px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; } .ds-track { position: relative; height: 56px; margin-top: 12px; } .ds-rlabel { position: absolute; top: 0; left: 12.5%; padding: 0 4px; font-size: 14px; font-weight: 600; background: var(--color-paper, #f4f4f0); } .ds-rlit { background: var(--color-signal, #f2c200); } .ds-bar { position: absolute; bottom: 0; height: 14px; background-image: linear-gradient(90deg, var(--bar) calc(100% - 3px), transparent 0); background-size: calc(100% / var(--cells)) 100%; background-repeat: repeat-x; } .ds-today { position: absolute; top: 24px; bottom: 24px; width: 2px; background: var(--color-cobalt, #1d3bd1); }"
+    },
+    {
+      "name": "Role Row",
+      "kind": "card",
+      "description": "4/8 row between ink rules; the date cell becomes a yellow plane when the answer lights it.",
+      "html": "<article class=\"ds-role\"><div class=\"ds-role-date ds-role-lit\"><p class=\"ds-role-period\"><span class=\"ds-role-key\"></span>Jun 2026 — Present</p><p class=\"ds-role-org\">Bank of America</p></div><div><h4 class=\"ds-role-title\">Software Engineer I</h4><ul class=\"ds-role-list\"><li>Backend services and AI agents for Brazilian payments</li></ul></div></article>",
+      "css": ".ds-role { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); display: grid; grid-template-columns: 4fr 8fr; gap: 32px; padding: 28px 24px; background: var(--color-paper, #f4f4f0); color: var(--color-ink, #111111); border-top: 2px solid var(--color-ink, #111111); border-bottom: 2px solid var(--color-ink, #111111); } .ds-role-date { align-self: start; margin: 0 -12px; padding: 12px; } .ds-role-lit { background: var(--color-signal, #f2c200); } .ds-role-period { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; } .ds-role-key { width: 16px; height: 16px; border: 2px solid var(--color-ink, #111111); background: var(--color-signal, #f2c200); } .ds-role-org { margin: 4px 0 0; padding-left: 28px; font-size: 20px; font-weight: 600; } .ds-role-title { margin: 12px 0 0; font-size: 26px; font-weight: 600; letter-spacing: -0.015em; } .ds-role-list { margin: 16px 0 0; padding: 0; list-style: none; font-size: 17px; line-height: 1.625; color: var(--color-ink-soft, #4a4a45); } .ds-role-list li { display: flex; gap: 12px; } .ds-role-list li::before { content: \"\"; flex-shrink: 0; width: 8px; height: 8px; margin-top: 0.6em; background: var(--color-cobalt, #1d3bd1); }"
+    },
+    {
+      "name": "Project Plane",
+      "kind": "card",
+      "description": "Full-width ink or yellow plane; a module-scale square marks it when lit by an answer.",
+      "html": "<article class=\"ds-plane\"><span class=\"ds-plane-lit\">in the answer</span><h3 class=\"ds-plane-title\">homelab</h3><p class=\"ds-plane-sub\">A production-style home infrastructure.</p><a href=\"#\" class=\"ds-plane-cta\">case study</a></article>",
+      "css": ".ds-plane { font-family: var(--font-concrete, 'Jost', 'Futura', 'Century Gothic', sans-serif); position: relative; padding: 56px 32px; background: var(--color-ink, #111111); color: var(--color-paper, #f4f4f0); } .ds-plane-lit { position: absolute; top: 0; right: 0; display: flex; align-items: flex-end; width: 96px; height: 96px; padding: 8px; background: var(--color-signal, #f2c200); color: var(--color-ink, #111111); font-size: 14px; font-weight: 700; line-height: 1.2; text-transform: lowercase; } .ds-plane-title { margin: 0; font-size: 56px; font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; text-transform: lowercase; } .ds-plane-sub { margin: 20px 0 32px; font-size: 20px; font-weight: 500; } .ds-plane-cta { display: inline-flex; align-items: center; height: 56px; padding: 0 20px; background: var(--color-signal, #f2c200); color: var(--color-ink, #111111); font-size: 17px; font-weight: 600; text-transform: lowercase; text-decoration: none; } .ds-plane-cta:hover { background: var(--color-paper, #f4f4f0); } .ds-plane-cta:focus-visible { outline: 3px solid var(--color-signal, #f2c200); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Concreto",
+    "overview": "The system draws on Brazilian concrete poetry and the Ruptura and Alexandre Wollner identity programs. The career is set as a concrete poem on a strict square grid. Flat silkscreen planes of paper, ink, cobalt and cadmium yellow meet at hard edges. Type is Jost, a Futura-lineage geometric sans. Display and navigation are lowercase; facts stay in sentence case. The visitor's question is the largest type on the page, and the answer recomposes the page around it.\n\nDensity is poster-like at the top and archival further down. The first viewport splits into a paper identity column (5/12) and a full-height cobalt question plane (7/12), with a yellow square straddling the seam. Below it, a year ruler lays roles out as bars of square cells, full-width project planes alternate ink and yellow, and a cobalt close ends the page. Nothing is rounded, nothing casts a shadow, nothing glows or blurs, and there are no gradients.\n\nThe yellow square is the system's only mark for \"lit / current / active\". When the chatbot answers, the page re-lights: matching nav items fill yellow, a matching role's date cell becomes a yellow plane, its ruler bar turns yellow, and a matching project plane gains a module-scale square. Motion moves in whole grid steps and never glides.\n\nScope: Concreto is the system. The landing route sets `html[data-world=\"concreto\"]`. The `/project/<slug>` case-study routes still render in the previous world (`data-world=\"lab\"`) and are pending migration to Concreto. The stylesheet keeps that world's tokens only so those routes keep working. They are legacy and are not a second system.",
+    "keyCharacteristics": [
+      "Four flat inks (paper, ink, cobalt, signal yellow) plus cobalt support tints for text and rules on the cobalt plane.",
+      "Zero radius, zero shadow, 2px ink rules as the only structure.",
+      "Jost everywhere, with lowercase display and heavy negative tracking.",
+      "The yellow square as the single lit/current/active signal.",
+      "Stepped motion in whole grid steps, with a reduced-motion fallback.",
+      "Square modules: send button, icon buttons, ruler cells, bullets, source numbers, lit markers."
+    ],
+    "rules": [
+      {
+        "name": "The Lit Square Rule",
+        "body": "Signal yellow means lit, current, or active, and nothing else. If an element is yellow, it is being answered about, is happening now, or is under the pointer or focus. Yellow as decoration is a bug. The one standing exception is the full-width yellow project plane, which is part of the plane alternation.",
+        "section": "colors"
+      },
+      {
+        "name": "The Silkscreen Rule",
+        "body": "Colors are laid down as flat planes with hard edges. Never use gradients, blends, transparency washes, or tints of an ink standing in for a surface.",
+        "section": "colors"
+      },
+      {
+        "name": "The Plane Contrast Rule",
+        "body": "Every plane sets its own focus color. Cobalt outlines on paper, yellow outlines on cobalt and ink, and ink outlines on yellow, all 3px with a 3px offset.",
+        "section": "colors"
+      },
+      {
+        "name": "The Question Is Largest Rule",
+        "body": "The question field and the asked question are the biggest type on the landing, bigger than the name. If anything outranks them, the hierarchy is wrong.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lowercase Voice Rule",
+        "body": "Display, nav, buttons and section titles are lowercase (enforced with a lowercase transform over sentence-case source copy). Names of facts inside body text keep their real case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Whole Step Rule",
+        "body": "Motion moves in whole grid steps. Ruler bars draw in with an 8-step stepped easing (0.64s, staggered 0.12s). The typing indicator lights three squares in sequence with `steps(1)`. Under `prefers-reduced-motion`, bars appear drawn and one square stays lit. Scroll is not smoothed in this world.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Plane Rule",
+        "body": "Nothing floats. If a surface needs separation, give it a different plane color or a 2px rule, never a shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Module Rule",
+        "body": "New marks, bullets, and indicators are squares. There are no circles, pills or dots.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do reserve signal yellow for lit, current, or active states and the alternating yellow project plane.",
+      "Do keep every corner at 0px and every structural line at 2px.",
+      "Do set display, nav and button labels lowercase in Jost, with -0.02em to -0.035em tracking at display sizes.",
+      "Do keep the question field and asked question the largest type on the landing.",
+      "Do express lit state by filling a whole cell or plane with yellow, never by tinting it.",
+      "Do move in whole grid steps (stepped easing) and give every animation a reduced-motion fallback.",
+      "Do keep the ruler module square: month cells on wide rulers, quarter cells at 700px and below.",
+      "Do switch focus outline color per plane (cobalt on paper, yellow on cobalt and ink, ink on yellow)."
+    ],
+    "donts": [
+      "Don't use shadows, blur, glow, or gradients on any surface.",
+      "Don't round corners or introduce circles, pills or dots where a square module fits.",
+      "Don't use yellow for decoration or emphasis that is not a lit, current, or active state.",
+      "Don't use smooth or eased glides. Motion lands in whole steps.",
+      "Don't bring the previous world's dark surfaces, green accent, or Syne/Satoshi/JetBrains Mono faces into Concreto surfaces. They survive only for the unmigrated project routes."
+    ]
+  }
+}
