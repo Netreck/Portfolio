@@ -6,6 +6,8 @@ import ProjectPage from './components/ProjectPage'
 import Landing from './components/concreto/Landing'
 import HomelabPage from './components/concreto/HomelabPage'
 import HireMatchPage from './components/concreto/HireMatchPage'
+import PostPage from './components/concreto/PostPage'
+import { getPostBySlug } from './data/posts'
 import { getProjectBySlug, type Language } from './data/projects'
 
 export default function App() {
@@ -14,6 +16,8 @@ export default function App() {
     return stored === 'br' ? 'br' : 'en'
   })
 
+  const postMatch = window.location.pathname.match(/^\/post\/([^/]+)\/?$/)
+  const activePost = postMatch ? getPostBySlug(postMatch[1]) : undefined
   const routeMatch = window.location.pathname.match(/^\/project\/([^/]+)\/?$/)
   const projectSlug = routeMatch?.[1]
   const activeProject = projectSlug ? getProjectBySlug(projectSlug) ?? null : null
@@ -31,14 +35,24 @@ export default function App() {
     document.documentElement.lang = language === 'br' ? 'pt-BR' : 'en'
   }, [language])
 
+  const isSubpage = isProjectRoute || Boolean(postMatch)
+
   useEffect(() => {
-    if (isProjectRoute) {
+    if (isSubpage) {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       return
     }
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
+    }
+
+    // Links back from subpages carry a section anchor (e.g. /#projects): honor it.
+    const target = window.location.hash ? document.getElementById(window.location.hash.slice(1)) : null
+    if (target && window.location.hash !== '#about') {
+      // Wait for web fonts: the layout above the target shrinks once Jost loads.
+      void document.fonts.ready.then(() => requestAnimationFrame(() => target.scrollIntoView({ block: 'start' })))
+      return
     }
 
     if (window.location.hash !== '#about') {
@@ -53,7 +67,11 @@ export default function App() {
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     })
-  }, [isProjectRoute])
+  }, [isSubpage])
+
+  if (activePost) {
+    return <PostPage post={activePost} language={language} onLanguageChange={setLanguage} />
+  }
 
   if (!isProjectRoute) {
     return <Landing language={language} onLanguageChange={setLanguage} />

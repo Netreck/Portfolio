@@ -3,6 +3,7 @@ import { projects, type Language } from '../../data/projects'
 import proxmenuxMonitor from '../../Assets/Home-lab/proxmenux-example.png'
 import hirematchHomepage from '../../Assets/HirematchAI/HirematchHomepage.png'
 import { LANDING } from './copy'
+import PostsTicker from './PostsTicker'
 
 interface ProjectPlanesProps {
   language: Language
@@ -42,6 +43,8 @@ export default function ProjectPlanes({ language }: ProjectPlanesProps) {
         </h2>
         <p className="max-w-[46ch] self-end text-[17px] leading-relaxed text-ink-soft lg:col-span-4">{t.projectsIntro}</p>
       </div>
+
+      <PostsTicker language={language} />
 
       {projects.map((project, index) => {
         const localized = language === 'br' && project.pt ? project.pt : project

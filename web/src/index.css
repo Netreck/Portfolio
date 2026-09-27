@@ -302,3 +302,48 @@ html[data-world="concreto"] { scrollbar-color: var(--color-ink) var(--color-pape
     background-size: calc(100% / var(--cells-q)) 100%;
   }
 }
+
+/* Round-trip simulation on the CDN post: the ball is the request, replayed 10×
+   slower (6 s = 600 ms real). Leg times are estimated from the measured totals:
+   hit ≈ 30 + 30 ms, miss ≈ 30 + 228.5 + 228.5 + 30 ms. A continuous glide here,
+   deliberately: it depicts travel, so it is the one exception to Whole Step. */
+@keyframes cz-rt-hit { 0% { left: var(--start, 0%); } 5% { left: var(--cdn, 30%); } 10% { left: var(--start, 0%); } 100% { left: var(--start, 0%); } }
+@keyframes cz-rt-miss { 0% { left: var(--start, 0%); } 5% { left: var(--cdn, 30%); } 43.08% { left: 100%; } 81.17% { left: var(--cdn, 30%); } 86.17% { left: var(--start, 0%); } 100% { left: var(--start, 0%); } }
+@keyframes cz-rt-done-hit { 0%, 9.9% { opacity: 0; } 10%, 100% { opacity: 1; } }
+@keyframes cz-rt-done-miss { 0%, 86.1% { opacity: 0; } 86.17%, 100% { opacity: 1; } }
+
+.cz-rt { --dur: 6s; background: var(--color-paper); color: var(--color-ink); border-bottom: 2px solid var(--color-ink); padding: 40px 16px; }
+@media (min-width: 640px) { .cz-rt { padding: 48px 32px; } }
+@media (min-width: 1024px) { .cz-rt { padding: 56px 48px; } }
+.cz-rt-inner { max-width: 1100px; }
+.cz-rt-title { font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.cz-rt-lane { margin-top: 28px; border-top: 2px solid var(--color-ink); padding-top: 16px; }
+.cz-rt-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; }
+.cz-rt-name { font-size: 18px; font-weight: 700; }
+.cz-rt-done { display: inline-flex; align-items: center; gap: 8px; border: 2px solid var(--color-ink); background: var(--color-signal); padding: 4px 10px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cz-rt-done.is-hit { animation: cz-rt-done-hit var(--dur) infinite; }
+.cz-rt-done.is-miss { animation: cz-rt-done-miss var(--dur) infinite; }
+.cz-rt-stage { position: relative; height: 112px; margin-top: 12px; --cdn: 30%; --start: 52px; }
+@media (max-width: 639px) { .cz-rt-stage { --cdn: 50%; --start: 36px; } }
+.cz-rt-track { position: absolute; left: 40px; right: 40px; top: 56px; height: 0; }
+@media (min-width: 640px) { .cz-rt-track { left: 56px; right: 56px; } }
+/* The line runs behind the nodes; only the ball passes over them */
+.cz-rt-track::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--color-ink); z-index: 0; }
+.cz-rt-lane.is-hit .cz-rt-track::before { right: calc(100% - var(--cdn)); }
+.cz-rt-node { position: absolute; top: 0; z-index: 1; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 80px; height: 88px; border: 2px solid var(--color-ink); font-size: 14px; font-weight: 700; line-height: 1.2; text-align: center; }
+.cz-rt-label { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+@media (min-width: 640px) { .cz-rt-node { width: 112px; } }
+.cz-rt-node.is-user { background: var(--color-paper); }
+.cz-rt-node.is-cdn { background: var(--color-cobalt); color: var(--color-paper); border-color: var(--color-cobalt); }
+.cz-rt-node.is-server { background: var(--color-ink); color: var(--color-paper); }
+.cz-rt-node.is-idle { background: var(--color-paper); color: var(--color-ink-soft); border-color: var(--color-ink-soft); }
+.cz-rt-sub { font-size: 10px; font-weight: 500; line-height: 1.2; text-align: center; white-space: nowrap; }
+@media (min-width: 640px) { .cz-rt-sub { font-size: 12px; } }
+.cz-rt-ball { position: absolute; top: -12px; left: var(--start, 0%); width: 24px; height: 24px; margin-left: -12px; border-radius: 9999px; background: var(--color-signal); border: 3px solid var(--color-ink); z-index: 2; }
+.cz-rt-lane.is-hit .cz-rt-ball { animation: cz-rt-hit var(--dur) linear infinite; }
+.cz-rt-lane.is-miss .cz-rt-ball { animation: cz-rt-miss var(--dur) linear infinite; }
+.cz-rt-note { margin-top: 20px; font-size: 14px; color: var(--color-ink-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .cz-rt-ball, .cz-rt-done { animation: none; }
+  .cz-rt-done { opacity: 1; }
+}
