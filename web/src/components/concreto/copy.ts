@@ -15,6 +15,8 @@ interface LandingCopy {
   projectsIntro: string
   caseStudy: string
   code: string
+  online: string
+  offline: string
   closeTitle: string
   closeLead: string
   proof: string
@@ -39,6 +41,8 @@ export const LANDING: Record<Language, LandingCopy> = {
       'These case studies document how I design systems end-to-end, from platform architecture and observability to model-driven product decisions.',
     caseStudy: 'Explore case study',
     code: 'Code on GitHub',
+    online: 'Online',
+    offline: 'Offline',
     closeTitle: "Let's talk",
     closeLead: 'Email is the fastest way to reach me.',
     proof:
@@ -62,6 +66,8 @@ export const LANDING: Record<Language, LandingCopy> = {
       'Esses projetos demonstram minha capacidade de atuar de ponta a ponta no design de sistemas, incluindo arquitetura de plataformas, observabilidade e desenvolvimento de aplicações em Data Engineering e Machine Learning.',
     caseStudy: 'Explorar case study',
     code: 'Código no GitHub',
+    online: 'Online',
+    offline: 'Offline',
     closeTitle: 'Vamos conversar',
     closeLead: 'E-mail é o jeito mais rápido de falar comigo.',
     proof:

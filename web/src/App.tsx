@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import ProjectPage from './components/ProjectPage'
 import Landing from './components/concreto/Landing'
 import HomelabPage from './components/concreto/HomelabPage'
+import HireMatchPage from './components/concreto/HireMatchPage'
 import { getProjectBySlug, type Language } from './data/projects'
 
 export default function App() {
@@ -18,7 +19,7 @@ export default function App() {
   const activeProject = projectSlug ? getProjectBySlug(projectSlug) ?? null : null
   const isProjectRoute = Boolean(routeMatch)
   // Case studies migrate to the Concreto world one at a time.
-  const isConcretoRoute = !isProjectRoute || projectSlug === 'homelab-pessoal'
+  const isConcretoRoute = !isProjectRoute || projectSlug === 'homelab-pessoal' || projectSlug === 'hirematch-ai'
 
   useEffect(() => {
     // Concreto routes: the landing and migrated case studies; the rest keep the lab world.
@@ -60,6 +61,10 @@ export default function App() {
 
   if (projectSlug === 'homelab-pessoal') {
     return <HomelabPage language={language} onLanguageChange={setLanguage} />
+  }
+
+  if (projectSlug === 'hirematch-ai') {
+    return <HireMatchPage language={language} onLanguageChange={setLanguage} />
   }
 
   return (

@@ -1,4 +1,3 @@
-import { useEffect, useState, type ReactNode } from 'react'
 import { ArrowLeft, Github } from 'lucide-react'
 import type { Language } from '../../data/projects'
 import {
@@ -16,6 +15,7 @@ import {
 import proxmenuxMonitor from '../../Assets/Home-lab/proxmenux-example.png'
 import ConcretoNav from './ConcretoNav'
 import ArchitectureDiagram from './ArchitectureDiagram'
+import { Question, QuestionIndex, useActiveQuestion } from './CaseStudy'
 
 interface HomelabPageProps {
   language: Language
@@ -44,48 +44,9 @@ function HopList({ hops, language }: { hops: Hop[]; language: Language }) {
   )
 }
 
-interface QuestionProps {
-  id: string
-  title: string
-  children: ReactNode
-  first?: boolean
-  className?: string
-}
-
-function Question({ id, title, children, first = false, className = '' }: QuestionProps) {
-  return (
-    <section
-      id={id}
-      aria-labelledby={`${id}-title`}
-      className={`scroll-mt-28 pb-16 pt-10 lg:pb-24 lg:pt-12 ${first ? '' : 'border-t-2 border-ink'} ${className}`}
-    >
-      <h2
-        id={`${id}-title`}
-        className="max-w-[22ch] text-[clamp(2rem,3.6vw,3.25rem)] font-bold leading-[1.02] tracking-[-0.03em]"
-      >
-        {title}
-      </h2>
-      <div className="mt-8 lg:mt-10">{children}</div>
-    </section>
-  )
-}
-
 export default function HomelabPage({ language, onLanguageChange }: HomelabPageProps) {
   const t = HOMELAB_COPY[language]
-  const [active, setActive] = useState(t.q[0].id)
-
-  useEffect(() => {
-    const sections = t.q.map((q) => document.getElementById(q.id)).filter((el): el is HTMLElement => el !== null)
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting)
-        if (visible.length > 0) setActive(visible[0].target.id)
-      },
-      { rootMargin: '-35% 0px -60% 0px' },
-    )
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [t.q])
+  const active = useActiveQuestion(t.q.map((q) => q.id))
 
   const zoneName = (zone: string) => ZONES.find((z) => z.id === zone)?.name ?? zone
 
@@ -157,31 +118,7 @@ export default function HomelabPage({ language, onLanguageChange }: HomelabPageP
       </section>
 
       <div className="grid grid-cols-1 px-4 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
-        <nav aria-label={t.questionsLabel} className="py-8 lg:sticky lg:top-[66px] lg:col-span-3 lg:self-start lg:py-12">
-          <p className="text-[14px] font-semibold text-ink-soft">{t.questionsLabel}</p>
-          <ol className="mt-3 border-t-2 border-ink">
-            {t.q.map((q) => {
-              const isActive = active === q.id
-              return (
-                <li key={q.id} className="border-b-2 border-ink">
-                  <a
-                    href={`#${q.id}`}
-                    aria-current={isActive ? 'true' : undefined}
-                    className={`flex items-start gap-3 px-2 py-3 text-[16px] font-semibold leading-snug text-ink no-underline hover:bg-signal ${
-                      isActive ? 'bg-signal' : ''
-                    }`}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={`mt-1 h-3.5 w-3.5 shrink-0 border-2 border-ink ${isActive ? 'bg-ink' : ''}`}
-                    />
-                    {q.title}
-                  </a>
-                </li>
-              )
-            })}
-          </ol>
-        </nav>
+        <QuestionIndex label={t.questionsLabel} questions={t.q} active={active} />
 
         <main className="min-w-0 lg:col-span-9">
           <Question id="ingress" title={t.q[0].title} first>

@@ -55,6 +55,23 @@ export default function ProjectPlanes({ language }: ProjectPlanesProps) {
             aria-labelledby={`project-${project.slug}`}
             className={`relative grid gap-10 px-4 py-14 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:py-20 ${style.plane}`}
           >
+            <span
+              className={`absolute top-0 inline-flex items-center gap-2 px-4 py-2.5 text-[15px] font-bold ${mirrored ? 'left-0' : 'right-0'} ${
+                project.online
+                  ? index % 2 === 0
+                    ? 'bg-signal text-ink'
+                    : 'bg-ink text-paper'
+                  : index % 2 === 0
+                    ? 'border-2 border-paper text-paper'
+                    : 'border-2 border-ink text-ink'
+              }`}
+            >
+              <span
+                aria-hidden="true"
+                className={`h-3 w-3 border-2 ${project.online ? (index % 2 === 0 ? 'border-ink bg-ink' : 'border-paper bg-signal') : index % 2 === 0 ? 'border-paper' : 'border-ink'}`}
+              />
+              {project.online ? t.online : t.offline}
+            </span>
             <div className={`flex flex-col lg:col-span-5 ${mirrored ? 'lg:order-2 lg:col-start-8' : ''}`}>
               <h3
                 id={`project-${project.slug}`}
@@ -65,9 +82,7 @@ export default function ProjectPlanes({ language }: ProjectPlanesProps) {
               <p className="mt-5 text-xl font-medium leading-snug">{localized.subtitle}</p>
               <p className={`mt-4 max-w-[52ch] text-[17px] leading-relaxed ${style.muted}`}>{localized.description}</p>
 
-              <p className={`mt-6 border-t-2 pt-4 text-[15px] font-medium ${style.rule}`}>
-                <span className="font-bold">{localized.status}</span> / {project.tags.join(' / ')}
-              </p>
+              <p className={`mt-6 border-t-2 pt-4 text-[15px] font-medium ${style.rule}`}>{project.tags.join(' / ')}</p>
 
               <div className="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-10">
                 <a
