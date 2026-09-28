@@ -60,6 +60,8 @@ export interface Project {
   overview: string
   tags: string[]
   githubUrl: string
+  // Whether the project is live today; shown as Online / Offline on the landing
+  online: boolean
   highlights: string[]
   stats: ProjectStat[]
   flow: ProjectFlowStep[]
@@ -154,6 +156,7 @@ export const projects: Project[] = [
       'This homelab is exposed to the internet through a VPS public IP. Inside it, I use Nginx Proxy Manager as a reverse proxy to map each subdomain to one of my Proxmox virtual machines. I also use the Grafana, Prometheus, and Loki stack for observability of logs and access across the homelab.',
     tags: ['Proxmox', 'WireGuard', 'CI/CD', 'Grafana', 'Self-hosting'],
     githubUrl: 'https://github.com/Netreck/myHomeLab',
+    online: true,
     highlights: [
       'Virtualized service isolation with Proxmox, VMs, and LXC containers.',
       'Secure ingress using VPS edge, Caddy TLS termination, and WireGuard tunnels.',
@@ -369,6 +372,7 @@ export const projects: Project[] = [
       'The project originated as a cloud prototype and is planned for migration into the homelab environment. The focus is objective ranking plus human-readable reasoning, balancing quantitative scoring with practical guidance.',
     tags: ['Python', 'NLP', 'LLM', 'ATS', 'Resume Analysis'],
     githubUrl: 'https://github.com/Netreck/HireMatch-AI',
+    online: false,
     highlights: [
       'Resume scoring against a job dataset to estimate role compatibility.',
       'Custom vacancy mode for direct comparison against user-defined requirements.',

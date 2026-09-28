@@ -1,9 +1,12 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     top_k: int = Field(default=4, ge=1, le=10)
+    language: Literal["pt", "en"] | None = None
 
 
 class ChatSource(BaseModel):

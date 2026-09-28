@@ -10,12 +10,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
   rebuild-and-ingest:
+    needs: test
     runs-on: [self-hosted, linux, dev]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Create .env
         run: |
@@ -29,7 +33,7 @@ jobs:
 
       - name: Build compose
         run: |
-          docker compose down || true
+          # Build before replacing running containers so a failed build keeps the site online.
           docker builder prune -af || true
           docker image prune -af || true
           COMPOSE_PARALLEL_LIMIT=1 docker compose build --no-cache rag-api

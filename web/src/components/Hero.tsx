@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react'
 import ChatSection from './ChatSection'
 import type { Language } from '../data/projects'
+import { PROFILE } from '../data/profile'
 import gabrielProfileImage from '../Assets/Main/Gabriel-Goncalves.png'
 
 const container = {
@@ -40,6 +41,7 @@ interface HeroProps {
 }
 
 export default function Hero({ language }: HeroProps) {
+  const copy = PROFILE[language]
   const [isChatExpanded, setIsChatExpanded] = useState(false)
   const [supportsExpandedChat, setSupportsExpandedChat] = useState(false)
 
@@ -99,7 +101,7 @@ export default function Hero({ language }: HeroProps) {
             <div className="relative h-28 w-28 overflow-hidden rounded-2xl border-2 border-dark-600 bg-dark-800 ring-1 ring-accent/20 sm:h-32 sm:w-32">
               <img
                 src={gabrielProfileImage}
-                alt="Gabriel Goncalves"
+                alt="Gabriel Gonçalves"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -114,7 +116,7 @@ export default function Hero({ language }: HeroProps) {
             variants={fadeUp}
             className="mb-2 font-mono text-sm tracking-widest text-accent uppercase"
           >
-            Hi, I'm
+            {copy.greeting}
           </motion.p>
 
           <motion.h1
@@ -122,22 +124,22 @@ export default function Hero({ language }: HeroProps) {
             className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
             <span className="text-cream">Gabriel </span>
-            <span className="text-accent">Goncalves</span>
+            <span className="text-accent">Gonçalves</span>
           </motion.h1>
 
-          <motion.p 
-  variants={fadeUp} 
-  className="mt-3 font-mono text-sm leading-relaxed text-cream-muted sm:text-base"
->
-  Tech Rotation Intern - Bank of America <br />
-  Computer Science - Universidade Federal do ABC (UFABC)
-</motion.p>
+          <motion.p
+            variants={fadeUp}
+            className="mt-3 font-mono text-sm leading-relaxed text-cream-muted sm:text-base"
+          >
+            {copy.role}<br />
+            {copy.studies}
+          </motion.p>
 
           <motion.p
             variants={fadeUp}
             className="mt-5 max-w-lg font-body text-sm leading-relaxed text-dark-300 sm:text-base"
           >
-            Interest in Software Engineering, Data Science and Devops.
+            {copy.summary}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
@@ -173,7 +175,7 @@ export default function Hero({ language }: HeroProps) {
               transition={{ duration: 0.35, ease: 'easeOut' as const }}
               className="mb-3 text-center font-mono text-[10px] tracking-[0.18em] text-accent uppercase sm:text-[11px] lg:text-left"
             >
-              {shouldExpandChat ? 'Live Conversation Mode' : 'Rag chatbot '}
+              {shouldExpandChat ? copy.expandedChatTitle : copy.chatTitle}
             </motion.p>
           </AnimatePresence>
           <ChatSection
@@ -197,7 +199,7 @@ export default function Hero({ language }: HeroProps) {
 
       <motion.button
         type="button"
-        aria-label="Scroll down to projects"
+        aria-label={copy.scrollToProjects}
         onClick={scrollToProjects}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -206,7 +208,7 @@ export default function Hero({ language }: HeroProps) {
         whileTap={{ scale: 0.96 }}
         className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 rounded-2xl border border-dark-600/70 bg-dark-900/65 px-4 py-2 text-dark-300 backdrop-blur-md transition-colors duration-300 hover:border-accent/45 hover:text-accent md:flex"
       >
-        <span className="font-mono text-[10px] tracking-[0.18em] uppercase">Scroll to Projects</span>
+        <span className="font-mono text-[10px] tracking-[0.18em] uppercase">{copy.scrollToProjects}</span>
         <motion.div
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.35, repeat: Infinity, ease: 'easeInOut' as const }}

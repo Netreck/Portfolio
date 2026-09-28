@@ -8,14 +8,14 @@ interface NavbarProps {
 }
 
 const navLabels: Record<Language, string[]> = {
-  en: ['About', 'Projects', 'Chat'],
-  br: ['Sobre', 'Projetos', 'Chat'],
+  en: ['About', 'Experience', 'Projects', 'Chat'],
+  br: ['Sobre', 'Experiência', 'Projetos', 'Chat'],
 }
 
 export default function Navbar({ language, onLanguageChange, isProjectRoute = false }: NavbarProps) {
   const labels = navLabels[language]
   const hrefPrefix = isProjectRoute ? '/#' : '#'
-  const hrefKeys = ['about', 'projects', 'chat']
+  const hrefKeys = ['about', 'experience', 'projects', 'chat']
 
   return (
     <motion.nav
