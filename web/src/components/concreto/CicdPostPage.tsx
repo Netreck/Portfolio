@@ -10,6 +10,7 @@ import {
   TRADEOFFS,
   type Env,
   type EnvRoute,
+  type Job,
 } from '../../data/cicd'
 import ConcretoNav from './ConcretoNav'
 import { Question } from './CaseStudy'
@@ -20,8 +21,10 @@ interface CicdPostPageProps {
 }
 
 const STEP_MS = 900
-// -4 idle · -3 push · -2 workflow picked · -1 runner on the machine · 0..10 steps · 11 done
-const IDLE = -4
+// -3 idle · -2 push · -1 workflow picked · 0.. steps (test job, then deploy job) · STEPS.length done
+const IDLE = -3
+const FIRST_DEPLOY = STEPS.findIndex((step) => step.job === 'deploy')
+const JOBS: Job[] = ['test', 'deploy']
 
 // One deploy, played in whole steps and shared by the route strip and the step list.
 // Under reduced motion it shows the finished run and does not advance.
@@ -111,19 +114,22 @@ function PlayControls({ pipe, language }: { pipe: Pipeline; language: Language }
   )
 }
 
-// GitHub → workflow → the runner on the machine with the matching label, lit in whole steps.
+// GitHub → workflow → tests on a GitHub-hosted machine → the runner with the matching label,
+// lit in whole steps as the job that owns each stage starts.
 function RouteStrip({ route, index, language }: { route: EnvRoute; index: number; language: Language }) {
+  const t = CICD_COPY[language]
   const stages = [
-    { title: `git push ${route.branch}`, sub: 'GitHub', lit: index >= -3 },
-    { title: route.workflow, sub: `runs-on: [self-hosted, linux, ${route.label}]`, lit: index >= -2 },
-    { title: `${route.machine} · ${route.role[language]}`, sub: route.address, lit: index >= -1 },
+    { title: `git push ${route.branch}`, sub: 'GitHub', lit: index >= -2 },
+    { title: route.workflow, sub: 'test → rebuild-and-ingest', lit: index >= -1 },
+    { title: t.testsStage, sub: 'runs-on: ubuntu-latest', lit: index >= 0 },
+    { title: `${route.machine} · ${route.role[language]}`, sub: `runs-on: [self-hosted, linux, ${route.label}] · ${route.address}`, lit: index >= FIRST_DEPLOY },
   ]
   return (
-    <ol className="grid gap-3 md:grid-flow-col md:auto-cols-fr md:gap-6">
+    <ol className="grid gap-3 md:grid-cols-2 md:gap-6 lg:grid-flow-col lg:auto-cols-fr lg:grid-cols-none">
       {stages.map((stage) => (
         <li
           key={stage.title}
-          className={`relative border-2 px-4 py-4 after:absolute after:left-8 after:top-full after:h-3 after:w-1 after:bg-cobalt last:after:hidden md:after:left-full md:after:top-1/2 md:after:h-1 md:after:w-6 md:after:-translate-y-1/2 ${
+          className={`relative border-2 px-4 py-4 after:absolute after:left-8 after:top-full after:h-3 after:w-1 after:bg-cobalt last:after:hidden md:after:hidden lg:after:block lg:after:left-full lg:after:top-1/2 lg:after:h-1 lg:after:w-6 lg:after:-translate-y-1/2 lg:last:after:hidden ${
             stage.lit ? 'border-cobalt bg-cobalt text-paper' : 'border-paper text-paper'
           }`}
         >
@@ -143,33 +149,53 @@ function StepList({ index, language }: { index: number; language: Language }) {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_9rem]">
-      <ol className="border-t-2 border-ink">
-        {STEPS.map((step, i) => {
-          const state = i < index ? 'done' : i === index ? 'running' : 'pending'
+      <div className="grid gap-8">
+        {JOBS.map((job) => {
+          const steps = STEPS.map((step, i) => ({ step, i })).filter(({ step }) => step.job === job)
+          const first = steps[0].i
+          const running = index >= first && index <= steps[steps.length - 1].i
           return (
-            <li key={step.title.en} className="grid grid-cols-[2rem_1fr] items-start gap-x-4 border-b-2 border-ink py-2.5">
-              <span
-                className={`tnum mt-0.5 flex h-8 w-8 items-center justify-center border-2 border-ink text-[14px] font-bold ${
-                  state === 'done' ? 'bg-ink text-paper' : state === 'running' ? 'bg-signal text-ink' : 'bg-paper text-ink'
-                }`}
-              >
-                {i + 1}
-              </span>
-              <div className="min-w-0">
-                <p className={`text-[16px] font-semibold ${state === 'pending' ? 'text-ink-soft' : ''}`}>
-                  {step.title[language]}
-                  {state !== 'pending' && <span className="sr-only"> ({stateText[state]})</span>}
-                </p>
-                {step.command && (
-                  <p className="mt-0.5 break-normal font-mono text-[13px] text-cobalt">
-                    <Breakable text={step.command} />
-                  </p>
-                )}
+            <div key={job}>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pb-2.5">
+                <h3 className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                  {/* Yellow while this job is the one running */}
+                  <span aria-hidden="true" className={`h-3 w-3 ${running ? 'bg-signal outline outline-2 outline-ink' : 'bg-ink'}`} />
+                  <span className="font-mono text-[16px] font-bold">{t.jobs[job].name}</span>
+                  <span className="text-[14px] font-medium text-ink-soft">{t.jobs[job].where}</span>
+                </h3>
+                <p className="text-[14px] text-ink-soft">{t.jobs[job].note}</p>
               </div>
-            </li>
+              <ol start={first + 1} className="border-t-2 border-ink">
+                {steps.map(({ step, i }) => {
+                  const state = i < index ? 'done' : i === index ? 'running' : 'pending'
+                  return (
+                    <li key={step.title.en} className="grid grid-cols-[2rem_1fr] items-start gap-x-4 border-b-2 border-ink py-2.5">
+                      <span
+                        className={`tnum mt-0.5 flex h-8 w-8 items-center justify-center border-2 border-ink text-[14px] font-bold ${
+                          state === 'done' ? 'bg-ink text-paper' : state === 'running' ? 'bg-signal text-ink' : 'bg-paper text-ink'
+                        }`}
+                      >
+                        {i + 1}
+                      </span>
+                      <div className="min-w-0">
+                        <p className={`text-[16px] font-semibold ${state === 'pending' ? 'text-ink-soft' : ''}`}>
+                          {step.title[language]}
+                          {state !== 'pending' && <span className="sr-only"> ({stateText[state]})</span>}
+                        </p>
+                        {step.command && (
+                          <p className="mt-0.5 break-normal font-mono text-[13px] text-cobalt">
+                            <Breakable text={step.command} />
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
+              </ol>
+            </div>
           )
         })}
-      </ol>
+      </div>
 
       {/* Reachability of the environment being deployed: above the steps on small screens */}
       <div className="order-first flex flex-row items-center gap-3 lg:order-none lg:flex-col lg:items-stretch">
@@ -333,7 +359,9 @@ export default function CicdPostPage({ language, onLanguageChange }: CicdPostPag
         </tbody>
       </table>
       <p className="mt-3 text-[14px] text-ink-soft">
-        {language === 'br' ? 'Ambos também aceitam Actions → Run workflow.' : 'Both also accept Actions → Run workflow.'}
+        {language === 'br'
+          ? 'Pull requests para Dev ou main rodam só os testes, sem deploy. Os dois deploys também aceitam Actions → Run workflow.'
+          : 'Pull requests to Dev or main run only the tests, with no deploy. Both deploys also accept Actions → Run workflow.'}
       </p>
     </div>
   </div>

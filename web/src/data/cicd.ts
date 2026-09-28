@@ -40,25 +40,33 @@ export const ROUTES: EnvRoute[] = [
 
 export type SiteState = 'up' | 'down'
 
+export type Job = 'test' | 'deploy'
+
 export interface PipelineStep {
   title: T
   command?: string
   site: SiteState
+  job: Job
 }
 
-// The exact order both workflows run, one job: rebuild-and-ingest.
+// The exact order both workflows run: the reusable test job (ci.yml), then
+// rebuild-and-ingest, which declares needs: test and only starts if it passed.
 export const STEPS: PipelineStep[] = [
-  { title: { en: 'Check out the commit', br: 'Checkout do commit' }, command: 'actions/checkout@v4', site: 'up' },
-  { title: { en: 'Write .env from a secret', br: 'Gerar .env a partir de um secret' }, command: 'secrets.ENV_FILE → .env', site: 'up' },
-  { title: { en: 'Check Docker and Compose', br: 'Validar Docker e Compose' }, command: 'docker --version · docker compose version', site: 'up' },
-  { title: { en: 'Stop the current stack', br: 'Derrubar a stack atual' }, command: 'docker compose down', site: 'down' },
-  { title: { en: 'Clear build cache and images', br: 'Limpar cache e imagens' }, command: 'docker builder prune -af · docker image prune -af', site: 'down' },
-  { title: { en: 'Build the RAG API, no cache', br: 'Build da API RAG, sem cache' }, command: 'docker compose build --no-cache rag-api', site: 'down' },
-  { title: { en: 'Build the web app, no cache', br: 'Build do app web, sem cache' }, command: 'docker compose build --no-cache web', site: 'down' },
-  { title: { en: 'Start the new stack', br: 'Subir a stack nova' }, command: 'docker compose up -d', site: 'up' },
-  { title: { en: 'Wait for the services', br: 'Aguardar os serviços' }, command: 'sleep 15', site: 'up' },
-  { title: { en: 'Copy the RAG documents in', br: 'Copiar os documentos do RAG' }, command: 'docker compose cp rag/data/uploads/. rag-api:…', site: 'up' },
-  { title: { en: 'Reindex the vector collection', br: 'Reindexar a coleção vetorial' }, command: 'ingest_uploads_to_vector_db(reset_collection=True)', site: 'up' },
+  { job: 'test', title: { en: 'Check out and set up Node 20', br: 'Checkout e setup do Node 20' }, command: 'actions/setup-node@v4 · cache: npm', site: 'up' },
+  { job: 'test', title: { en: 'Install dependencies', br: 'Instalar dependências' }, command: 'npm ci', site: 'up' },
+  { job: 'test', title: { en: 'Run the unit tests', br: 'Rodar os testes unitários' }, command: 'npm test', site: 'up' },
+  { job: 'test', title: { en: 'Typecheck and build', br: 'Typecheck e build' }, command: 'npm run build', site: 'up' },
+  { job: 'deploy', title: { en: 'Check out the commit', br: 'Checkout do commit' }, command: 'actions/checkout@v4', site: 'up' },
+  { job: 'deploy', title: { en: 'Write .env from a secret', br: 'Gerar .env a partir de um secret' }, command: 'secrets.ENV_FILE → .env', site: 'up' },
+  { job: 'deploy', title: { en: 'Check Docker and Compose', br: 'Validar Docker e Compose' }, command: 'docker --version · docker compose version', site: 'up' },
+  { job: 'deploy', title: { en: 'Stop the current stack', br: 'Derrubar a stack atual' }, command: 'docker compose down', site: 'down' },
+  { job: 'deploy', title: { en: 'Clear build cache and images', br: 'Limpar cache e imagens' }, command: 'docker builder prune -af · docker image prune -af', site: 'down' },
+  { job: 'deploy', title: { en: 'Build the RAG API, no cache', br: 'Build da API RAG, sem cache' }, command: 'docker compose build --no-cache rag-api', site: 'down' },
+  { job: 'deploy', title: { en: 'Build the web app, no cache', br: 'Build do app web, sem cache' }, command: 'docker compose build --no-cache web', site: 'down' },
+  { job: 'deploy', title: { en: 'Start the new stack', br: 'Subir a stack nova' }, command: 'docker compose up -d', site: 'up' },
+  { job: 'deploy', title: { en: 'Wait for the services', br: 'Aguardar os serviços' }, command: 'sleep 15', site: 'up' },
+  { job: 'deploy', title: { en: 'Copy the RAG documents in', br: 'Copiar os documentos do RAG' }, command: 'docker compose cp rag/data/uploads/. rag-api:…', site: 'up' },
+  { job: 'deploy', title: { en: 'Reindex the vector collection', br: 'Reindexar a coleção vetorial' }, command: 'ingest_uploads_to_vector_db(reset_collection=True)', site: 'up' },
 ]
 
 export interface YamlLine {
@@ -101,6 +109,11 @@ export interface Tradeoff {
 
 export const TRADEOFFS: Tradeoff[] = [
   {
+    title: { en: 'Tests before anything goes down', br: 'Testes antes de qualquer coisa cair' },
+    why: { en: 'The tests run first, on a GitHub-hosted machine. If a link, the posts or the chat form breaks, the deploy never starts and the live site is left untouched. Pull requests run the same tests before a merge.', br: 'Os testes rodam primeiro, numa máquina hospedada pelo GitHub. Se um link, os posts ou o formulário do chat quebrarem, o deploy nem começa e o site no ar fica intacto. Pull requests rodam os mesmos testes antes do merge.' },
+    cost: { en: 'Each deploy takes a little longer while the tests run.', br: 'Cada deploy leva um pouco mais enquanto os testes rodam.' },
+  },
+  {
     title: { en: 'Stop, then start', br: 'Derrubar e depois subir' },
     why: { en: 'The job stops the running stack, clears it and only then starts the freshly built one, always in that order.', br: 'O job derruba a stack em execução, limpa tudo e só então sobe a recém-construída, sempre nessa ordem.' },
     cost: { en: 'A short window where the environment being deployed is offline.', br: 'Uma janela curta em que o ambiente publicado fica fora do ar.' },
@@ -116,14 +129,9 @@ export const TRADEOFFS: Tradeoff[] = [
     cost: { en: 'A failure right after the reset can leave the RAG empty until the next deploy.', br: 'Uma falha logo após o reset pode deixar o RAG vazio até o próximo deploy.' },
   },
   {
-    title: { en: 'A green job is not a health check', br: 'Job verde não é health check' },
-    why: { en: 'The workflow proves the commands finished. I verify the UI, the proxy and a real RAG answer myself after each deploy.', br: 'O workflow prova que os comandos terminaram. Eu verifico a UI, o proxy e uma resposta real do RAG depois de cada deploy.' },
-    cost: { en: 'No tests, HTTP smoke test or automatic rollback in the pipeline yet.', br: 'Ainda não há testes, smoke test HTTP nem rollback automático no pipeline.' },
-  },
-  {
     title: { en: 'One secret for configuration', br: 'Um secret para a configuração' },
     why: { en: 'The .env is always written from a GitHub secret, so no configuration lives in the repo or is edited by hand on the machine.', br: 'O .env sempre é gerado a partir de um secret do GitHub, então nenhuma configuração fica no repositório nem é editada à mão na máquina.' },
-    cost: { en: 'DEV and PROD read the same secret; nothing in the workflow keeps their configuration apart. Next step: GitHub Environments with a protected secret per environment.', br: 'DEV e PROD leem o mesmo secret; nada no workflow separa a configuração dos dois. Próximo passo: GitHub Environments com um secret protegido por ambiente.' },
+    cost: { en: 'DEV and PROD are isolated, each with its own runner and its own secret, but both run with the same configuration.', br: 'DEV e PROD são isolados, cada um com o seu runner e o seu secret, mas os dois rodam com a mesma configuração.' },
   },
 ]
 
@@ -177,24 +185,26 @@ export const CICD_COPY: Record<
     tradeoffCost: string
     checksTitle: string
     checksText: string
+    jobs: Record<Job, { name: string; where: string; note: string }>
+    testsStage: string
   }
 > = {
   en: {
     back: 'Back to portfolio',
     title: 'How I ship this portfolio with CI/CD',
     thesis:
-      'A push rebuilds the whole stack inside the target machine in my homelab: GitHub Actions hands the job to a self-hosted runner, which builds the Docker images locally and brings them up with Compose. No registry in between.',
+      'A push first runs the unit tests on a GitHub-hosted machine. Only if they pass does GitHub Actions hand the deploy to a self-hosted runner in my homelab, which rebuilds the Docker images inside the target machine and brings them up with Compose. No registry in between.',
     facts: [
-      { label: 'Stack', value: 'GitHub Actions · self-hosted runners · Docker Compose · Proxmox LXC' },
+      { label: 'Stack', value: 'GitHub Actions · Vitest · self-hosted runners · Docker Compose · Proxmox LXC' },
       { label: 'Environments', value: 'DEV on CT109 · PROD on CT108' },
-      { label: 'Result', value: 'git push → rebuilt and live' },
+      { label: 'Result', value: 'git push → tested, rebuilt and live' },
     ],
     routingTitle: 'The branch picks the workflow, the label picks the machine',
-    routingText: 'Each environment has its own runner inside its own container. The job lands on whichever runner carries the matching label.',
+    routingText: 'Each workflow runs two jobs. The tests run on a machine GitHub provides; the deploy lands on my runner that carries the matching label, inside the environment’s own container.',
     routingHead: { branch: 'Branch', workflow: 'Workflow', label: 'runs-on label', machine: 'Machine' },
     envToggle: 'Environment',
     pipelineTitle: 'A deploy, step by step',
-    pipelineText: 'The job’s route lights up above; here are its eleven steps. The Site indicator shows when the environment is reachable.',
+    pipelineText: 'The route lights up above; here are the two jobs and their fifteen steps. The Site indicator shows when the environment is reachable: a failing test stops the run while it is still up.',
     replay: 'Replay',
     play: 'Play',
     pause: 'Pause',
@@ -216,23 +226,28 @@ export const CICD_COPY: Record<
     tradeoffCost: 'Cost',
     checksTitle: 'How I check a deploy',
     checksText: 'A runner only counts as ready when it is active, connected and listening; a deploy only counts when the public URL answers.',
+    jobs: {
+      test: { name: 'test', where: 'GitHub-hosted · ubuntu-latest', note: 'Links, the posts and a short chat question, with the chatbot’s backend faked.' },
+      deploy: { name: 'rebuild-and-ingest', where: 'self-hosted', note: 'needs: test. Starts only if every test passed.' },
+    },
+    testsStage: 'Unit tests',
   },
   br: {
     back: 'Voltar ao portfólio',
     title: 'Como faço o CI/CD deste portfólio',
     thesis:
-      'Um push reconstrói a stack inteira dentro da máquina de destino no meu homelab: o GitHub Actions entrega o job a um runner self-hosted, que faz o build das imagens Docker localmente e sobe tudo com o Compose. Sem registry no meio.',
+      'Um push primeiro roda os testes unitários numa máquina hospedada pelo GitHub. Só se eles passarem o GitHub Actions entrega o deploy a um runner self-hosted no meu homelab, que refaz as imagens Docker dentro da máquina de destino e sobe tudo com o Compose. Sem registry no meio.',
     facts: [
-      { label: 'Stack', value: 'GitHub Actions · runners self-hosted · Docker Compose · LXC no Proxmox' },
+      { label: 'Stack', value: 'GitHub Actions · Vitest · runners self-hosted · Docker Compose · LXC no Proxmox' },
       { label: 'Ambientes', value: 'DEV no CT109 · PROD no CT108' },
-      { label: 'Resultado', value: 'git push → reconstruído e no ar' },
+      { label: 'Resultado', value: 'git push → testado, reconstruído e no ar' },
     ],
     routingTitle: 'A branch escolhe o workflow, a label escolhe a máquina',
-    routingText: 'Cada ambiente tem o seu runner dentro do seu próprio container. O job cai no runner que tem a label correspondente.',
+    routingText: 'Cada workflow roda dois jobs. Os testes rodam numa máquina fornecida pelo GitHub; o deploy cai no meu runner que tem a label correspondente, dentro do container do próprio ambiente.',
     routingHead: { branch: 'Branch', workflow: 'Workflow', label: 'Label runs-on', machine: 'Máquina' },
     envToggle: 'Ambiente',
     pipelineTitle: 'Um deploy, passo a passo',
-    pipelineText: 'A rota do job acende acima; aqui estão as suas onze etapas. O indicador Site mostra quando o ambiente está acessível.',
+    pipelineText: 'A rota acende acima; aqui estão os dois jobs e as suas quinze etapas. O indicador Site mostra quando o ambiente está acessível: um teste falhando para a execução enquanto ele ainda está no ar.',
     replay: 'Repetir',
     play: 'Rodar',
     pause: 'Pausar',
@@ -254,5 +269,10 @@ export const CICD_COPY: Record<
     tradeoffCost: 'Custo',
     checksTitle: 'Como eu confiro um deploy',
     checksText: 'Um runner só conta como pronto quando está ativo, conectado e ouvindo; um deploy só conta quando a URL pública responde.',
+    jobs: {
+      test: { name: 'test', where: 'hospedado pelo GitHub · ubuntu-latest', note: 'Links, os posts e uma pergunta curta ao chat, com o backend do chatbot simulado.' },
+      deploy: { name: 'rebuild-and-ingest', where: 'self-hosted', note: 'needs: test. Só começa se todos os testes passaram.' },
+    },
+    testsStage: 'Testes unitários',
   },
 }
