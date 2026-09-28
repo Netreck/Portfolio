@@ -154,6 +154,19 @@ export const POSTS: Post[] = [
 
 export const getPostBySlug = (slug: string) => POSTS.find((post) => post.slug === slug)
 
+// Everything the posts band lists, newest first. Each slug maps to its own page.
+export const POST_LIST: { slug: string; title: Record<Language, string>; teaser: Record<Language, string> }[] = [
+  {
+    slug: 'cicd-portfolio',
+    title: { en: 'How I ship this portfolio with CI/CD', br: 'Como faço o CI/CD deste portfólio' },
+    teaser: {
+      en: 'git push → self-hosted runner → Docker Compose → live',
+      br: 'git push → runner self-hosted → Docker Compose → no ar',
+    },
+  },
+  ...POSTS.map(({ slug, title, teaser }) => ({ slug, title, teaser })),
+]
+
 export const POSTS_COPY: Record<
   Language,
   {

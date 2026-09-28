@@ -1,7 +1,7 @@
 import type { Language } from '../../data/projects'
 
 interface LandingCopy {
-  nav: { about: string; experience: string; projects: string; chat: string; contact: string }
+  nav: { about: string; experience: string; projects: string; posts: string; chat: string; contact: string }
   switchTo: { en: string; br: string }
   grounding: string
   suggestionsLabel: string
@@ -27,7 +27,7 @@ interface LandingCopy {
 
 export const LANDING: Record<Language, LandingCopy> = {
   en: {
-    nav: { about: 'About', experience: 'Experience', projects: 'Projects', chat: 'Chat', contact: 'Contact' },
+    nav: { about: 'About', experience: 'Experience', projects: 'Projects', posts: 'Posts', chat: 'Chat', contact: 'Contact' },
     switchTo: { en: 'Switch language to English', br: 'Mudar idioma para Português' },
     grounding: 'A RAG chatbot that answers from my resume and project write-ups.',
     suggestionsLabel: 'Suggested questions',
@@ -53,7 +53,7 @@ export const LANDING: Record<Language, LandingCopy> = {
     askAgain: 'Or ask the chatbot',
   },
   br: {
-    nav: { about: 'Sobre', experience: 'Experiência', projects: 'Projetos', chat: 'Chat', contact: 'Contato' },
+    nav: { about: 'Sobre', experience: 'Experiência', projects: 'Projetos', posts: 'Posts', chat: 'Chat', contact: 'Contato' },
     switchTo: { en: 'Switch language to English', br: 'Mudar idioma para Português' },
     grounding: 'Um chatbot RAG que responde a partir do meu currículo e dos meus projetos.',
     suggestionsLabel: 'Perguntas sugeridas',

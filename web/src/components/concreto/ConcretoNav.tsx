@@ -18,6 +18,7 @@ export default function ConcretoNav({
     { href: `${base}#about`, label: t.nav.about },
     { href: `${base}#experience`, label: t.nav.experience },
     { href: `${base}#projects`, label: t.nav.projects },
+    { href: '/posts', label: t.nav.posts },
     { href: `${base}#contact`, label: t.nav.contact },
   ]
 
@@ -34,7 +35,8 @@ export default function ConcretoNav({
             <li key={link.href} className="flex">
               <a
                 href={link.href}
-                className="flex h-12 items-center whitespace-nowrap px-4 text-[15px] font-medium text-ink no-underline hover:bg-signal sm:h-16"
+                aria-current={link.href === '/posts' && typeof window !== 'undefined' && /^\/posts\/?$/i.test(window.location.pathname) ? 'page' : undefined}
+                className="flex h-12 items-center aria-[current=page]:bg-signal whitespace-nowrap px-4 text-[15px] font-medium text-ink no-underline hover:bg-signal sm:h-16"
               >
                 {link.label}
               </a>

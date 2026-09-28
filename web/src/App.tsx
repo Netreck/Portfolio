@@ -7,6 +7,8 @@ import Landing from './components/concreto/Landing'
 import HomelabPage from './components/concreto/HomelabPage'
 import HireMatchPage from './components/concreto/HireMatchPage'
 import PostPage from './components/concreto/PostPage'
+import CicdPostPage from './components/concreto/CicdPostPage'
+import PostsPage from './components/concreto/PostsPage'
 import { getPostBySlug } from './data/posts'
 import { getProjectBySlug, type Language } from './data/projects'
 
@@ -16,6 +18,7 @@ export default function App() {
     return stored === 'br' ? 'br' : 'en'
   })
 
+  const isPostsIndex = /^\/posts\/?$/i.test(window.location.pathname)
   const postMatch = window.location.pathname.match(/^\/post\/([^/]+)\/?$/)
   const activePost = postMatch ? getPostBySlug(postMatch[1]) : undefined
   const routeMatch = window.location.pathname.match(/^\/project\/([^/]+)\/?$/)
@@ -35,7 +38,7 @@ export default function App() {
     document.documentElement.lang = language === 'br' ? 'pt-BR' : 'en'
   }, [language])
 
-  const isSubpage = isProjectRoute || Boolean(postMatch)
+  const isSubpage = isProjectRoute || Boolean(postMatch) || isPostsIndex
 
   useEffect(() => {
     if (isSubpage) {
@@ -68,6 +71,14 @@ export default function App() {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     })
   }, [isSubpage])
+
+  if (isPostsIndex) {
+    return <PostsPage language={language} onLanguageChange={setLanguage} />
+  }
+
+  if (postMatch?.[1] === 'cicd-portfolio') {
+    return <CicdPostPage language={language} onLanguageChange={setLanguage} />
+  }
 
   if (activePost) {
     return <PostPage post={activePost} language={language} onLanguageChange={setLanguage} />
