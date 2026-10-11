@@ -54,7 +54,7 @@ export const PROFILE: Record<Language, Profile> = {
         technologies: ['Java', 'Python', 'AI agents', 'Selenium'],
       },
       {
-        role: 'Software Engineer Intern — Tech Rotation',
+        role: 'Software Engineer — Tech Rotation',
         organization: 'Bank of America',
         period: 'Jul 2025 — Jun 2026',
         highlights: [
@@ -119,7 +119,7 @@ export const PROFILE: Record<Language, Profile> = {
         technologies: ['Java', 'Python', 'Agentes de IA', 'Selenium'],
       },
       {
-        role: 'Estagiário de Engenharia de Software — Tech Rotation',
+        role: 'Engenheiro de Software — Tech Rotation',
         organization: 'Bank of America',
         period: 'Jul 2025 — Jun 2026',
         highlights: [

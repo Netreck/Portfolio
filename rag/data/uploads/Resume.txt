@@ -21,7 +21,7 @@ Jun 2026 — Present
 • Architected a reusable Java monitoring library integrated with an enterprise Selenium framework to centralize execution telemetry.
 • Built an AI engineering assistant combining technical documentation, system architecture and business workflows to support 8+ engineers and QA professionals.
 
-Software Engineer Intern — Tech Rotation — Bank of America
+Software Engineer — Tech Rotation — Bank of America
 Jul 2025 — Jun 2026
 • Developed Java frameworks, APIs, internal platforms and end-to-end automation for enterprise financial applications.
 • Contributed to payment software architecture, evaluating scalable designs and integrations for throughput, reliability and transaction performance.

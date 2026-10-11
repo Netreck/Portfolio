@@ -21,7 +21,7 @@ Jun 2026 — Presente
 • Arquitetura de uma biblioteca Java reutilizável de monitoramento, integrada a um framework corporativo de Selenium para centralizar a telemetria de execução.
 • Desenvolvimento de um assistente de engenharia com IA que combina documentação técnica, arquitetura de sistemas e fluxos de negócio para apoiar 8 ou mais profissionais de engenharia e QA.
 
-Estagiário de Engenharia de Software — Tech Rotation — Bank of America
+Engenheiro de Software — Tech Rotation — Bank of America
 Jul 2025 — Jun 2026
 • Desenvolvimento de frameworks Java, APIs, plataformas internas e automação de ponta a ponta para aplicações financeiras corporativas.
 • Contribuição à arquitetura de software de pagamentos, avaliando projetos e integrações escaláveis com foco em capacidade de processamento, confiabilidade e desempenho das transações.
